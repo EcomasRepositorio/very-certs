@@ -8,7 +8,7 @@ const NuestrosDiplomados = () => {
         {/* Contenedor de texto */}
         <div className="md:w-1/2 p-4 md:pr-8">
           <span className="text-blue-600 font-semibold uppercase text-sm tracking-wide mb-2 inline-block">
-            Vericerts
+            NOSOTROS
           </span>
           <h1 className="text-4xl font-extrabold text-[#009FB2] leading-tight mb-4">
             Cómo Funciona Vericerts

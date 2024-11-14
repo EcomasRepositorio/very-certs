@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const SecurityFeatureWithImage = () => {
   return (
@@ -18,7 +18,7 @@ const SecurityFeatureWithImage = () => {
       {/* Contenedor del contenido */}
       <div className="text-left md:w-1/2 max-w-lg">
         <span className="bg-[#009FB2] dark:bg-[#1B2A48] text-white py-1 px-4 rounded-full text-sm inline-block mb-4">
-          Beneficios de Verificar con Vericerts
+          NOSOTROS
         </span>
         <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6 text-gray-700 dark:text-white">
           Beneficios de Verificar con Vericerts
@@ -43,7 +43,13 @@ const SecurityFeatureWithImage = () => {
 };
 
 // Aplicar hover directamente aquí
-const FeatureItem = ({ title, description }: { title: string; description: string }) => (
+const FeatureItem = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => (
   <div className="flex items-start bg-[#009FB2] dark:bg-[#1B2A48] p-4 rounded-lg hover:bg-[#3c424d] transition-colors duration-300">
     <span className="text-green-400 text-xl mr-3">✔</span>
     <div>

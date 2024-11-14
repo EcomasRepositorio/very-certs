@@ -54,29 +54,31 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Elemento hexagonal */}
+        {/* Elemento hexagonal */}
         <div
-          className="hidden lg:flex absolute text-white p-4 flex-col items-center justify-center mt-20 ml-[900px]"
+          className="hidden lg:flex absolute text-white p-4 flex-col items-center justify-center mt-28 ml-[900px] z-10"
           style={{
             clipPath:
               "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
             width: "120px",
-            height: "104px",
+            height: "120px",
             backgroundColor: "black",
-            top: "150px", // Ajusta estos valores para mover el hexágono
-            left: "20px", // Ajusta estos valores para mover el hexágono
+            top: "150px", // Ajusta esta posición para mover el hexágono verticalmente
+            left: "20px", // Ajusta esta posición para mover el hexágono horizontalmente
           }}
         >
-          <FaTools className="w-10 h-10" />
-          <span className="text-2xl font-bold">25+</span>
-          <span className="text-sm">Years of experience</span>
+          {/* Icono de herramientas */}
+          <FaTools className="w-6 h-6 mb-1" />{" "}
+          <span className="text-xl font-bold">2+</span>{" "}
+          <span className="text-xs text-center">Años de experiencia</span>{" "}
         </div>
       </div>
-      {/* Elemento hexagonal */}
 
       {/* Contenedor de texto e información */}
 
       <div className="md:w-1/2 text-gray-700 dark:text-white  -z-20">
-        <span className="text-red-500 uppercase font-semibold "></span>
+        <span className="text-red-500 uppercase font-semibold "> NOSOTROS</span>
+
         <h2 className="text-4xl font-extrabold my-4">
           Ventajas de Usar Vericerts
         </h2>
@@ -115,7 +117,6 @@ const ExpertiseSection = () => {
             <span>Sostenibilidad</span>
           </li>
         </ul>
-
       </div>
     </section>
   );

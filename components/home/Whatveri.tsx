@@ -11,6 +11,8 @@ const stats = [
 
 const CyberSecuritySection = () => {
   return (
+    <section id='nosotros'>
+
     <section className="flex flex-col md:flex-row items-center bg-transparent text-gray-700 dark:text-white p-10 md:p-20 max-w-screen-xl mx-auto">
       {/* Contenedor de imagen (Carrusel) */}
       <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0 relative">
@@ -76,6 +78,8 @@ const CyberSecuritySection = () => {
         </div>
       </div>
     </section>
+    </section>
+
   );
 };
 

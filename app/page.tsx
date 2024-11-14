@@ -4,22 +4,16 @@ const PrincipalHome = dynamic(() => import("@/components/home/PrincipalHome"));
 const PorqueNosotros = dynamic(
   () => import("@/components/home/PorqueNosotros")
 );
-const SwiperCarrouselDiplomados = dynamic(
-  () => import("@/components/home/SwiperDiplomados")
-);
+const VentajVeri = dynamic(() => import("@/components/home/VentajVeri"));
 const CarouselCursosDestacados = dynamic(
   () => import("@/components/home/SwiperCursosDestacados")
 );
-const TestimoniosFb = dynamic(() => import("@/components/home/TestimoniosFb"));
+const Beneficios = dynamic(() => import("@/components/home/Beneficios"));
 //const QuienesSomos = dynamic(() => import("@/components/home/QuienesSomos"));
-const NuestrosDiplomados = dynamic(
-  () => import("@/components/home/NuestrosDiplomados")
-);
+const ComoVeri = dynamic(() => import("@/components/home/ComoVeri"));
 const ContactForm = dynamic(() => import("@/components/home/ContactForm"));
 const ScrollToBotButton = dynamic(() => import("@/components/home/bounceDown"));
-const LogosCarrousel = dynamic(
-  () => import("@/components/home/logosCarrousel")
-);
+const Whatveri = dynamic(() => import("@/components/home/Whatveri"));
 
 export default function Main() {
   return (
@@ -32,22 +26,22 @@ export default function Main() {
         <QuienesSomos />
       </div> */}
       <div className=" dark:bg-fondDark">
-        <LogosCarrousel />
+        <Whatveri />
       </div>
       <div className=" dark:bg-fondDark">
-        <NuestrosDiplomados />
+        <ComoVeri />
       </div>
       <div className=" dark:bg-fondDark">
-        <SwiperCarrouselDiplomados />
+        <VentajVeri />
+      </div>
+      <div className=" dark:bg-fondDark ">
+        <Beneficios />
       </div>
       <div className=" dark:bg-fondDark ">
         <PorqueNosotros />
       </div>
       <div className="  dark:bg-fondDark ">
         <CarouselCursosDestacados />
-      </div>
-      <div className=" dark:bg-fondDark ">
-        <TestimoniosFb />
       </div>
 
       <div className=" dark:bg-fondDark ">

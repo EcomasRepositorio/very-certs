@@ -17,14 +17,14 @@ const Whatveri = dynamic(() => import("@/components/home/Whatveri"));
 
 export default function Main() {
   return (
-    <main className="relative z-0 bg-gradient-to-r  from-[#e0f9f6] to-[#e0f9f6] ">
+    <main className="relative z-0 bg-gradient-to-r  from-[#e0f9f6] to-[#e0f9f6]  ">
       {/* Botón para cambiar de tema */}
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />
       </div>
-      {/*  <div className="bg-blue-500  dark:bg-fondDark ">
+      {/* <div className="bg-blue-500  dark:bg-fondDark ">
         <QuienesSomos />
-      </div> */}
+      </div>  */}
       <div className=" dark:bg-fondDark">
         <Whatveri />
       </div>

@@ -54,7 +54,6 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Elemento hexagonal */}
-        {/* Elemento hexagonal */}
         <div
           className="hidden lg:flex absolute text-white p-4 flex-col items-center justify-center mt-28 ml-[900px] z-10"
           style={{
@@ -75,11 +74,10 @@ const ExpertiseSection = () => {
       </div>
 
       {/* Contenedor de texto e información */}
+      <div className="md:w-1/2 text-gray-700 dark:text-gray-200 -z-2">
+        <span className="text-red-500 uppercase font-semibold dark:text-red-400"> NOSOTROS</span>
 
-      <div className="md:w-1/2 text-gray-700 dark:text-white  -z-20">
-        <span className="text-red-500 uppercase font-semibold "> NOSOTROS</span>
-
-        <h2 className="text-4xl font-extrabold my-4">
+        <h2 className="text-4xl font-extrabold my-4 dark:text-white">
           Ventajas de Usar Vericerts
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -93,28 +91,28 @@ const ExpertiseSection = () => {
         </p>
         <ul className="space-y-4">
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Confianza y Credibilidad</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Confianza y Credibilidad</span>
           </li>
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Verificación Rápida y Sencilla</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Verificación Rápida y Sencilla</span>
           </li>
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Ahorro de Tiempo y Recursos</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Ahorro de Tiempo y Recursos</span>
           </li>
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Accesibilidad Global</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Accesibilidad Global</span>
           </li>
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Control Total para Instituciones</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Control Total para Instituciones</span>
           </li>
           <li className="flex items-center">
-            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2" />
-            <span>Sostenibilidad</span>
+            <BsCheckCircle className="text-blue-500 w-6 h-6 mr-2 dark:text-blue-300" />
+            <span className="dark:text-gray-100">Sostenibilidad</span>
           </li>
         </ul>
       </div>

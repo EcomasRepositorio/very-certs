@@ -1,134 +1,143 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { motion, useAnimation } from "framer-motion";
-import { UsersIcon, BookOpenIcon, AcademicCapIcon, StarIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+
+const pricingPlans = [
+  {
+    name: "Basico",
+    price: 99,
+    features: [
+      "Registro de hasta 100 certificados al mes.",
+      "10GB de espacio en disco para almacenamiento de certificados.",
+      "Acceso a informes básicos de verificación.",
+      "Soporte técnico por correo electrónico.",
+      "Integración básica con sistemas LMS como Moodle o Blackboard."
+    ],
+    icon: CheckCircleIcon,
+  },
+  {
+    name: "Normal",
+    price: 199,
+    features: [
+      "Registro de hasta 1000 certificados al mes.",
+      "100GB de espacio en disco.",
+      "100 consultas de verificación al mes.",
+      "Soporte técnico avanzado por chat y correo electrónico",
+      "Informes detallados sobre la verificación y emisión de certificados.",
+      "Personalización del certificado con logotipos y sellos digitales de la institución"
+    ],
+    icon: CheckCircleIcon,
+  },
+  {
+    name: "Premium",
+    price: 299,
+    features: [
+      "Registro ilimitado de certificados.",
+      "500GB de espacio en disco para almacenamiento seguro",
+      "Verificaciones ilimitadas",
+      "Soporte prioritario por teléfono, chat y correo electrónico",
+      "Acceso a API para integración completa con sistemas LMS",
+      "Informes avanzados de uso y verificaciones ",
+      "Verificaciones ilimitadas",
+      "Opciones de personalización avanzada de certificados, incluyendo diseños exclusivos"
+    ],
+    icon: CheckCircleIcon,
+  },
+];
 
 const PorqueNosotros = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const controls = useAnimation();
+  return (
+    <section className="bg-transparent py-16 px-4 text-teal-400 dark:text-white">
+      <div className="max-w-7xl mx-auto text-center mb-12">
+        <p className="text-lg font-semibold text-teal-400">Nuestros Plnaes</p>
+        <h2 className="text-4xl font-bold">encuentra el mejor plan que necesites</h2>
+      </div>
 
-  // Efecto para activar la animación cuando el componente se vuelve visible
+      <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-3">
+        {pricingPlans.map((plan, index) => (
+          <PricingCard key={index} plan={plan} delay={index * 0.2} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const PricingCard = ({ plan, delay }) => {
+  const [count, setCount] = useState(0);
+  const cardRef = useRef(null);
+
   useEffect(() => {
-    if (isVisible) {
-      controls.start("visible");
-    }
-  }, [isVisible, controls]);
+    const handleIntersection = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Reinicia el contador al entrar en la vista
+          startCounting();
+        } else {
+          // Reinicia el contador al salir de la vista
+          setCount(0);
+        }
+      });
+    };
 
-  // Función para manejar el evento de scroll y determinar la visibilidad del componente
-  const handleScroll = () => {
-    const element = document.getElementById("porque-nosotros");
-    if (element) {
-      const elementPosition = element.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.2;
-      if (elementPosition < screenPosition) {
-        setIsVisible(true);
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5, // 50% visible para activar
+    });
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
       }
-    }
+    };
+  }, [plan.price]);
+
+  const startCounting = () => {
+    const increment = plan.price / 100;
+    let currentCount = 0;
+
+    const counterInterval = setInterval(() => {
+      currentCount += increment;
+      if (currentCount >= plan.price) {
+        setCount(plan.price);
+        clearInterval(counterInterval);
+      } else {
+        setCount(Math.floor(currentCount));
+      }
+    }, 20);
   };
-
-  // Efecto para añadir el listener de scroll
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Variantes de animación
-  const textVariants = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 2, ease: "easeOut" } }
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 2, ease: "easeOut" } }
-  };
-
-  const features = [
-    { name: '+3000', description: 'Alumnos beneficiados', icon: UsersIcon },
-    { name: '+70', description: 'Diplomados disponibles', icon: AcademicCapIcon },
-    { name: '+700', description: 'Cursos disponibles', icon: BookOpenIcon },
-    { name: '+10000', description: 'Clases virtuales impartidas', icon: StarIcon },
-  ];
 
   return (
-    <div id="porque-nosotros" className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 items-center pt-4 px-4 sm:px-6 sm:py-10 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
-      <div>
-        <motion.h2
-          className="text-primaryblue dark:text-white text-4xl font-extrabold mb-1 sm:text-4xl"
-          variants={textVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          ¿Por qué debes elegirnos?
-        </motion.h2>
-        <motion.p
-          className="mt-4 text-gray-800 dark:text-white text-justify"
-          variants={textVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          En Ecomas, nos dedicamos a ayudar a mejorar el currículum vitae de los titulados mediante una amplia
-          gama de cursos y diplomados especializados en áreas clave como ingenierías,
-          ofreciendo oportunidades para el desarrollo profesional y el crecimiento personal.
-        </motion.p>
-        <motion.dl
-          className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-4"
-          variants={textVariants}
-          initial="hidden"
-          animate={controls}
-        >
-          {features.map((feature, index) => (
-            <motion.div key={index} className="border-t border-gray-200 dark:border-gray-500 pt-4 flex items-center" variants={textVariants}>
-              <div className="mr-2">
-                <feature.icon className="h-12 w-12 mr-4 text-primaryblue" aria-hidden="true" />
-              </div>
-              <div>
-                <dt className="font-extrabold text-4xl text-gray-800 dark:text-white">{feature.name}</dt>
-                <dd className="mt-2 text-sm text-gray-800 dark:text-white">{feature.description}</dd>
-              </div>
-            </motion.div>
-          ))}
-        </motion.dl>
+    <motion.div
+      ref={cardRef}
+      className="bg-[#16213e] p-8 rounded-2xl shadow-lg flex flex-col items-center text-center"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay }}
+    >
+      <div className=" w-16 h-16 bg-teal-400 rounded-full flex items-center justify-center mb-4">
+        <plan.icon className="w-8 h-8 text-[#0e1b35]" />
       </div>
-      <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-        <motion.div className="relative" variants={imageVariants} initial="hidden" animate={controls}>
-          <Image
-            src='/image/inges.jpg'
-            alt='Imagen banner'
-            width={400}
-            height={300}
-            className='hidden md:block rounded-lg w-full h-72 object-cover object-center'
-          />
-        </motion.div>
-        <motion.div className="relative" variants={imageVariants} initial="hidden" animate={controls}>
-          <Image
-            src='/image/riego.jpg'
-            alt='Imagen banner'
-            width={400}
-            height={300}
-            className='hidden md:block rounded-lg w-full h-72 object-cover object-center'
-          />
-        </motion.div>
-        <motion.div className="relative" variants={imageVariants} initial="hidden" animate={controls}>
-          <Image
-            src='/image/autocad.jpg'
-            alt='Imagen banner'
-            width={400}
-            height={300}
-            className='hidden md:block rounded-lg w-full h-72 object-cover object-center'
-          />
-        </motion.div>
-        <motion.div className="relative" variants={imageVariants} initial="hidden" animate={controls}>
-          <Image
-            src='/image/alkumnos.jpg'
-            alt='Imagen banner'
-            width={400}
-            height={300}
-            className='hidden md:block rounded-lg w-full h-72 object-cover object-center'
-          />
-        </motion.div>
-      </div>
-    </div>
+      <h3 className="text-xl font-semibold mb-4">{plan.name}</h3>
+      <ul className="text-sm space-y-2 mb-6">
+        {plan.features.map((feature, i) => (
+          <li key={i} className="flex items-center justify-center space-x-2">
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="flex flex-col justify-between h-full">
+  <div>
+    <p className="text-3xl font-bold mb-6">${count}/mo</p>
+  </div>
+  <button className="bg-gradient-to-r from-blue-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold mt-auto">
+    COMPRAR AHORA
+  </button>
+</div>
+
+    </motion.div>
   );
 };
 

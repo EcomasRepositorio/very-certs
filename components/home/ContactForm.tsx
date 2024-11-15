@@ -59,7 +59,7 @@ const ContactForm = () => {
 
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
             {/* Left Side - Contact Information */}
-            <div className="animated-gradient bg-gradient-to-r from-[#e0f9f6] via-[#82e6cd] to-[#e0f9f6] dark:from-[#0a0326] dark:via-[#1a0e4b] dark:to-fondDark rounded-3xl text-black dark:text-white p-6 md:p-8 flex flex-col items-center md:items-start md:w-1/2">
+            <div className="animated-gradient bg-gradient-to-r from-[#e0f9f6] via-[#e0f9f6] to-[#e0f9f6] dark:from-[#0a0326] dark:via-[#1a0e4b] dark:to-fondDark rounded-3xl text-black dark:text-white p-6 md:p-8 flex flex-col items-center md:items-start md:w-1/2">
               <p className="mb-2 text-center md:text-left">#################</p>
               <p className="mb-6 text-center md:text-left">### ### ### ###</p>
               <div className="mb-6 flex flex-col items-center md:items-start">
@@ -67,7 +67,7 @@ const ContactForm = () => {
                 <img
                   src="/image/log-light.png"
                   alt="VERICERTS Light"
-                  className="w-40 h-40 mb-4 dark:hidden"
+                  className="w-40 h-40 mb-4 dark:hidden ml-40"
                 />
                 {/* Imagen para modo oscuro */}
                 <img
@@ -88,7 +88,7 @@ const ContactForm = () => {
             </div>
 
             {/* Right Side - Contact Form */}
-            <div className="animated-gradient w-full md:w-1/2 p-6 md:p-8 bg-gradient-to-tl from-[#e0f9f6] via-[#82e6cd] to-[#e0f9f6] dark:from-transparent dark:via-[#1a0e4b] dark:to-[#0a0326] rounded-lg border-none">
+            <div className="animated-gradient w-full md:w-1/2 p-6 md:p-8 bg-gradient-to-tl from-[#e0f9f6] via-[#e0f9f6] to-[#e0f9f6] dark:from-transparent dark:via-[#1a0e4b] dark:to-[#0a0326] rounded-lg border-none">
               <form
                 ref={formRef}
                 onSubmit={handleSubmit(onSubmit)}
@@ -102,12 +102,12 @@ const ContactForm = () => {
                     <input
                       {...register("nombres", { required: true })}
                       type="text"
-                      className="w-full px-4 py-2 text-gray-800 dark:text-white bg-white border-2 border-[#009FB2] rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
+                      className="w-full px-4 py-2 text-gray-800 dark:text-white bg-transparent border-2 border-[#009FB2] rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
                       placeholder="Nombres completos"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 dark:text-white font-medium">
+                    <label className="block text-gray-700 dark:text-white bg-transparent font-medium">
                       N° Celular
                     </label>
                     <input
@@ -116,7 +116,7 @@ const ContactForm = () => {
                         pattern: /^\d{9}$/,
                       })}
                       type="text"
-                      className="w-full px-4 py-2 text-gray-800 dark:text-white bg-white border-2 border-[#009FB2] rounded-md shadow-md focus:outline-none focus:ring focus:ring-[#009FB2]"
+                      className="w-full px-4 py-2 text-gray-800 dark:text-white bg-transparent border-2 border-[#009FB2] rounded-md shadow-md focus:outline-none focus:ring focus:ring-[#009FB2]"
                       placeholder="999 999 999"
                     />
                   </div>
@@ -132,7 +132,7 @@ const ContactForm = () => {
                         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     })}
                     type="email"
-                    className="w-full px-4 py-2 text-gray-800 bg-white border-2 border-blue-500 rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
+                    className="w-full px-4 py-2 text-gray-800 bg-transparent border-2 border-blue-500 rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
                     placeholder="Ej: ejemplo@gmail.com"
                   />
                   {errors.correo && (
@@ -147,13 +147,13 @@ const ContactForm = () => {
                   </label>
                   <textarea
                     {...register("mensaje")}
-                    className="w-full h-24 md:h-32 px-4 py-2 text-gray-800 bg-white border-2 border-blue-500 rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
+                    className="w-full h-24 md:h-32 px-4 py-2 text-gray-800 bg-transparent border-2 border-blue-500 rounded-md shadow-md focus:outline-none focus:ring focus:ring-blue-500"
                     placeholder="Escribe tu mensaje aquí..."
                   ></textarea>
                 </div>
                 <Button
                   type="submit"
-                  className="w-full bg-blue-800 text-white py-2 rounded-md hover:bg-blue-500"
+                  className="w-full bg-transparent border-2 border-[#009FB2]  text-white py-2 rounded-md hover:bg-[#009FB2]"
                 >
                   {sending ? "Enviando..." : "Enviar mensaje"}
                 </Button>

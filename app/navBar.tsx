@@ -92,7 +92,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/#" onClick={() => setNavbar(!navbar)}>
+                  <Link href="/#servicios" onClick={() => setNavbar(!navbar)}>
                     Servicios
                   </Link>
                 </li>
@@ -112,7 +112,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/" onClick={() => setNavbar(!navbar)}>
+                  <Link href="/#contacto" onClick={() => setNavbar(!navbar)}>
                     Contactanos
                   </Link>
                 </li>

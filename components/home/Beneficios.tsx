@@ -2,6 +2,7 @@ import React from "react";
 
 const SecurityFeatureWithImage = () => {
   return (
+    <section id='servicios'>
     <section className="flex flex-col md:flex-row items-center bg-transparent text-white dark:text-white p-10 md:p-20">
       {/* Contenedor de la imagen */}
       <div className="flex-shrink-0 w-full md:w-1/2 mb-8 md:mb-0 md:mr-8">
@@ -18,7 +19,7 @@ const SecurityFeatureWithImage = () => {
       {/* Contenedor del contenido */}
       <div className="text-left md:w-1/2 max-w-lg">
         <span className="bg-[#009FB2] dark:bg-[#1B2A48] text-white py-1 px-4 rounded-full text-sm inline-block mb-4">
-          NOSOTROS
+          SERVICIOS
         </span>
         <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6 text-gray-700 dark:text-white">
           Beneficios de Verificar con Vericerts
@@ -38,6 +39,7 @@ const SecurityFeatureWithImage = () => {
           />
         </div>
       </div>
+    </section>
     </section>
   );
 };

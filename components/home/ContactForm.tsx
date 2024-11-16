@@ -47,7 +47,6 @@ const ContactForm = () => {
   return (
     <>
       <style>{keyframesStyle}</style>
-
       <section id="contacto" className="bg-transparent p-4 md:p-8 rounded-xl">
         <div className="max-w-7xl mx-auto space-y-8 px-4 sm:px-0">
           {/* Título */}

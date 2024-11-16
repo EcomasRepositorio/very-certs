@@ -9,13 +9,14 @@ const CarouselCursosDestacados = dynamic(
   () => import("@/components/home/SwiperCursosDestacados")
 );
 const Beneficios = dynamic(() => import("@/components/home/Beneficios"));
-//const QuienesSomos = dynamic(() => import("@/components/home/QuienesSomos"));
 const ComoVeri = dynamic(() => import("@/components/home/ComoVeri"));
 const ContactForm = dynamic(() => import("@/components/home/ContactForm"));
 const ScrollToBotButton = dynamic(() => import("@/components/home/bounceDown"));
 const Whatveri = dynamic(() => import("@/components/home/Whatveri"));
 /* const segSoport = dynamic(() => import("@/components/home/segSoport"));
  */
+const QuienesSomos = dynamic(() => import("@/components/home/QuienesSomos"));
+
 export default function Main() {
   return (
     <main className="relative z-0 bg-gradient-to-r  from-[#e0f9f6] to-[#e0f9f6]  ">
@@ -23,9 +24,7 @@ export default function Main() {
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />
       </div>
-      {/* <div className="bg-blue-500  dark:bg-fondDark ">
-        <QuienesSomos />
-      </div>  */}
+      
       <div className=" dark:bg-fondDark">
         <Whatveri />
       </div>
@@ -47,7 +46,9 @@ export default function Main() {
       <div className="  dark:bg-fondDark ">
         <CarouselCursosDestacados />
       </div>
-
+ <div className="dark:bg-fondDark ">
+        <QuienesSomos />
+      </div>  
       <div className=" dark:bg-fondDark ">
         <ContactForm />
       </div>

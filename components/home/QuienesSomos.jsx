@@ -13,7 +13,7 @@ const Contacto = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Columna Izquierda */}
         <div className="space-y-6">
-          <p className="text-red-500 font-bold uppercase">VERIFICACIÓN</p>
+          <p className="text-blue-600 font-bold uppercase">VERIFICACIÓN</p>
 
           {/* Acordeón */}
           <div className="space-y-4">
@@ -23,7 +23,7 @@ const Contacto = () => {
               className={`cursor-pointer p-4 border rounded-lg ${
                 activeQuestion === 1
                   ? "bg-[#009FB2] dark:bg-[#1a0e4b] text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
               <div className="flex justify-between items-center">
@@ -63,14 +63,17 @@ const Contacto = () => {
                 </span>
               </div>
               {activeQuestion === 1 && (
-                <p className="mt-2">
+                <p className="mt-2text-gray-300 mb-4 list-disc pl-5">
                   1. Introduce el código de verificación:
-                  <p className="mt-2">
-                    Ingresa el código único del certificado en el campo de
-                    búsqueda. o Ejemplo: "1234-5678-9101-ABCD"
-                  </p>
+                  <ul className="text-gray-300 mb-4 list-disc pl-5">
+                    <li>
+                      Ingresa el código único del certificado en el campo de
+                      búsqueda.
+                    </li>
+                    <li>Ejemplo: "1234-5678-9101-ABCD"</li>
+                  </ul>
                   <p className="mt-2">2. Escanea el código QR:</p>
-                  <p className="mt-2">
+                  <p className="mt-2 text-gray-300 ">
                     Si el certificado tiene un código QR, puedes escanearlo con
                     tu smartphone para una verificación instantánea.
                   </p>
@@ -78,12 +81,12 @@ const Contacto = () => {
                   <p className="mt-2">
                     Vericerts te mostrará la información del certificado:
                   </p>
-                  <p className="mt-2">o Nombre del titular</p>
-                  <p className="mt-2">o Nombre de la institución emisora</p>
-                  <p className="mt-2">o Fecha de emisión</p>
-                  <p className="mt-2">
-                    o Tipo de certificación (curso, diplomado, etc.)
-                  </p>
+                  <ul className="text-gray-300 mb-4 list-disc pl-5">
+                    <li>Nombre del titular</li>
+                    <li>Nombre de la institución emisora </li>
+                    <li>Fecha de emisión</li>
+                    <li>Tipo de certificación (curso, diplomado, etc.) </li>
+                  </ul>
                 </p>
               )}
             </div>
@@ -94,7 +97,7 @@ const Contacto = () => {
               className={`cursor-pointer p-4 border rounded-lg ${
                 activeQuestion === 2
                   ? "bg-[#009FB2] dark:bg-[#1a0e4b] text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
               <div className="flex justify-between items-center">
@@ -134,7 +137,7 @@ const Contacto = () => {
                 </span>
               </div>
               {activeQuestion === 2 && (
-                <p className="mt-2">
+                <p className="mt-2 text-gray-300 ">
                   La verificación se realiza en tiempo real, lo que asegura que
                   cualquier consulta o verificación refleje la información más
                   actualizada y precisa. Este sistema ayuda a prevenir fraudes y
@@ -153,7 +156,7 @@ const Contacto = () => {
               className={`cursor-pointer p-4 border rounded-lg ${
                 activeQuestion === 3
                   ? "bg-[#009FB2] dark:bg-[#1a0e4b] text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
               <div className="flex justify-between items-center">
@@ -195,7 +198,7 @@ const Contacto = () => {
                 </span>
               </div>
               {activeQuestion === 3 && (
-                <p className="mt-2">
+                <p className="mt-2 text-gray-300 ">
                   Si el certificado no aparece en nuestra plataforma o el código
                   es incorrecto, contacta a la institución emisora para
                   confirmar los detalles. También puedes contactar a nuestro
@@ -210,7 +213,7 @@ const Contacto = () => {
               className={`cursor-pointer p-4 border rounded-lg ${
                 activeQuestion === 4
                   ? "bg-[#009FB2] dark:bg-[#1a0e4b] text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
               <div className="flex justify-between items-center">
@@ -252,7 +255,7 @@ const Contacto = () => {
                 </span>
               </div>
               {activeQuestion === 4 && (
-                <p className="mt-2">
+                <p className="mt-2 text-gray-300 ">
                   No, el código de verificación es necesario para asegurar la
                   autenticidad del certificado. Si no tienes el código, contacta
                   al titular del certificado o a la institución emisora{" "}
@@ -266,7 +269,7 @@ const Contacto = () => {
               className={`cursor-pointer p-4 border rounded-lg ${
                 activeQuestion === 5
                   ? "bg-[#009FB2] dark:bg-[#1a0e4b] text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
               <div className="flex justify-between items-center">
@@ -308,7 +311,7 @@ const Contacto = () => {
                 </span>
               </div>
               {activeQuestion === 5 && (
-                <p className="mt-2">
+                <p className="mt-2 text-gray-300 ">
                   Cualquier persona o institución con acceso al código de
                   verificación puede comprobar la autenticidad del certificado a
                   través de nuestra plataforma{" "}
@@ -327,7 +330,7 @@ const Contacto = () => {
             height={500}
             className="rounded-lg shadow-lg object-cover"
           />
-          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-lg shadow-lg flex items-center">
+          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-lg shadow-lg  items-center hidden lg:flex md:ml-96 xl:mt-20">
             <div className="mr-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

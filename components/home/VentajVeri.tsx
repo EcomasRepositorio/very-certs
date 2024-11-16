@@ -75,7 +75,7 @@ const ExpertiseSection = () => {
 
       {/* Contenedor de texto e información */}
       <div className="md:w-1/2 text-gray-700 dark:text-gray-200 -z-2">
-        <span className="text-red-500 uppercase font-semibold dark:text-red-400"> NOSOTROS</span>
+        <span className="text-blue-600 uppercase font-semibold dark:text-blue-600"> NOSOTROS</span>
 
         <h2 className="text-4xl font-extrabold my-4 dark:text-white">
           Ventajas de Usar Vericerts

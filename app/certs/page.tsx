@@ -1,134 +1,169 @@
 "use client";
 
-import React, { Suspense, memo } from "react";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import React, { useState, useRef, useEffect } from "react";
+import SearchDNI from "@/components/certificate/SearchDNI"; // Importar el componente SearchDNI
+import SearchCode from "@/components/certificate/SearchCode"; // Importar el componente SearchDNI
+import SearchName from "@/components/certificate/SearchName"; // Importar el componente SearchDNI
 
-// Carga dinámica de componentes para mejorar LCP
-const SearchCode = dynamic(
-  () => import("@/components/certificate/SearchCode"),
-  { suspense: true }
-);
-const SearchDNI = dynamic(() => import("@/components/certificate/SearchDNI"), {
-  suspense: true,
-});
-const SearchName = dynamic(
-  () => import("@/components/certificate/SearchName"),
-  { suspense: true }
-);
+// Componente para el video en cámara lenta
+const SlowVideo = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-// Componente memoizado para evitar re-renders innecesarios
-const Logo = memo(
-  ({
-    src,
-    alt,
-    width,
-    height,
-  }: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  }) => (
-    <div
-      className="relative flex justify-center items-center w-full"
-      style={{ height, width }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        style={{ objectFit: "contain" }} // Mantener el estilo de la imagen
-        priority
-      />
-    </div>
-  )
-);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.7; // Reduce la velocidad del video al 50%
+    }
+  }, []);
 
+  return (
+    <video
+      ref={videoRef}
+      className="absolute top-0 left-0 w-full h-full object-cover"
+      src="/image/fond-cert.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+    ></video>
+  );
+};
+
+// Componente principal
 const TestingPage: React.FC = () => {
-  const handleSearch = (data: any) => {
-    console.log(data);
+  const [searchType, setSearchType] = useState("document"); // Estado para controlar el tipo de búsqueda
+  const [inputValue, setInputValue] = useState(""); // Estado para almacenar el valor ingresado
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para manejar errores
+
+  // Funciones para manejar la búsqueda
+  const onSearchDNI = (dni: string) => {
+    console.log(`Buscando por DNI: ${dni}`);
+    // Simulación de error
+    if (!dni || dni.length < 8) {
+      setErrorMessage("El DNI que ingresaste no se encuentra en nuestra base de datos.");
+    } else {
+      setErrorMessage(null);
+    }
+  };
+
+  const onSearchCode = (code: string) => {
+    console.log(`Buscando por Código: ${code}`);
+    if (!code) {
+      setErrorMessage("El código que ingresaste no es válido.");
+    } else {
+      setErrorMessage(null);
+    }
+  };
+
+  const onSearchName = (name: string) => {
+    console.log(`Buscando por Nombre: ${name}`);
+    if (!name) {
+      setErrorMessage("El nombre ingresado no se encuentra en nuestra base de datos.");
+    } else {
+      setErrorMessage(null);
+    }
+  };
+
+  // Renderiza dinámicamente el input según el tipo de búsqueda seleccionado
+  const renderSearchComponent = () => {
+  switch (searchType) {
+    case "document":
+      return (
+        <SearchDNI
+          onSearchDNI={(data) => {
+            console.log("Data recibida desde SearchDNI:", data);
+            // Aquí puedes manejar los datos enviados por SearchDNI
+          }}
+        />
+      );
+    case "code":
+      return (
+        <SearchCode
+        onSearchCode={(data) => {
+            console.log("Data recibida desde SearchDNI:", data);
+            // Aquí puedes manejar los datos enviados por SearchDNI
+          }}
+        />
+      );
+    case "name":
+      return (
+        <SearchName
+        onSearchName={(data) => {
+            console.log("Data recibida desde SearchDNI:", data);
+            // Aquí puedes manejar los datos enviados por SearchDNI
+          }}
+        />
+      );
+    default:
+      return null;
+  }
+};
+
+
+  // Lógica para manejar la acción del botón de búsqueda
+  const handleSearch = () => {
+    if (searchType === "document") {
+      onSearchDNI(inputValue);
+    } else if (searchType === "code") {
+      onSearchCode(inputValue);
+    } else if (searchType === "name") {
+      onSearchName(inputValue);
+    }
   };
 
   return (
-    <section className="relative bg-fixed bg-cover bg-center min-h-[400px] w-full bg-[url('/image/panorama.jpg')]">
-      {/* Overlay con color semitransparente */}
-      <div className="absolute inset-0 bg-blue-600 opacity-50"></div>
+    <section className="relative min-h-screen w-full">
+      {/* Video de fondo */}
+      <SlowVideo />
 
-      <div className="relative py-12 mx-auto max-w-screen-lg px-4 w-full">
-        <div className=" bg-transparent rounded-lg shadow-lg p-8 md:p-12 mb-12 w-full">
-          {/* Nueva estructura de contenedor para centrar los logos */}
-          <div className="flex justify-center items-center gap-12 mb-6 w-full">
-            {/* Logotipo de Corporación Inalta */}
-            <Logo
-              src="/image/inaltlogwhite.png"
-              alt="Logo Inalta"
-              width={200}
-              height={200}
-            />
+      {/* Overlay semitransparente */}
+      <div className="absolute inset-0 bg-black opacity-60"></div>
 
-            {/* Logotipo de la Universidad Nacional de Piura */}
-            <Logo
-              src="/image/uni_dark.png"
-              alt="UNP"
-              width={200}
-              height={200}
-            />
-          </div>
+      {/* Mensaje de error */}
+      {errorMessage && (
+        <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-4 rounded-lg shadow-lg max-w-md text-center">
+          <h3 className="font-bold text-lg">DNI incorrecto</h3>
+          <p>{errorMessage}</p>
+          <button
+            onClick={() => setErrorMessage(null)}
+            className="absolute top-2 right-2 text-white font-bold"
+          >
+            ✖
+          </button>
+        </div>
+      )}
 
-          {/* Título y Pestañas */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-100 mb-6 md:text-4xl">
-              VERIFICAR CERTIFICADO
-            </h2>
-            <p className="text-gray-100 text-lg mb-8">
-              Verifica la validez de tu certificado introduciendo tu DNI, nombre
-              completo o código de certificado. Nos esforzamos en proteger la
-              privacidad y el manejo confidencial de tus datos personales.
-            </p>
+      {/* Contenido */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full">
+        {/* Título */}
+        <div className="text-center mb-8 mt-96">
+          <h2 className="text-3xl font-bold text-white mb-4 md:text-4xl">
+            VERIFICAR CERTIFICADO
+          </h2>
+          <p className="text-white text-lg">
+            Verifica la validez de tu certificado introduciendo tu DNI,
+          </p>
+          <p className="text-white text-lg">
+            nombre completo o código de certificado. Nos esforzamos en proteger
+            la privacidad
+          </p>
+          <p className="text-white text-lg">
+            y el manejo confidencial de tus datos personales.
+          </p>
+        </div>
 
-            {/* Pestañas optimizadas para carga diferida */}
-            <Tabs
-              aria-label="Opciones de búsqueda"
-              color="secondary"
-              classNames={{
-                tabList:
-                  "w-full flex flex-col md:flex-row bg-transparent border border-gray-300/40",
-                cursor: "bg-gray-100/30 text-gray-100",
-                tab: "py-2 px-4 rounded-t-lg text-gray-100",
-                tabContent:
-                  "group-data-[selected=true]:text-gray-100 text-g-100 ",
-              }}
-            >
-              <Tab key="dni" title="Buscar por DNI">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-gray-100 w-full">
-                      <SearchDNI onSearchDNI={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-              <Tab key="code" title="Buscar por Código">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-gray-100 dark:bg-gray-900 w-full">
-                      <SearchCode onSearchCode={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-              <Tab key="name" title="Buscar por Nombres">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-gray-100 dark:bg-gray-900 w-full">
-                      <SearchName onSearchName={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-            </Tabs>
+        {/* Contenedor del buscador */}
+        <div className="flex flex-col sm:flex-row items-center gap-2 max-w-3xl w-full bg-transparent shadow-lg rounded-lg p-4">
+          <select
+            className="form-select bg-white rounded-lg p-3 text-gray-700 w-full sm:w-auto"
+            onChange={(e) => setSearchType(e.target.value)}
+          >
+            <option value="document">Buscar por DNI</option>
+            <option value="code">Buscar por Código</option>
+            <option value="name">Buscar por Nombre</option>
+          </select>
+
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
+            {renderSearchComponent()}
           </div>
         </div>
       </div>

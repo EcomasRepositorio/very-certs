@@ -16,6 +16,9 @@ const Whatveri = dynamic(() => import("@/components/home/Whatveri"));
 /* const segSoport = dynamic(() => import("@/components/home/segSoport"));
  */
 const QuienesSomos = dynamic(() => import("@/components/home/QuienesSomos"));
+const LogosCarrousel = dynamic(
+  () => import("@/components/home/logosCarrousel")
+);
 
 export default function Main() {
   return (
@@ -24,7 +27,9 @@ export default function Main() {
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />
       </div>
-      
+      <div className=" dark:bg-fondDark ">
+        <LogosCarrousel />
+      </div>
       <div className=" dark:bg-fondDark">
         <Whatveri />
       </div>
@@ -40,15 +45,15 @@ export default function Main() {
       <div className=" dark:bg-fondDark ">
         <PorqueNosotros />
       </div>
-    {/*   <div className="  dark:bg-fondDark ">
+      {/*   <div className="  dark:bg-fondDark ">
       <SegSoport />
       </div> */}
       <div className="  dark:bg-fondDark ">
         <CarouselCursosDestacados />
       </div>
- <div className="dark:bg-fondDark ">
+      <div className="dark:bg-fondDark ">
         <QuienesSomos />
-      </div>  
+      </div>
       <div className=" dark:bg-fondDark ">
         <ContactForm />
       </div>

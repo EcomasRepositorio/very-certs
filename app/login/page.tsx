@@ -1,38 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { useTheme } from "next-themes";
 import Image from "next/image";
-import { Button } from "@nextui-org/react";
-import { EyeFilledIcon } from "./EyeFilledIcon";
-import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
-
-type ResErrors = {
-  message: string;
-  errorContent: string;
-};
-
-type Auth = {
-  email: string;
-  password: string;
-  role: boolean;
-  token: string;
-};
-
-const dataForm = {
-  email: "",
-  password: "",
-  role: true,
-  token: "",
-};
 
 const Login: React.FC = () => {
-  const [resErrors, setResErrors] = useState<ResErrors | null>(null);
-  const [form, setForm] = useState<Auth>(dataForm);
-  const { theme } = useTheme();
-  const imageSrc =
-    theme === "dark" ? "/image/ECOMAS-HORIZONTAL.png" : "/image/ecomas.png";
-
+  const [resErrors, setResErrors] = useState<{ message: string } | null>(null);
+  const [form, setForm] = useState({ email: "", password: "" });
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -45,171 +19,119 @@ const Login: React.FC = () => {
     setForm({ ...form, [textField]: value });
   };
 
-  const saveToken = (token: string) => {
-    localStorage.setItem("token", token);
-  };
-
-  const getToken = (): string | null => {
-    return localStorage.getItem("token");
-  };
-
-  const redirectIfLoggedIn = () => {
-    const token = getToken();
-    if (token) {
-      window.location.href = "student"; // Redirige a la siguiente página
-    }
-  };
-
-  useEffect(() => {
-    redirectIfLoggedIn(); // Verifica si el usuario ya está logueado al cargar la página
-  }, []); // Se ejecuta solo una vez al cargar el componente
-
   const onSubmit = async () => {
     try {
       const response = await axios.post(
-        "https://backend.ecomas.pe/api/v1/user/login",
+        "https://backend.inalta.edu.pe/api/v1/user/login",
         form
       );
       if (response.data.token) {
-        const token = response.data.token;
-        saveToken(token);
-        window.location.href = "student";
+        localStorage.setItem("token", response.data.token);
+        window.location.href = "/student";
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const { data } = error.response;
-
-        if (data.error === "invalid_password") {
-          setResErrors({
-            message: "Credenciales incorrectas",
-            errorContent: data.errorContent,
-          });
-        } else if (data.error === "user_not_found") {
-          setResErrors({
-            message: "Credenciales incorrectas",
-            errorContent: data.errorContent,
-          });
-        } else {
-          setResErrors({
-            message: "Credenciales incorrectas",
-            errorContent: "",
-          });
-        }
-      } else {
-        setResErrors({ message: "Error en el servidor", errorContent: "" });
-      }
-
-      // Restablecer los errores después de 3 segundos
-      setTimeout(() => {
-        setResErrors(null);
-      }, 3000);
+      setResErrors({ message: "Credenciales incorrectas" });
+      setTimeout(() => setResErrors(null), 3000);
     }
   };
 
   return (
-    <section
-      className=""
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{
-        backgroundAttachment: "fixed",
-        backgroundImage: "url(/image/bg_test7.jpg)",
-        backgroundSize: "cover",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        backgroundImage: "url('/image/fondE.jpeg')", // Mantener el fondo original
       }}
     >
-      <div className="p-10  items-center">
-        <div className="text-gray-600">
-          <div className="rounded-3xl bg-white dark:bg-blackblue">
-            <div className="md:px-0">
-              <div className="p-10 md:p-8">
-                <div className="text-center">
-                  <Image
-                    className="mx-auto mb-6"
-                    src={imageSrc}
-                    alt="logo"
-                    width={300}
-                    height={300}
-                  />
-                </div>
-                {resErrors?.message && (
-                  <p className="text-error text-medium font-bold text-[#c30e4d] text-center">
-                    {resErrors.message}
-                  </p>
-                )}
+      {/* Contenedor Principal con dos secciones */}
+      <div className="flex w-[900px] h-[500px] backdrop-blur-sm dark:backdrop-blur-md bg-transparent rounded-xl shadow-lg overflow-hidden">
+        {/* Sección de Bienvenida (Izquierda) - Oculto en Móviles */}
+        <div className="w-1/2 flex items-center justify-center bg-gradient-to-t from-black/70 to-blue-700/10 hidden md:flex">
+          <div className="text-center text-white">
+            <h1 className="text-4xl font-bold mb-2">BIENVENIDO DE NUEVO</h1>
+            <p className="text-sm mb-4">¡Qué bueno verte de nuevo!</p>
+            <p className="text-xs">
+              "Alcanza tus metas y construye un futuro más brillante con nosotros."
+            </p>
+          </div>
+        </div>
 
-                <form
-                  className="w-full max-w-sm"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    onSubmit();
-                  }}
-                >
-                  <div className="md:flex md:items-center mb-6 items-center justify-center">
-                    <div className="md:w-1/3">
-                      <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                        Correo electrónico:
-                      </label>
-                    </div>
-
-                    <div className="md:w-2/3">
-                      <input
-                        onChange={(event) => handleFormData(event, "email")}
-                        className="w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primaryblue"
-                        id="username"
-                        type="email"
-                        placeholder="Correo Electrónico"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="md:flex md:items-center mb-6">
-                    <div className="md:w-1/3">
-                      <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                        Contraseña:
-                      </label>
-                    </div>
-                    <div className="md:w-2/3 relative">
-                      <input
-                        type={isVisible ? "text" : "password"}
-                        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 pr-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primaryblue"
-                        id="inline-password"
-                        autoComplete="on"
-                        placeholder="*******"
-                        onChange={(
-                          event: React.ChangeEvent<HTMLInputElement>
-                        ) => handleFormData(event, "password")}
-                      />
-                      <button
-                        className="absolute right-0 top-0 mt-2 mr-4 focus:outline-none"
-                        type="button"
-                        onClick={toggleVisibility}
-                      >
-                        {isVisible ? (
-                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="">
-                    <Button
-                      className="w-full bg-primaryblue"
-                      color="primary"
-                      value="login"
-                      type="submit"
-                      onClick={() => onSubmit()}
-                    >
-                      Iniciar sesión
-                    </Button>
-                  </div>
-                </form>
+        {/* Sección del Formulario (Derecha) */}
+        <div className="w-full md:w-1/2 p-8 bg-gradient-to-t from-black/50 to-blue-700/10 flex flex-col justify-center items-center">
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/image/inaltlogcert.png"
+              alt="Logo"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </div>
+          <h2 className="text-2xl font-bold text-center mb-6 text-white">
+            Iniciar sesión
+          </h2>
+          <form
+            className="flex flex-col gap-3 backdrop-blur-md p-6 w-[450px] rounded-2xl shadow-lg transition"
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
+          >
+            <div className="flex flex-col">
+              <label className="text-sm font-semibold text-white">
+                Correo electrónico
+              </label>
+              <div className="flex items-center bg-white/20 border-2 border-gray-300 rounded-full pl-3 focus-within:border-blue-500">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="input flex-1 bg-transparent border-transparent focus:outline-none ml-3 placeholder-gray-300 text-white"
+                  value={form.email}
+                  onChange={(e) => handleFormData(e, "email")}
+                  required
+                />
               </div>
             </div>
+
+            <div className="flex flex-col mb-4">
+              <label className="text-sm font-semibold text-white">
+                Contraseña
+              </label>
+              <div className="inputForm flex items-center bg-white/20 border-2 border-gray-300 rounded-full pl-3 focus-within:border-blue-500">
+                <input
+                  type={isVisible ? "text" : "password"}
+                  placeholder="Contraseña"
+                  className="input flex-1 bg-transparent border-transparent focus:outline-none ml-3 placeholder-gray-300 text-white"
+                  value={form.password}
+                  onChange={(e) => handleFormData(e, "password")}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={toggleVisibility}
+                  className="px-3 text-white"
+                >
+                  {isVisible ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            {resErrors && (
+              <p className="text-red-500 text-center">{resErrors.message}</p>
+            )}
+
+            <button className="button-submit text-white w-full py-3 rounded-full bg-transparent border-2 border-white transition-all duration-300 ease-in-out hover:bg-blue-600">
+              Iniciar Sesión
+            </button>
+          </form>
+          <div className="flex justify-between items-center mt-4 text-sm text-gray-300">
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="form-checkbox text-blue-600" />
+              <span>Mantenerme conectado</span>
+            </label>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

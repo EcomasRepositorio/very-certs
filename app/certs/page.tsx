@@ -1,149 +1,134 @@
 "use client";
-import React from "react";
+
+import React, { Suspense, memo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
-const SearchCode = dynamic(() => import("@/components/certificate/SearchCode"));
-const SearchDNI = dynamic(() => import("@/components/certificate/SearchDNI"));
-const SearchName = dynamic(() => import("@/components/certificate/SearchName"));
+// Carga dinámica de componentes para mejorar LCP
+const SearchCode = dynamic(
+  () => import("@/components/certificate/SearchCode"),
+  { suspense: true }
+);
+const SearchDNI = dynamic(() => import("@/components/certificate/SearchDNI"), {
+  suspense: true,
+});
+const SearchName = dynamic(
+  () => import("@/components/certificate/SearchName"),
+  { suspense: true }
+);
 
-interface Props {
-  // Define any props if needed
-}
+// Componente memoizado para evitar re-renders innecesarios
+const Logo = memo(
+  ({
+    src,
+    alt,
+    width,
+    height,
+  }: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  }) => (
+    <div
+      className="relative flex justify-center items-center w-full"
+      style={{ height, width }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        style={{ objectFit: "contain" }} // Mantener el estilo de la imagen
+        priority
+      />
+    </div>
+  )
+);
 
-const TestingPage: React.FC<Props> = () => {
+const TestingPage: React.FC = () => {
   const handleSearch = (data: any) => {
     console.log(data);
   };
 
   return (
-    <section className=" bg-fixed " style={{}}>
-      <div
-        className=""
-        style={{
-          backgroundAttachment: "fixed",
-          backgroundImage: "url(/image/bg_test7.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="py-8  mx-auto max-w-screen-xl lg:py-10">
-          <div className="" style={{ position: "relative", width: "100%" }}>
-            <div
-              className="bg-white dark:bg-blackblue rounded-lg p-8 md:p-12 mb-50 mx-2"
-              style={{
-                marginBottom: "20px",
+    <section className="relative bg-fixed bg-cover bg-center min-h-[400px] w-full bg-[url('/image/panorama.jpg')]">
+      {/* Overlay con color semitransparente */}
+      <div className="absolute inset-0 bg-blue-600 opacity-50"></div>
+
+      <div className="relative py-12 mx-auto max-w-screen-lg px-4 w-full">
+        <div className=" bg-transparent rounded-lg shadow-lg p-8 md:p-12 mb-12 w-full">
+          {/* Nueva estructura de contenedor para centrar los logos */}
+          <div className="flex justify-center items-center gap-12 mb-6 w-full">
+            {/* Logotipo de Corporación Inalta */}
+            <Logo
+              src="/image/inaltlogwhite.png"
+              alt="Logo Inalta"
+              width={200}
+              height={200}
+            />
+
+            {/* Logotipo de la Universidad Nacional de Piura */}
+            <Logo
+              src="/image/uni_dark.png"
+              alt="UNP"
+              width={200}
+              height={200}
+            />
+          </div>
+
+          {/* Título y Pestañas */}
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-100 mb-6 md:text-4xl">
+              VERIFICAR CERTIFICADO
+            </h2>
+            <p className="text-gray-100 text-lg mb-8">
+              Verifica la validez de tu certificado introduciendo tu DNI, nombre
+              completo o código de certificado. Nos esforzamos en proteger la
+              privacidad y el manejo confidencial de tus datos personales.
+            </p>
+
+            {/* Pestañas optimizadas para carga diferida */}
+            <Tabs
+              aria-label="Opciones de búsqueda"
+              color="secondary"
+              classNames={{
+                tabList:
+                  "w-full flex flex-col md:flex-row bg-transparent border border-gray-300/40",
+                cursor: "bg-gray-100/30 text-gray-100",
+                tab: "py-2 px-4 rounded-t-lg text-gray-100",
+                tabContent:
+                  "group-data-[selected=true]:text-gray-100 text-g-100 ",
               }}
             >
-              <div className="flex flex-col md:flex-row mx-auto max-w-screen-xl  md:mr-0 md:p-4  ">
-                <div className="md:mr-12">
-                  <div className="flex flex-col">
-                    <h2 className=" mb-4 text-2xl font-bold text-primaryblue dark:text-blue-100 md:mb-6 lg:text-4xl">
-                      Vertifica tu certificado
-                    </h2>
-                    <p className="text-blackblue2 dark:text-gray-300 md:text-xl mb-4 text-justify ">
-                      Verifica la autenticidad de tu certificado ingresando tu
-                      DNI, nombres o código de certificación proporcionado al
-                      obtenerlo. Nos aseguramos de proteger tu privacidad y la
-                      confidencialidad de tus datos.
-                    </p>
-
-                    <Tabs
-                      aria-label="Options"
-                      color="primary"
-                      classNames={{
-                        tabList: " w-full dark:bg-blackblue2 bg-blue-100",
-                        cursor: "bg-primaryblue",
-                        tab: "",
-                        tabContent:
-                          "group-data-[selected=true]:text-white dark:text-white ",
-                      }}
-                    >
-                      <Tab key="dni" title="Buscar por DNI" className="">
-                        <Card>
-                          <CardBody className="bg-blue-100 dark:bg-blackblue2">
-                            <div>
-                              <SearchDNI onSearchDNI={handleSearch} />
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Tab>
-                      <Tab key="name" title="Buscar por Código">
-                        <Card>
-                          <CardBody className="bg-blue-100 dark:bg-blackblue2">
-                            <div>
-                              <SearchCode onSearchCode={handleSearch} />
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Tab>
-                      <Tab key="code" title="Buscar por nombres">
-                        <Card>
-                          <CardBody className="bg-blue-100 dark:bg-blackblue2">
-                            <div>
-                              <SearchName onSearchName={handleSearch} />
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Tab>
-                    </Tabs>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-4 md:mt-0 md:w-full  md:grid-cols-2 md:grid-rows-2 md:gap-y-8  justify-items-center md:items-center ">
-                  <div>
-                    <Image
-                      src="/certificate/CAL.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                      className=""
-                    />
-                  </div>
-                  <div>
-                    <Image
-                      src="/certificate/CIP.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                      className="block dark:hidden"
-                    />
-                    <Image
-                      src="/image/colegio_dark.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                      className="hidden dark:block"
-                    />
-                  </div>
-                  <div>
-                    <Image
-                      src="/certificate/UNP.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                    />
-                  </div>
-                  <div>
-                    <Image
-                      src="/image/LOGO-VERTICAL-COLOR.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                      className="block dark:hidden"
-                    />
-                    <Image
-                      src="/image/EcomasVert_dark.png"
-                      alt="ecomas"
-                      width={150}
-                      height={150}
-                      className="hidden dark:block"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+              <Tab key="dni" title="Buscar por DNI">
+                <Suspense fallback={<div className="loader">Cargando...</div>}>
+                  <Card>
+                    <CardBody className="bg-gray-100 w-full">
+                      <SearchDNI onSearchDNI={handleSearch} />
+                    </CardBody>
+                  </Card>
+                </Suspense>
+              </Tab>
+              <Tab key="code" title="Buscar por Código">
+                <Suspense fallback={<div className="loader">Cargando...</div>}>
+                  <Card>
+                    <CardBody className="bg-gray-100 dark:bg-gray-900 w-full">
+                      <SearchCode onSearchCode={handleSearch} />
+                    </CardBody>
+                  </Card>
+                </Suspense>
+              </Tab>
+              <Tab key="name" title="Buscar por Nombres">
+                <Suspense fallback={<div className="loader">Cargando...</div>}>
+                  <Card>
+                    <CardBody className="bg-gray-100 dark:bg-gray-900 w-full">
+                      <SearchName onSearchName={handleSearch} />
+                    </CardBody>
+                  </Card>
+                </Suspense>
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </div>

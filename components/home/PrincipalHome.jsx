@@ -77,12 +77,6 @@ const PrincipalHome = () => {
           <p className="mb-8 max-w-lg font-normal text-2xl md:text-xl lg:text-2xl text-gray-50">
             {/* Contenido adicional puede ir aquí */}
           </p>
-          <Link href="/diplomados" passHref legacyBehavior>
-            <button className="hover:animate-pulse bg-blue-100 border-blue-200 border text-primaryblue rounded-full inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center hover:scale-105 focus:ring-4 focus:ring-blue-300">
-              Ver Diplomados
-              <ArrowRightIcon className="w-5 h-5 ml-2" />
-            </button>
-          </Link>
         </motion.div>
         
         {/* HeroImage para pantallas grandes */}

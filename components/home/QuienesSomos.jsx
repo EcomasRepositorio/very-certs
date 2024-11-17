@@ -326,11 +326,11 @@ const Contacto = () => {
           <Image
             src="/image/verifi.jpg"
             alt="Mechanic Image"
-            width={500}
+            width={700}
             height={500}
             className="rounded-lg shadow-lg object-cover"
           />
-          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-lg shadow-lg  items-center hidden lg:flex md:ml-96 xl:mt-20">
+          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-lg shadow-lg  items-center hidden lg:flex md:ml-[400px] xl:mt-20">
             <div className="mr-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -348,7 +348,7 @@ const Contacto = () => {
               </svg>
             </div>
             <div>
-              <h3 className="text-xl font-bold">250+</h3>
+              <h3 className="text-xl text-black font-bold">250+</h3>
               <p className="text-sm text-gray-600">Servicios ofrecidos</p>
             </div>
           </div>

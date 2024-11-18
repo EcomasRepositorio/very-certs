@@ -274,51 +274,11 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
         >
           <div className="flex justify-center items-center mb-4 gap-2">
             <Image
-              src={"/certificate/UNP.png"}
-              alt="ecomas"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={200}
-              height={200}
-              priority={true}
-            />
-            <Image
-              src={"/certificate/LOGO-VERTICAL-COLOR.png"}
-              alt="ecomas"
-              className="block dark:hidden md:w-20  w-16 h-[125px] md:mt-[13px] mt-[11px] object-contain"
-              width={200}
-              height={200}
-              priority={true}
-            />
-            <Image
-              src={"/image/EcomasVert_dark.png"}
-              alt="ecomas"
-              className="hidden dark:block md:w-20  w-16 h-[125px] md:mt-[13px] mt-[11px] object-contain"
-              width={200}
-              height={200}
-              priority={true}
-            />{" "}
-            <Image
-              src={"/certificate/CAL.png"}
-              alt="ecomas"
-              className="md:w-20  w-16 object-contain mt-2"
-              width={200}
-              height={200}
-              priority={true}
-            />
-            <Image
-              src={"/image/colegio_dark.png"}
-              alt="ecomas"
-              className="block dark:hidden md:w-20  w-16 object-contain mt-2"
-              width={200}
-              height={200}
-              priority={true}
-            />
-            <Image
-              src={"/image/colegio_dark.png"}
-              alt="ecomas"
-              className="hidden dark:block md:w-20  w-16 object-contain mt-2"
-              width={200}
-              height={200}
+              src={"/image/log-blank.png"}
+              alt="vericerts"
+              className="md:w-60   w-20  object-contain mt-2"
+              width={300}
+              height={300}
               priority={true}
             />
           </div>

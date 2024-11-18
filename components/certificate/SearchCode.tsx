@@ -188,7 +188,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
         <Modal open={open} onClose={() => setOpen(false)}>
           <div className="flex justify-center items-center mb-4 gap-2">
             <Image
-              src={"/certificate/UNP.png"}
+              src={"/"}
               alt="ecomas"
               className="md:w-20 w-16  object-contain mt-2"
               width={200}

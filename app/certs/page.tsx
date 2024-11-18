@@ -34,79 +34,38 @@ const TestingPage: React.FC = () => {
   const [inputValue, setInputValue] = useState(""); // Estado para almacenar el valor ingresado
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para manejar errores
 
-  // Funciones para manejar la búsqueda
-  const onSearchDNI = (dni: string) => {
-    console.log(`Buscando por DNI: ${dni}`);
-    // Simulación de error
-    if (!dni || dni.length < 8) {
-      setErrorMessage("El DNI que ingresaste no se encuentra en nuestra base de datos.");
-    } else {
-      setErrorMessage(null);
-    }
-  };
-
-  const onSearchCode = (code: string) => {
-    console.log(`Buscando por Código: ${code}`);
-    if (!code) {
-      setErrorMessage("El código que ingresaste no es válido.");
-    } else {
-      setErrorMessage(null);
-    }
-  };
-
-  const onSearchName = (name: string) => {
-    console.log(`Buscando por Nombre: ${name}`);
-    if (!name) {
-      setErrorMessage("El nombre ingresado no se encuentra en nuestra base de datos.");
-    } else {
-      setErrorMessage(null);
-    }
-  };
-
   // Renderiza dinámicamente el input según el tipo de búsqueda seleccionado
   const renderSearchComponent = () => {
-  switch (searchType) {
-    case "document":
-      return (
-        <SearchDNI
-          onSearchDNI={(data) => {
-            console.log("Data recibida desde SearchDNI:", data);
-            // Aquí puedes manejar los datos enviados por SearchDNI
-          }}
-        />
-      );
-    case "code":
-      return (
-        <SearchCode
-        onSearchCode={(data) => {
-            console.log("Data recibida desde SearchDNI:", data);
-            // Aquí puedes manejar los datos enviados por SearchDNI
-          }}
-        />
-      );
-    case "name":
-      return (
-        <SearchName
-        onSearchName={(data) => {
-            console.log("Data recibida desde SearchDNI:", data);
-            // Aquí puedes manejar los datos enviados por SearchDNI
-          }}
-        />
-      );
-    default:
-      return null;
-  }
-};
-
-
-  // Lógica para manejar la acción del botón de búsqueda
-  const handleSearch = () => {
-    if (searchType === "document") {
-      onSearchDNI(inputValue);
-    } else if (searchType === "code") {
-      onSearchCode(inputValue);
-    } else if (searchType === "name") {
-      onSearchName(inputValue);
+    switch (searchType) {
+      case "document":
+        return (
+          <SearchDNI
+            onSearchDNI={(data) => {
+              console.log("Data recibida desde SearchDNI:", data);
+              // Aquí puedes manejar los datos enviados por SearchDNI
+            }}
+          />
+        );
+      case "code":
+        return (
+          <SearchCode
+            onSearchCode={(data) => {
+              console.log("Data recibida desde SearchDNI:", data);
+              // Aquí puedes manejar los datos enviados por SearchDNI
+            }}
+          />
+        );
+      case "name":
+        return (
+          <SearchName
+            onSearchName={(data) => {
+              console.log("Data recibida desde SearchDNI:", data);
+              // Aquí puedes manejar los datos enviados por SearchDNI
+            }}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -162,7 +121,7 @@ const TestingPage: React.FC = () => {
             <option value="name">Buscar por Nombre</option>
           </select>
 
-          <div className="flex flex-col sm:flex-row gap-2 w-full">
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto">
             {renderSearchComponent()}
           </div>
         </div>
@@ -170,5 +129,4 @@ const TestingPage: React.FC = () => {
     </section>
   );
 };
-
 export default TestingPage;

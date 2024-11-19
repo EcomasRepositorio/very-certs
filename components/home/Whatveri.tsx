@@ -56,7 +56,7 @@ const CyberSecuritySection = () => {
           ))}
         </div>
         <div>
-        <Link href="https://api.whatsapp.com/send?phone=51921818181&text=Hola vengo en por mas informacio sobre VERICERTs" passHref legacyBehavior>
+        <Link href="https://api.whatsapp.com/send?phone= &text=Hola vengo en por mas informacio sobre VERICERTs" passHref legacyBehavior>
         <a
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full font-semibold shadow-md transition duration-300 inline-block text-center"
               target="_blank"
@@ -66,7 +66,7 @@ const CyberSecuritySection = () => {
             </a>
           </Link>
 
-          <Link href="https://api.whatsapp.com/send?phone=51921818181&text=Hola vengo en por mas informacio sobre VERICERTs" passHref legacyBehavior>
+          <Link href="https://api.whatsapp.com/send?phone= &text=Hola vengo en por mas informacio sobre VERICERTs" passHref legacyBehavior>
             <a
               className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-full font-semibold shadow-md transition duration-300 inline-block text-center ml-4"
               target="_blank"

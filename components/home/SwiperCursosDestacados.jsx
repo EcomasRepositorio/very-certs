@@ -41,7 +41,7 @@ const SwiperCursosDestacados = () => {
       <div className="grid gap-8 md:grid-cols-3 max-w-7xl mx-auto">
         {cursosDestacados.map((curso) => {
           // Construimos dinámicamente el mensaje para WhatsApp
-          const whatsAppLink = `https://api.whatsapp.com/send?phone=51921818181&text=${encodeURIComponent(
+          const whatsAppLink = `https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(
             `Hola, vengo de la página de Ecomás y me gustaría obtener información sobre "${curso.title}".`
           )}`;
 

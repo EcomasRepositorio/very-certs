@@ -15,6 +15,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
   const [studentData, setStudentData] = useState<StudentCode>();
   const [open, setOpen] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [closeTable, setCloseTable] = useState(false);
 
   const toggleIsActive = () => {
     setIsActive(!isActive);
@@ -89,61 +90,105 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
 
   const splitText = (text: string): string[] => {
     const cleanText = text.trim();
-  
+
     // Identificar posiciones clave en el texto
-    const indexCorporacion = cleanText.indexOf("ECOMÁS Consultoría y Capacitación");
+    const indexCorporacion = cleanText.indexOf(
+      "ECOMÁS Consultoría y Capacitación"
+    );
     const indexFundenorp = cleanText.indexOf("FUNDENORP");
-    const indexEscuela = cleanText.indexOf("Escuela de Posgrado - Universidad Nacional de Piura");
-    const indexUniversidadPiura = cleanText.indexOf("Universidad Nacional de Piura");
-    const indexColegioIngenierosHuancavelica = cleanText.indexOf("Colegio de ingenieros del Perú CD-Huancavelica");
-    const indexColegioIngenierosCallao = cleanText.indexOf("Colegio de ingenieros del Perú CD-Callao");
-    const indexColegioIngenierosPuno = cleanText.indexOf("Colegio de ingenieros del Perú CD-Puno");
-    const indexColegioIngenierosIca = cleanText.indexOf("Colegio de ingenieros del Perú CD-Ica");
-  
+    const indexEscuela = cleanText.indexOf(
+      "Escuela de Posgrado - Universidad Nacional de Piura"
+    );
+    const indexUniversidadPiura = cleanText.indexOf(
+      "Universidad Nacional de Piura"
+    );
+    const indexColegioIngenierosHuancavelica = cleanText.indexOf(
+      "Colegio de ingenieros del Perú CD-Huancavelica"
+    );
+    const indexColegioIngenierosCallao = cleanText.indexOf(
+      "Colegio de ingenieros del Perú CD-Callao"
+    );
+    const indexColegioIngenierosPuno = cleanText.indexOf(
+      "Colegio de ingenieros del Perú CD-Puno"
+    );
+    const indexColegioIngenierosIca = cleanText.indexOf(
+      "Colegio de ingenieros del Perú CD-Ica"
+    );
+
     // Caso 1: 3 líneas - "ECOMÁS Consultoría y Capacitación Escuela de Posgrado - Universidad Nacional de Piura FUNDENORP"
-    if (indexCorporacion !== -1 && indexEscuela !== -1 && indexFundenorp !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexEscuela).trim();
+    if (
+      indexCorporacion !== -1 &&
+      indexEscuela !== -1 &&
+      indexFundenorp !== -1
+    ) {
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexEscuela)
+        .trim();
       const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim();
       const fundenorp = cleanText.substring(indexFundenorp).trim();
       return [corporacion, escuela, fundenorp];
     }
-  
+
     // Caso 2: 3 líneas - "ECOMÁS Consultoría y Capacitación Universidad Nacional de Piura FUNDENORP"
-    if (indexCorporacion !== -1 && indexUniversidadPiura !== -1 && indexFundenorp !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexUniversidadPiura).trim();
-      const universidad = cleanText.substring(indexUniversidadPiura, indexFundenorp).trim();
+    if (
+      indexCorporacion !== -1 &&
+      indexUniversidadPiura !== -1 &&
+      indexFundenorp !== -1
+    ) {
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexUniversidadPiura)
+        .trim();
+      const universidad = cleanText
+        .substring(indexUniversidadPiura, indexFundenorp)
+        .trim();
       const fundenorp = cleanText.substring(indexFundenorp).trim();
       return [corporacion, universidad, fundenorp];
     }
-  
+
     // Caso 3: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Huancavelica"
     if (indexCorporacion !== -1 && indexColegioIngenierosHuancavelica !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexColegioIngenierosHuancavelica).trim();
-      const colegioIngenierosHuancavelica = cleanText.substring(indexColegioIngenierosHuancavelica).trim();
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexColegioIngenierosHuancavelica)
+        .trim();
+      const colegioIngenierosHuancavelica = cleanText
+        .substring(indexColegioIngenierosHuancavelica)
+        .trim();
       return [corporacion, colegioIngenierosHuancavelica];
     }
-  
+
     // Caso 4: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Callao"
     if (indexCorporacion !== -1 && indexColegioIngenierosCallao !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexColegioIngenierosCallao).trim();
-      const colegioIngenierosCallao = cleanText.substring(indexColegioIngenierosCallao).trim();
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexColegioIngenierosCallao)
+        .trim();
+      const colegioIngenierosCallao = cleanText
+        .substring(indexColegioIngenierosCallao)
+        .trim();
       return [corporacion, colegioIngenierosCallao];
     }
-  
+
     // Caso 5: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Puno"
     if (indexCorporacion !== -1 && indexColegioIngenierosPuno !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexColegioIngenierosPuno).trim();
-      const colegioIngenierosPuno = cleanText.substring(indexColegioIngenierosPuno).trim();
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexColegioIngenierosPuno)
+        .trim();
+      const colegioIngenierosPuno = cleanText
+        .substring(indexColegioIngenierosPuno)
+        .trim();
       return [corporacion, colegioIngenierosPuno];
     }
-  
+
     // Caso 6: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Ica"
     if (indexCorporacion !== -1 && indexColegioIngenierosIca !== -1) {
-      const corporacion = cleanText.substring(indexCorporacion, indexColegioIngenierosIca).trim();
-      const colegioIngenierosIca = cleanText.substring(indexColegioIngenierosIca).trim();
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexColegioIngenierosIca)
+        .trim();
+      const colegioIngenierosIca = cleanText
+        .substring(indexColegioIngenierosIca)
+        .trim();
       return [corporacion, colegioIngenierosIca];
     }
-  
+
     // Caso general: Divide el texto en líneas basadas en cantidad de palabras, máximo 3 líneas
     const words = cleanText.split(" ");
     const firstLine = words.slice(0, 9).join(" ");
@@ -151,19 +196,22 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
     const thirdLine = words.slice(15).join(" ");
     return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
   };
-  
 
   return (
     <div className="">
       <form onSubmit={searchCode} className="w-full ">
-        <div className="flex items-center  justify-center">
-          <div className=" flex-1">
+        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2 ">
+          <div
+            className={`flex-1 transition-all duration-300 ${
+              closeTable ? "w-[600px]" : "w-[400px]"
+            }`}
+          >
             <input
               type="search"
               id="default-search"
-              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white  focus:border-primaryblue  m-0"
-              placeholder={`Ingrese su código ${
-                searchType === "code" ? "código" : ""
+              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-primaryblue p-3 transition-all duration-300"
+              placeholder={`Ingrese su CODIGO${
+                searchType === "name" ? "nombre" : ""
               }`}
               required
               onClick={toggleIsActive}
@@ -171,9 +219,8 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
               value={queryValue}
             />
           </div>
-          <div className=" ml-2 h-full">
+          <div className="ml-2 mb-2">
             <Button
-              color="primary"
               type="submit"
               className="bg-primaryblue dark:bg-transparent text-white border border-white/50 rounded-lg"
             >

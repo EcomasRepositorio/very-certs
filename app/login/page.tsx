@@ -5,7 +5,7 @@ import axios from "axios";
 
 const SignIn: React.FC = () => {
   const [form, setForm] = useState({
-    emailOrPhone: "",
+    email: "",
     password: "",
   });
   const [resErrors, setResErrors] = useState<{ message: string } | null>(null);
@@ -25,15 +25,16 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend.inalta.edu.pe/api/v1/user/login",
+        "http://localhost:8000/api/v1/user/login", // Asegúrate de que la URL sea correcta
         form
       );
+
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         window.location.href = "/student";
       }
-    } catch (error) {
-      setResErrors({ message: "Credenciales incorrectas" });
+    } catch (error: any) {
+      setResErrors({ message: error?.response?.data?.message || "Error desconocido" });
       setTimeout(() => setResErrors(null), 3000);
     }
   };
@@ -42,7 +43,7 @@ const SignIn: React.FC = () => {
     const message = encodeURIComponent(
       "Hola, me gustaría obtener información sobre el registro en su plataforma."
     );
-    const phone = "123456789"; // Reemplaza este número con el número de WhatsApp al que deseas redirigir.
+    const phone = "123456789"; // Cambia este número con el WhatsApp correcto.
     const url = `https://wa.me/${phone}?text=${message}`;
     window.open(url, "_blank");
   };
@@ -64,30 +65,23 @@ const SignIn: React.FC = () => {
         {resErrors && (
           <p className="text-center text-red-500 mb-4">{resErrors.message}</p>
         )}
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={onSubmit}
-        >
-          {/* Campo de Correo o Teléfono */}
+        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+          {/* Campo de Email */}
           <div>
-            <label className="text-sm text-gray-300">
-              Correo o Teléfono
-            </label>
+            <label className="text-sm text-gray-300">Correo</label>
             <input
-              type="text"
-              placeholder="Correo o Teléfono"
+              type="email"
+              placeholder="Correo"
               className="bg-gray-800 text-white placeholder-gray-500 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
-              value={form.emailOrPhone}
-              onChange={(e) => handleFormData(e, "emailOrPhone")}
+              value={form.email}
+              onChange={(e) => handleFormData(e, "email")}
               required
             />
           </div>
 
           {/* Campo de Contraseña */}
           <div>
-            <label className="text-sm text-gray-300">
-              Contraseña
-            </label>
+            <label className="text-sm text-gray-300">Contraseña</label>
             <div className="relative">
               <input
                 type={isVisible ? "text" : "password"}
@@ -107,20 +101,10 @@ const SignIn: React.FC = () => {
             </div>
           </div>
 
-          {/* Enlace de Olvidó Contraseña */}
-          <div className="text-right">
-            <a
-              href="#"
-              className="text-sm text-purple-400 hover:underline"
-            >
-              ¿Olvidaste tu contraseña?
-            </a>
-          </div>
-
           {/* Botón de Inicio de Sesión */}
           <button
             type="submit"
-            className="w-full py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition"
+            className="w-full py-3 bg-[#009FB2] text-white font-semibold rounded-md hover:bg-[#007C92] transition"
           >
             Iniciar Sesión
           </button>
@@ -130,7 +114,7 @@ const SignIn: React.FC = () => {
             ¿Nuevo en Vericerts?{" "}
             <button
               onClick={handleRegisterRedirect}
-              className="text-purple-400 hover:underline"
+              className="text-[#009FB2] hover:underline"
             >
               Regístrate ahora
             </button>

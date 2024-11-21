@@ -121,7 +121,7 @@ const TestingPage: React.FC = () => {
             <option value="name">Buscar por Nombre</option>
           </select>
 
-          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto">
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[80%] lg:w-[70%] xl:w-[60%]">
             {renderSearchComponent()}
           </div>
         </div>

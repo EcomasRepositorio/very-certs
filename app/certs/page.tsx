@@ -91,7 +91,7 @@ const TestingPage: React.FC = () => {
               <Tab key="code" title="Buscar por Código">
                 <Suspense fallback={<div className="loader">Cargando...</div>}>
                   <Card>
-                    <CardBody className="bg-gray-100 w-full">
+                    <CardBody className="bg-transparent w-full">
                       <SearchCode onSearchCode={handleSearch} />
                     </CardBody>
                   </Card>
@@ -100,7 +100,7 @@ const TestingPage: React.FC = () => {
               <Tab key="name" title="Buscar por Nombres">
                 <Suspense fallback={<div className="loader">Cargando...</div>}>
                   <Card>
-                    <CardBody className="bg-gray-100  w-full">
+                    <CardBody className="bg-transparent  w-full">
                       <SearchName onSearchName={handleSearch} />
                     </CardBody>
                   </Card>

@@ -209,7 +209,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
             <input
               type="search"
               id="default-search"
-              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-primaryblue p-3 transition-all duration-300"
+              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent focus:border-primaryblue p-3 transition-all duration-300"
               placeholder={`Ingrese su CODIGO${
                 searchType === "name" ? "nombre" : ""
               }`}
@@ -222,7 +222,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
           <div className="ml-2 mb-2">
             <Button
               type="submit"
-              className="bg-primaryblue dark:bg-transparent text-white border border-white/50 rounded-lg"
+              className="bg-black text-white border border-white/50 rounded-lg"
             >
               Buscar
             </Button>

@@ -119,7 +119,7 @@ function Navbar() {
                 <li className="lg:pl-40 flex justify-center items-center hover:text-primaryBlue md:mt-0 mt-20">
                   <Link
                     href="/login"
-                    className="bg-secondaryCian py-1 px-4 rounded-xl mr-2 text-black dark:text-gray-100 hover:bg-black dark:hover:bg-gray-100 hover:text-primaryBlue hover:scale-125 duration-300"
+                    className="bg-secondaryCian py-1 px-4 rounded-xl mr-2 text-black dark:text-gray-100 hover:bg-white dark:hover:bg-black hover:text-primaryBlue hover:scale-125 duration-300"
                   >
                     <FaUserCog className="md:text-xl text-4xl" />
                   </Link>

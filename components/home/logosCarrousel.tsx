@@ -1,113 +1,129 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import ScrollAnimation from "./scrollAnimation";
+import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { useMediaQuery } from "react-responsive";
 
-const cursosDestacados = [
-  { id: 1, title: "ecomas", imageUrl: "/logosCa/ecomas-color.png" },
-  { id: 2, title: "binex", imageUrl: "/logosCa/binex-color.png" },
-  { id: 4, title: "rizo", imageUrl: "/logosCa/rizo-color.png" },
-  { id: 5, title: "sayan", imageUrl: "/logosCa/sayan-color.png" },
-  { id: 6, title: "cimade", imageUrl: "/logosCa/cimade-color.png" },
-  { id: 7, title: "promas", imageUrl: "/logosCa/promas-color.png" },
-  { id: 8, title: "inalta", imageUrl: "/logosCa/inalta-color.png" },
-  { id: 9, title: "seveda", imageUrl: "/logosCa/seveda-color.png" },
+
+const slides = [
+  {
+    id: 1,
+    title: "ecomas",
+    lightImage: "/logosCa/ecomas-color.png",
+    darkImage: "/logosCa/ecomas-dark.png",
+  },
+  {
+    id: 2,
+    title: "binex",
+    lightImage: "/logosCa/binex-color.png",
+    darkImage: "/logosCa/binex-dark.png",
+  },
+  {
+    id: 3,
+    title: "rizo",
+    lightImage: "/logosCa/rizo-color.png",
+    darkImage: "/logosCa/rizo-dark.png",
+  },
+  {
+    id: 5,
+    title: "sayan",
+    lightImage: "/logosCa/sayan-color.png",
+    darkImage: "/logosCa/sayan-dark.png",
+  },
+  {
+    id: 6,
+    title: "cimade",
+    lightImage: "/logosCa/cimade-color.png",
+    darkImage: "/logosCa/dark-cimade.png",
+  },
+  {
+    id: 7,
+    title: "promas",
+    lightImage: "/logosCa/promas-color.png",
+    darkImage: "/logosCa/promas-dark.png",
+  },
+  {
+    id: 8,
+    title: "inalta",
+    lightImage: "/logosCa/inalta-color.png",
+    darkImage: "/logosCa/inalta-dark.png",
+  },
+  {
+    id: 9,
+    title: "seveda",
+    lightImage: "/logosCa/seveda-color.png",
+    darkImage: "/logosCa/seveda-dark.png",
+  },
 ];
 
-const SwiperCursosDestacados = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const isMobile = useMediaQuery({ maxWidth: 667 });
 
-  const itemWidth = isMobile ? 120 : 200; // Tamaño de cada imagen
-  const visibleWidth = isMobile ? 320 : 800; // Ancho del contenedor según la pantalla
 
-  const duplicatedCursos = [...cursosDestacados, ...cursosDestacados];
-  const totalWidth = itemWidth * duplicatedCursos.length;
+const ImageCarrousel = () => {
+  const { resolvedTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const duplicatedSlides = [...slides, ...slides];
+  const itemWidth = 100;
+  const totalWidth = itemWidth * duplicatedSlides.length;
 
   const containerVariants = {
     animate: {
-      x: [0, -totalWidth / 2], // Desplazamiento continuo
+      x: [0, -totalWidth / 4],
       transition: {
         x: {
-          repeat: Infinity, // Repetir indefinidamente
-          repeatType: "loop", // Ciclo continuo
-          duration: 20, // Duración total de un ciclo completo
-          ease: "linear", // Movimiento lineal
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: 6,
+          ease: "linear",
         },
       },
     },
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % cursosDestacados.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + cursosDestacados.length) % cursosDestacados.length
-    );
-  };
+  if (!isMounted) {
+    return null;
+  }
 
   return (
-    <ScrollAnimation>
-      <div className="rounded-lg p-8 md:p-5 flex flex-col items-center">
-        <h2 className="text-primaryblue dark:text-white text-4xl font-extrabold mb-1"></h2>
-      </div>
-      {/* Contenedor principal */}
-      <div
-        className="relative overflow-hidden py-5 mx-auto"
-        style={{ width: visibleWidth }}
-      >
-        <motion.div
-          className="flex justify-center items-center"
-          initial="animate" 
-          animate="animate"
-          variants={containerVariants}
-          style={{
-            transform: `translateX(calc(50% - ${itemWidth / 2}px))`,
-            width: totalWidth,
-          }}
-        >
-          {duplicatedCursos.map((curso, index) => (
-            <motion.div
-              key={index}
-              className={`mr-2 rounded-2xl relative bg-transparent backdrop-blur-md transition-all ring-1  shadow hover:shadow-lg w-[${itemWidth}px] flex flex-col justify-center items-center`}
-            >
-              <div className="object-cover">
-                <Image
-                  src={curso.imageUrl}
-                  alt="Imagen curso"
-                  width={itemWidth}
-                  height={itemWidth}
-                  className="object-cover rounded-lg"
-                />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+    <motion.div
+      variants={{
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 2 } },
+      }}
+      initial="hidden"
+      animate="visible"
+      className="relative overflow-hidden pb-12 mx-auto w-full sm:w-1/2 mt-20"
+    >
+      {/* Gradiente aplicado al carrusel */}
+      <div className="absolute inset-0 z-10 before:absolute before:left-0 before:top-0 before:w-1/4 before:h-full before:bg-gradient-to-r before:from-[#e0f9f6] dark:before:from-fondDark dark:after:from-fondDark before:to-transparent before:filter before:blur-3 after:absolute after:right-0 after:top-0 after:w-1/4 after:h-full after:bg-gradient-to-l after:from-[#e0f9f6] after:to-transparent after:filter after:blur-3"></div>
 
-        {/* Botones de navegación solo en móvil */}
-        {isMobile && (
-          <div className="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
-            <button
-              onClick={handlePrev}
-              className="bg-transparent p-2 rounded-full shadow text-gray-800"
-            >
-              &#8592;
-            </button>
-            <button
-              onClick={handleNext}
-              className="bg-transparenta p-2 rounded-full shadow text-gray-800"
-            >
-              &#8594;
-            </button>
+      <motion.div
+        className="flex"
+        variants={containerVariants}
+        animate="animate"
+      >
+        {duplicatedSlides.map((slide, index) => (
+          <div
+            key={index}
+            className="bg-transparent max-h-40 flex items-center justify-center mr-16"
+          >
+            <div className="w-32 h-32 flex items-center justify-center border-2 border-gray-300 rounded-md bg-transparent shadow-md">
+              <Image
+                alt={slide.title}
+                src={resolvedTheme === "dark" ? slide.darkImage : slide.lightImage}
+                width={128}
+                height={128}
+                className="object-contain"
+              />
+            </div>
           </div>
-        )}
-      </div>
-    </ScrollAnimation>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 };
 
-export default SwiperCursosDestacados;
+export default ImageCarrousel;

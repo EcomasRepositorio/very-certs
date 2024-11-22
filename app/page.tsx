@@ -22,7 +22,7 @@ const LogosCarrousel = dynamic(
 
 export default function Main() {
   return (
-    <main className="relative z-0 bg-gradient-to-r  from-[#e0f9f6] to-[#e0f9f6]  ">
+    <main className="relative z-0 bg-[#e0f9f6] dark:bg-fondDark   ">
       {/* Botón para cambiar de tema */}
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />

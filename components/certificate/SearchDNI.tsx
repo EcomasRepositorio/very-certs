@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps, Student } from "@/interface/interface";
-import Modal from "../share/ModalCerti";
+import Modal from "../share/Modal";
 import "./Styles.css";
 import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
@@ -73,111 +73,52 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
 
   // Función para dividir el texto según palabras clave o cantidad de palabras
   const splitText = (text: string): string[] => {
+    // Elimina espacios innecesarios
     const cleanText = text.trim();
 
-    // Identificar posiciones clave en el texto
-    const indexCorporacion = cleanText.indexOf(
-      "ECOMÁS Consultoría y Capacitación"
-    );
+    // Identificamos las posiciones de las palabras clave dentro del texto
+    const indexCorporacion = cleanText.indexOf("Corporación INALTA");
     const indexFundenorp = cleanText.indexOf("FUNDENORP");
-    const indexEscuela = cleanText.indexOf(
-      "Escuela de Posgrado - Universidad Nacional de Piura"
-    );
-    const indexUniversidadPiura = cleanText.indexOf(
-      "Universidad Nacional de Piura"
-    );
-    const indexColegioIngenierosHuancavelica = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Huancavelica"
-    );
-    const indexColegioIngenierosCallao = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Callao"
-    );
-    const indexColegioIngenierosPuno = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Puno"
-    );
-    const indexColegioIngenierosIca = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Ica"
-    );
+    const indexEscuela = cleanText.indexOf("Escuela de Posgrado");
+    const indexUniversidad = cleanText.indexOf("Universidad Nacional de Piura");
 
-    // Caso 1: 3 líneas - "ECOMÁS Consultoría y Capacitación Escuela de Posgrado - Universidad Nacional de Piura FUNDENORP"
+    // Si contiene "Escuela de Posgrado"
     if (
       indexCorporacion !== -1 &&
-      indexEscuela !== -1 &&
-      indexFundenorp !== -1
+      indexFundenorp !== -1 &&
+      indexEscuela !== -1
     ) {
       const corporacion = cleanText
         .substring(indexCorporacion, indexEscuela)
-        .trim();
-      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim();
-      const fundenorp = cleanText.substring(indexFundenorp).trim();
+        .trim(); // Desde "Corporación SEVEDA" hasta "Escuela de Posgrado"
+      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim(); // Desde "Escuela de Posgrado" hasta "FUNDENORP"
+      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
+
       return [corporacion, escuela, fundenorp];
     }
 
-    // Caso 2: 3 líneas - "ECOMÁS Consultoría y Capacitación Universidad Nacional de Piura FUNDENORP"
+    // Si contiene "Universidad Nacional de Piura" (y no "Escuela de Posgrado")
     if (
       indexCorporacion !== -1 &&
-      indexUniversidadPiura !== -1 &&
-      indexFundenorp !== -1
+      indexFundenorp !== -1 &&
+      indexUniversidad !== -1
     ) {
       const corporacion = cleanText
-        .substring(indexCorporacion, indexUniversidadPiura)
-        .trim();
+        .substring(indexCorporacion, indexUniversidad)
+        .trim(); // Desde "Corporación SEVEDA" hasta "Universidad Nacional de Piura"
       const universidad = cleanText
-        .substring(indexUniversidadPiura, indexFundenorp)
-        .trim();
-      const fundenorp = cleanText.substring(indexFundenorp).trim();
+        .substring(indexUniversidad, indexFundenorp)
+        .trim(); // Desde "Universidad Nacional de Piura" hasta "FUNDENORP"
+      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
+
       return [corporacion, universidad, fundenorp];
     }
 
-    // Caso 3: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Huancavelica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosHuancavelica !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosHuancavelica)
-        .trim();
-      const colegioIngenierosHuancavelica = cleanText
-        .substring(indexColegioIngenierosHuancavelica)
-        .trim();
-      return [corporacion, colegioIngenierosHuancavelica];
-    }
-
-    // Caso 4: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Callao"
-    if (indexCorporacion !== -1 && indexColegioIngenierosCallao !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosCallao)
-        .trim();
-      const colegioIngenierosCallao = cleanText
-        .substring(indexColegioIngenierosCallao)
-        .trim();
-      return [corporacion, colegioIngenierosCallao];
-    }
-
-    // Caso 5: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Puno"
-    if (indexCorporacion !== -1 && indexColegioIngenierosPuno !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosPuno)
-        .trim();
-      const colegioIngenierosPuno = cleanText
-        .substring(indexColegioIngenierosPuno)
-        .trim();
-      return [corporacion, colegioIngenierosPuno];
-    }
-
-    // Caso 6: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Ica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosIca !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosIca)
-        .trim();
-      const colegioIngenierosIca = cleanText
-        .substring(indexColegioIngenierosIca)
-        .trim();
-      return [corporacion, colegioIngenierosIca];
-    }
-
-    // Caso general: Divide el texto en líneas basadas en cantidad de palabras, máximo 3 líneas
+    // Si no encuentra las palabras clave, devuelve el texto dividido en palabras
     const words = cleanText.split(" ");
-    const firstLine = words.slice(0, 9).join(" ");
-    const secondLine = words.slice(9, 15).join(" ");
-    const thirdLine = words.slice(15).join(" ");
+    const firstLine = words.slice(0, 9).join(" "); // Primeras 9 palabras
+    const secondLine = words.slice(9, 10).join(" "); // Palabra 10
+    const thirdLine = words.slice(10).join(" "); // Resto de las palabras
     return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
   };
 
@@ -212,16 +153,12 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   return (
     <div className="">
       <form onSubmit={searchDNI} className="w-full ">
-        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2">
-          <div
-            className={`flex-1 transition-all duration-300 ${
-              closeTable ? "w-[600px]" : "w-[400px]"
-            }`}
-          >
+        <div className="flex items-center ">
+          <div className=" flex-1">
             <input
               type="search"
               id="default-search"
-              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-primaryblue p-3 transition-all duration-300"
+              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent  focus:border-primaryblue  m-0"
               placeholder={`Ingrese su DNI${
                 searchType === "name" ? "nombre" : ""
               }`}
@@ -231,10 +168,10 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
               value={queryValue}
             />
           </div>
-          <div className="ml-2 mb-2">
+          <div className=" ml-2 h-full">
             <Button
               type="submit"
-              className="bg-primaryblue dark:bg-transparent text-white border border-white/50 rounded-lg"
+              className="bg-black  text-white border border-white/50 rounded-lg"
             >
               Buscar
             </Button>
@@ -319,13 +256,29 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           open={openModals.findIndex(Boolean) !== -1}
           onClose={() => closeStudentModal(openModals.findIndex(Boolean))}
         >
-          <div className="flex justify-center items-center mb-4 gap-2">
+          <div className=" flex justify-center mb-4 gap-2">
             <Image
-              src={"/image/log-blank.png"}
-              alt="vericerts"
-              className="md:w-60   w-20  object-contain mt-2"
-              width={300}
-              height={300}
+              src={"/image/unp.png"}
+              alt="inalta"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+            <Image
+              src={"/image/inaltlogcert_2.png"}
+              alt="inalta"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={200}
+              height={200}
+              priority={true}
+            />
+            <Image
+              src={"/image/funde.png"}
+              alt="inalta"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
               priority={true}
             />
           </div>
@@ -362,7 +315,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           <h2 className="text-md font-bold text-red-500 mb-4">
             DNI incorrecto
           </h2>
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
+          <h3 className="text-sm font-semibold text-gray-100">
             El DNI que ingresaste no se encuentra en nuestra base de datos.
           </h3>
         </div>

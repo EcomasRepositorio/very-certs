@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@heroicons/react": "^1.0.6",
+    "@mui/material": "^6.1.8",
     "@nextui-org/react": "^2.3.4",
     "@nextui-org/tabs": "^2.0.28",
     "autoprefixer": "^10.4.19",
@@ -27,7 +30,7 @@
     "react-router-dom": "^6.22.0",
     "react-type-animation": "^3.2.0",
     "sharp": "^0.33.3",
-    "swiper": "^11.1.0",
+    "swiper": "^11.1.15",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

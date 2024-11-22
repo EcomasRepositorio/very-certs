@@ -62,9 +62,9 @@ const SwiperCursosDestacados = () => {
       >
         <motion.div
           className="flex justify-center items-center"
-          initial="animate" // Inicia la animación al cargar
-          animate="animate" // Aplica la animación
-          variants={containerVariants} // Variantes de animación
+          initial="animate" 
+          animate="animate"
+          variants={containerVariants}
           style={{
             transform: `translateX(calc(50% - ${itemWidth / 2}px))`,
             width: totalWidth,

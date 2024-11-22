@@ -200,7 +200,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
   return (
     <div className="">
       <form onSubmit={searchCode} className="w-full ">
-        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2 ">
+        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2">
           <div
             className={`flex-1 transition-all duration-300 ${
               closeTable ? "w-[600px]" : "w-[400px]"

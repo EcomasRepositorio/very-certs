@@ -7,7 +7,6 @@ import { useMediaQuery } from 'react-responsive';
 const cursosDestacados = [
   {
     id: 1,
-    imageUrl: "/image/solidos.jpg",
     title: "Gestion y manejo de residuos sólidos municipales",
     description:
       "Este curso aborda estrategias y técnicas para gestionar eficazmente los residuos sólidos en entornos urbanos, incluyendo temas como reciclaje, tratamiento de residuos y participación comunitaria.",

@@ -112,7 +112,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/#contacto" onClick={() => setNavbar(!navbar)}>
+                  <Link href="/#contact" onClick={() => setNavbar(!navbar)}>
                     Contactanos
                   </Link>
                 </li>
@@ -131,41 +131,53 @@ function Navbar() {
             </div>
           </div>
           <div className={`md:hidden ${navbar ? "block" : "hidden"}`}>
-  <ul>
-    {/* Mobile menu links */}
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/" onClick={() => setNavbar(!navbar)}>Inicio</Link>
-    </li>
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/certs" onClick={() => setNavbar(!navbar)}>Servicios</Link>
-    </li>
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/graduate" onClick={() => setNavbar(!navbar)}>Nosotros</Link>
-    </li>
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/about" onClick={() => setNavbar(!navbar)}>Instituciones</Link>
-    </li>
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/" onClick={() => setNavbar(!navbar)}>certificados</Link>
-    </li>
-    <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-      <Link href="/" onClick={() => setNavbar(!navbar)}>Contactanos</Link>
-    </li>
-    <li className="flex justify-center items-center hover:text-primaryBlue mt-20">
-      <Link
-        href="/login"
-        className="bg-secondaryCian py-1 px-4 rounded-xl text-white hover:bg-gray-100 hover:text-primaryBlue hover:scale-125 duration-300 "
-      >
-        <FaUserCog className="text-4xl" />
-      </Link>
-    </li>
+            <ul>
+              {/* Mobile menu links */}
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/" onClick={() => setNavbar(!navbar)}>
+                  Inicio
+                </Link>
+              </li>
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/#servicios" onClick={() => setNavbar(!navbar)}>
+                  Servicios
+                </Link>
+              </li>
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/graduate" onClick={() => setNavbar(!navbar)}>
+                  Nosotros
+                </Link>
+              </li>
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/about" onClick={() => setNavbar(!navbar)}>
+                  Instituciones
+                </Link>
+              </li>
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/" onClick={() => setNavbar(!navbar)}>
+                  certificados
+                </Link>
+              </li>
+              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <Link href="/#contact" onClick={() => setNavbar(!navbar)}>
+                  Contactanos
+                </Link>
+              </li>
+              <li className="flex justify-center items-center hover:text-primaryBlue mt-20">
+                <Link
+                  href="/login"
+                  className="bg-secondaryCian py-1 px-4 rounded-xl text-white hover:bg-gray-100 hover:text-primaryBlue hover:scale-125 duration-300 "
+                >
+                  <FaUserCog className="text-4xl" />
+                </Link>
+              </li>
 
-    {/* Centered ThemeSwitcher */}
-    <div className="flex justify-center mt-4">
-      <ThemeSwitcher />
-    </div>
-  </ul>
-</div>
+              {/* Centered ThemeSwitcher */}
+              <div className="flex justify-center mt-4">
+                <ThemeSwitcher />
+              </div>
+            </ul>
+          </div>
 
           {/* Agregar el ThemeSwitcher al final de la barra de navegación */}
         </div>

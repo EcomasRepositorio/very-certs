@@ -153,12 +153,16 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   return (
     <div className="">
       <form onSubmit={searchDNI} className="w-full ">
-        <div className="flex items-center ">
-          <div className=" flex-1">
+        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2">
+          <div
+            className={`flex-1 transition-all duration-300 ${
+              closeTable ? "w-[600px]" : "w-[400px]"
+            }`}
+          >
             <input
               type="search"
               id="default-search"
-              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent  focus:border-primaryblue  m-0"
+              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent focus:border-primaryblue p-3 transition-all duration-300"
               placeholder={`Ingrese su DNI${
                 searchType === "name" ? "nombre" : ""
               }`}
@@ -168,10 +172,10 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
               value={queryValue}
             />
           </div>
-          <div className=" ml-2 h-full">
+          <div className="ml-2 mb-2">
             <Button
               type="submit"
-              className="bg-black  text-white border border-white/50 rounded-lg"
+              className="bg-black text-white border border-white/50 rounded-lg"
             >
               Buscar
             </Button>

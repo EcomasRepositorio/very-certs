@@ -29,13 +29,6 @@ const PrincipalHome = () => {
         className="fixed z-50 top-16 right-0 mr-3 p-2 flex items-center justify-center"
         onClick={handleThemeChange}
       >
-        <Image
-          src={theme === "light" ? "/image/bulb_on.png" : "/image/bulb.png"}
-          className="block md:hidden w-10 h-10 object-contain"
-          alt="Home Image"
-          width={35}
-          height={35}
-        />
       </button>
 
       <div className="py-8 lg:py-10 max-w-7xl sm:px-6 lg:px-8 flex flex-col md:flex-row items-start w-full">

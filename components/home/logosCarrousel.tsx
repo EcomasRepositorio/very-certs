@@ -110,7 +110,7 @@ const ImageCarrousel = () => {
             key={index}
             className="bg-transparent max-h-40 flex items-center justify-center mr-16"
           >
-            <div className="w-32 h-32 flex items-center justify-center border-2 border-gray-300 rounded-md bg-transparent shadow-md">
+            <div className="w-32 h-32 flex items-center justify-center border-0.5 border-gray-300 rounded-md bg-transparent shadow-md">
               <Image
                 alt={slide.title}
                 src={resolvedTheme === "dark" ? slide.darkImage : slide.lightImage}

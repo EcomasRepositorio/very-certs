@@ -11,7 +11,7 @@ const pricingPlans = [
       "10GB de espacio en disco para almacenamiento de certificados.",
       "Acceso a informes básicos de verificación.",
       "Soporte técnico por correo electrónico.",
-      "Integración básica con sistemas LMS como Moodle o Blackboard."
+      "Integración básica con sistemas LMS como Moodle o Blackboard.",
     ],
     icon: CheckCircleIcon,
   },
@@ -22,9 +22,9 @@ const pricingPlans = [
       "Registro de hasta 1000 certificados al mes.",
       "100GB de espacio en disco.",
       "100 consultas de verificación al mes.",
-      "Soporte técnico avanzado por chat y correo electrónico",
+      "Soporte técnico avanzado por chat y correo electrónico.",
       "Informes detallados sobre la verificación y emisión de certificados.",
-      "Personalización del certificado con logotipos y sellos digitales de la institución"
+      "Personalización del certificado con logotipos y sellos digitales de la institución.",
     ],
     icon: CheckCircleIcon,
   },
@@ -33,13 +33,12 @@ const pricingPlans = [
     price: 299,
     features: [
       "Registro ilimitado de certificados.",
-      "500GB de espacio en disco para almacenamiento seguro",
-      "Verificaciones ilimitadas",
-      "Soporte prioritario por teléfono, chat y correo electrónico",
-      "Acceso a API para integración completa con sistemas LMS",
-      "Informes avanzados de uso y verificaciones ",
-      "Verificaciones ilimitadas",
-      "Opciones de personalización avanzada de certificados, incluyendo diseños exclusivos"
+      "500GB de espacio en disco para almacenamiento seguro.",
+      "Verificaciones ilimitadas.",
+      "Soporte prioritario por teléfono, chat y correo electrónico.",
+      "Acceso a API para integración completa con sistemas LMS.",
+      "Informes avanzados de uso y verificaciones.",
+      "Opciones de personalización avanzada de certificados, incluyendo diseños exclusivos.",
     ],
     icon: CheckCircleIcon,
   },
@@ -49,8 +48,10 @@ const PorqueNosotros = () => {
   return (
     <section className="bg-transparent py-16 px-4 text-teal-400 dark:text-white">
       <div className="max-w-7xl mx-auto text-center mb-12">
-        <p className="text-lg font-semibold text-teal-400">Nuestros Plnaes</p>
-        <h2 className="text-4xl font-bold">encuentra el mejor plan que necesites</h2>
+        <p className="text-lg font-semibold text-teal-400">Nuestros Planes</p>
+        <h2 className="text-4xl font-bold">
+          Encuentra el mejor plan que necesites
+        </h2>
       </div>
 
       <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-3">
@@ -70,17 +71,15 @@ const PricingCard = ({ plan, delay }) => {
     const handleIntersection = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Reinicia el contador al entrar en la vista
           startCounting();
         } else {
-          // Reinicia el contador al salir de la vista
           setCount(0);
         }
       });
     };
 
     const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.5, // 50% visible para activar
+      threshold: 0.5,
     });
 
     if (cardRef.current) {
@@ -117,7 +116,7 @@ const PricingCard = ({ plan, delay }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: delay }}
     >
-      <div className=" w-16 h-16 bg-teal-400 rounded-full flex items-center justify-center mb-4">
+      <div className="w-16 h-16 bg-teal-400 rounded-full flex items-center justify-center mb-4">
         <plan.icon className="w-8 h-8 text-[#0e1b35]" />
       </div>
       <h3 className="text-xl font-semibold mb-4">{plan.name}</h3>
@@ -128,15 +127,19 @@ const PricingCard = ({ plan, delay }) => {
           </li>
         ))}
       </ul>
-      <div className="flex flex-col justify-between h-full">
-  <div>
-    <p className="text-3xl font-bold mb-6">${count}/mo</p>
-  </div>
-  <button className="bg-gradient-to-r from-blue-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold mt-auto">
-    COMPRAR AHORA
-  </button>
-</div>
-
+      {/* Contenedor para el precio y el botón */}
+      <div className="flex flex-col justify-between items-center mt-auto">
+        {/* Precio */}
+        <div className="min-h-[4rem] flex items-center justify-center">
+          <p className="text-4xl font-bold">${count}/mo</p>
+        </div>
+        {/* Botón */}
+        <div className="mt-4">
+          <button className="bg-gradient-to-r from-blue-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold">
+            PURCHASE NOW
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 };

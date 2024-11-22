@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { BsCheckCircle } from "react-icons/bs";
 import { FaTools } from "react-icons/fa";
-import Link from "next/link";
 
 const ExpertiseSection = () => {
   return (
@@ -12,7 +11,7 @@ const ExpertiseSection = () => {
         {/* Imagen principal (siempre visible) */}
         <div className="relative z-10">
           <Image
-            src="/image/estambient.jpg"
+            src="/image/noso2.jpg"
             alt="Mechanic working on car"
             width={400}
             height={300}
@@ -23,11 +22,11 @@ const ExpertiseSection = () => {
         {/* Imagen secundaria detrás (solo visible en pantallas md o mayores) */}
         <div className="hidden md:block absolute top-10 left-10 z-1">
           <Image
-            src="/image/goteo.jpg"
+            src="/image/noso1.jpg"
             alt="Secondary mechanic image"
             width={350}
             height={250}
-            className="rounded-lg shadow-md opacity-80 lg:mt-40 lg:ml-5 md:mt-40 md:ml-10"
+            className="rounded-lg shadow-md opacity-80 lg:mt-40 lg:ml-5 md:mt-40 md:ml-10 dark:opacity-90"
           />
         </div>
 
@@ -35,10 +34,10 @@ const ExpertiseSection = () => {
         <div className="hidden md:block absolute top-60 left-12 -z-10">
           <Image
             src="/image/fondcian.jpg"
-            alt="Secondary mechanic image"
+            alt="Background mechanic image"
             width={350}
             height={250}
-            className="rounded-lg shadow-md opacity-50 mt-[40px] ml-[35px]"
+            className="rounded-lg shadow-md opacity-50 mt-[40px] ml-[35px] dark:opacity-60"
           />
         </div>
 
@@ -46,10 +45,10 @@ const ExpertiseSection = () => {
         <div className="hidden md:block relative bottom-80 left-16 z-1">
           <Image
             src="/image/fondcian.jpg"
-            alt="Mechanic working on car"
+            alt="Background mechanic image"
             width={400}
             height={300}
-            className="rounded-lg shadow-lg opacity-50"
+            className="rounded-lg shadow-lg opacity-50 dark:opacity-70"
           />
         </div>
 

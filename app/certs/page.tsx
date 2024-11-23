@@ -30,7 +30,7 @@ const VideoBackground = () => {
     <video
       ref={videoRef}
       className="absolute top-0 left-0 w-full h-full object-cover"
-      src="/image/fond-cert.mp4" // Cambia esta ruta a tu video
+      src="/image/fond2.mp4" // Cambia esta ruta a tu video
       autoPlay
       loop
       muted
@@ -50,7 +50,7 @@ const TestingPage: React.FC = () => {
       <VideoBackground />
 
       {/* Superposición transparente */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-[#009FB2] opacity-30"></div>
 
       {/* Contenido principal */}
       <div className="relative py-12 mx-auto max-w-screen-lg px-4 w-full">
@@ -73,16 +73,16 @@ const TestingPage: React.FC = () => {
               classNames={{
                 tabList:
                   "w-full flex flex-col md:flex-row bg-transparent border border-gray-300/40",
-                cursor: "bg-gray-100/30 text-gray-100",
+                cursor: "bg-transparent text-gray-100",
                 tab: "py-2 px-4 rounded-t-lg text-gray-100",
                 tabContent:
-                  "group-data-[selected=true]:text-gray-100 text-g-100 ",
+                  "group-data-[selected=true]:text-gray-100 text-g-100  ",
               }}
             >
               <Tab key="dni" title="Buscar por DNI">
                 <Suspense fallback={<div className="loader">Cargando...</div>}>
                   <Card>
-                    <CardBody className="bg-transparent w-full">
+                    <CardBody className=" bg-white w-full">
                       <SearchDNI onSearchDNI={handleSearch} />
                     </CardBody>
                   </Card>
@@ -91,7 +91,7 @@ const TestingPage: React.FC = () => {
               <Tab key="code" title="Buscar por Código">
                 <Suspense fallback={<div className="loader">Cargando...</div>}>
                   <Card>
-                    <CardBody className="bg-transparent w-full">
+                    <CardBody className="bg-white w-full">
                       <SearchCode onSearchCode={handleSearch} />
                     </CardBody>
                   </Card>
@@ -100,7 +100,7 @@ const TestingPage: React.FC = () => {
               <Tab key="name" title="Buscar por Nombres">
                 <Suspense fallback={<div className="loader">Cargando...</div>}>
                   <Card>
-                    <CardBody className="bg-transparent  w-full">
+                    <CardBody className="bg-white  w-full">
                       <SearchName onSearchName={handleSearch} />
                     </CardBody>
                   </Card>

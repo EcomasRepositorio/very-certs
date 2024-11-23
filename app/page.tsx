@@ -27,9 +27,9 @@ export default function Main() {
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />
       </div>
-      <div className=" dark:bg-fondDark ">
+      {/* <div className=" dark:bg-fondDark ">
         <LogosCarrousel />
-      </div>
+      </div> */}
       <div className=" dark:bg-fondDark">
         <Whatveri />
       </div>
@@ -42,9 +42,9 @@ export default function Main() {
       <div className=" dark:bg-fondDark ">
         <Beneficios />
       </div>
-      <div className=" dark:bg-fondDark ">
+      {/* <div className=" dark:bg-fondDark ">
         <PorqueNosotros />
-      </div>
+      </div> */}
       {/*   <div className="  dark:bg-fondDark ">
       <SegSoport />
       </div> */}

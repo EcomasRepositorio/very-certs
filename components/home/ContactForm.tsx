@@ -17,8 +17,8 @@ const ContactForm = () => {
   const onSubmit = () => {
     setSending(true);
 
-    const serviceID = "service_g5u0i0w";
-    const templateID = "template_l1rb6uk";
+    const serviceID = "";
+    const templateID = "";
 
     const form = formRef.current;
     if (form) {

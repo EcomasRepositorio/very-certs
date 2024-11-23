@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
@@ -25,7 +26,7 @@ const SignIn: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/user/login", // Asegúrate de que la URL sea correcta
+        "http://localhost:8000/api/v1/user/login",
         form
       );
 
@@ -34,7 +35,9 @@ const SignIn: React.FC = () => {
         window.location.href = "/student";
       }
     } catch (error: any) {
-      setResErrors({ message: error?.response?.data?.message || "Error desconocido" });
+      setResErrors({
+        message: error?.response?.data?.message || "Error desconocido",
+      });
       setTimeout(() => setResErrors(null), 3000);
     }
   };
@@ -49,12 +52,27 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-black bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/image/espace.png')", // Cambia esta ruta por la de tu imagen
-      }}
-    >
+    <div className="relative min-h-screen flex items-center justify-center">
+      {/* Imagen para modo Light */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
+        style={{
+          backgroundImage: "url(/image/fond-wite.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
+
+      {/* Imagen para modo Dark */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
+        style={{
+          backgroundImage: "url(/image/espace.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
+
       <div className="relative z-10 w-[400px] p-8 backdrop-blur-md bg-black/60 rounded-xl shadow-lg">
         <h1 className="text-2xl font-semibold text-white text-center mb-4">
           Iniciar Sesión

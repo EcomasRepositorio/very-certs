@@ -102,7 +102,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/about" onClick={() => setNavbar(!navbar)}>
+                  <Link href="/instituciones" onClick={() => setNavbar(!navbar)}>
                     Instituciones
                   </Link>
                 </li>
@@ -149,12 +149,12 @@ function Navbar() {
                 </Link>
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/about" onClick={() => setNavbar(!navbar)}>
+                <Link href="/instituciones" onClick={() => setNavbar(!navbar)}>
                   Instituciones
                 </Link>
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/" onClick={() => setNavbar(!navbar)}>
+                <Link href="/certs" onClick={() => setNavbar(!navbar)}>
                   certificados
                 </Link>
               </li>

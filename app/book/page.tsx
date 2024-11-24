@@ -341,7 +341,7 @@ const Book = () => {
                             </textarea>
                         </div>
                     </div>
-                    <input type="submit" value={sending ? 'Enviando...' : 'Enviar'} className='hover:scale-105  p-2 mb-6 rounded-xl bg-primaryblue text-gray-200 text-normal cursor-pointer' />
+                    <input type="submit" value={sending ? 'Enviando...' : 'Enviar'} className='hover:scale-105  p-2 mb-6 rounded-xl bg-[#009FB2] dark:bg-[#00E8AE] text-gray-200 text-normal cursor-pointer' />
                 </form>
             </div>
         </section>

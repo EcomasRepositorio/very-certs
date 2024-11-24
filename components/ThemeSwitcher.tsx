@@ -8,22 +8,22 @@ const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // Marca el componente como montado para habilitar el renderizado del cliente
+    setMounted(true); // Marks the component as mounted to enable client-side rendering
   }, []);
 
-  if (!mounted) return null; // Previene el renderizado en SSR
+  if (!mounted) return null; // Prevents rendering during SSR
 
   return (
-    <label className="swap swap-rotate">
-      {/* Toggle controlado por un checkbox */}
+    <label className="swap swap-rotate cursor-pointer"> {/* Added cursor-pointer */}
+      {/* Toggle controlled by a checkbox */}
       <input
         type="checkbox"
         checked={theme === "dark"}
         onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="hidden" // Esconde el input checkbox
+        className="hidden" // Hides the input checkbox
       />
 
-      {/* Icono de sol para modo claro */}
+      {/* Sun icon for light mode */}
       <svg
         className={`swap-off h-10 w-10 fill-current ${
           theme === "light" ? "block" : "hidden"
@@ -36,7 +36,7 @@ const ThemeToggle = () => {
         />
       </svg>
 
-      {/* Icono de luna para modo oscuro */}
+      {/* Moon icon for dark mode */}
       <svg
         className={`swap-on h-10 w-10 fill-current ${
           theme === "dark" ? "block" : "hidden"

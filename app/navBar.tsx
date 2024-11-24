@@ -102,7 +102,10 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/instituciones" onClick={() => setNavbar(!navbar)}>
+                  <Link
+                    href="/instituciones"
+                    onClick={() => setNavbar(!navbar)}
+                  >
                     Instituciones
                   </Link>
                 </li>
@@ -174,7 +177,9 @@ function Navbar() {
 
               {/* Centered ThemeSwitcher */}
               <div className="flex justify-center mt-4">
-                <ThemeSwitcher />
+                <div className="cursor-pointer">
+                  <ThemeSwitcher />
+                </div>
               </div>
             </ul>
           </div>

@@ -114,7 +114,7 @@ const Graduate = () => {
               {/* Text Content */}
               <div className="flex flex-col justify-between flex-grow p-6">
                 <div>
-                  <p className="text-sm text-blue-400">{post.category}</p>
+                  <p className="text-sm text-[#e0f9f611111111111111111           1 *:                                   ]">{post.category}</p>
                   <p className="text-sm text-gray-400">{post.date}</p>
                   <h2 className="text-lg font-bold text-white mt-2">
                     {post.title}

@@ -1,0 +1,96 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="100"
+  height="100"
+  viewBox="0 0 24 24"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <!-- Estilos en el SVG -->
+  <style>
+    :root {
+      --icon-fill: black;
+      --background: white;
+    }
+    [data-theme="dark"] {
+      --icon-fill: white;
+      --background: black;
+    }
+
+    svg {
+      background-color: var(--background);
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+      overflow: visible;
+    }
+
+    .sun {
+      fill: var(--icon-fill);
+      transform-origin: center;
+      transition: transform 0.5s ease;
+    }
+
+    .sun-beams {
+      stroke: var(--icon-fill);
+      stroke-width: 2px;
+      transform-origin: center;
+      transition: opacity 0.5s ease;
+    }
+
+    .moon {
+      fill: var(--icon-fill);
+      transform: translateX(-7px);
+      transition: transform 0.5s ease;
+    }
+
+    [data-theme="dark"] .sun {
+      transform: scale(1.75);
+    }
+
+    [data-theme="dark"] .sun-beams {
+      opacity: 0;
+    }
+
+    [data-theme="dark"] .moon {
+      transform: translateX(0);
+    }
+  </style>
+
+  <!-- Definición del botón -->
+  <g id="theme-toggle" onclick="toggleTheme()" style="cursor: pointer;">
+    <!-- Sol -->
+    <circle class="sun" cx="12" cy="12" r="6" />
+    <!-- Rayos del Sol -->
+    <g class="sun-beams">
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </g>
+    <!-- Máscara para la Luna -->
+    <mask id="moon-mask">
+      <rect x="0" y="0" width="100%" height="100%" fill="white" />
+      <circle cx="24" cy="10" r="6" fill="black" />
+    </mask>
+    <!-- Luna -->
+    <circle class="moon" cx="12" cy="12" r="6" mask="url(#moon-mask)" />
+  </g>
+
+  <!-- Script para interactividad -->
+  <script><![CDATA[
+    // Estado inicial del tema
+    let currentTheme = 'light';
+
+    function toggleTheme() {
+      // Cambiar entre claro y oscuro
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+      // Actualizar el atributo en el SVG
+      document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+  ]]></script>
+</svg>

@@ -2,6 +2,7 @@
 import React, { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import {
   FaFacebookF,
   FaInstagram,
@@ -75,31 +76,42 @@ const Footer: React.FC = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
+  const { theme } = useTheme(); // Obtén el tema actual
+
   const openTermsModal = () => setShowTermsModal(true);
   const closeTermsModal = () => setShowTermsModal(false);
 
   const openPrivacyModal = () => setShowPrivacyModal(true);
   const closePrivacyModal = () => setShowPrivacyModal(false);
 
+  // Define las imágenes del logo para modo oscuro y claro
+  const logoImages = {
+    light: "/image/log_cert.png", // Reemplaza con la ruta del logo claro
+    dark: "/image/log-blank.png", // Reemplaza con la ruta del logo oscuro
+  };
+
+  const currentLogo = theme === "dark" ? logoImages.dark : logoImages.light;
+
   return (
-    <footer
-      id="footer"
-      className="bg-fondDark text-white py-16 px-6 w-full overflow-visible"
-    >
-      <div className="container mx-auto w-full h-full overflow-visible">
+    <footer className="bg-[#e0f9f6] dark:bg-fondDark text-black dark:text-white py-16 px-6 w-full">
+      <div className="container mx-auto">
         {/* Redes Sociales */}
         <div className="flex justify-center lg:justify-between items-center mb-12">
           <p className="text-center lg:text-left">
             Síguenos en nuestras redes sociales
           </p>
           <div className="flex justify-center lg:justify-end space-x-4 mt-4 lg:mt-0">
-            {socialLinks.map(({ href, icon, disabled }, idx) => (
-              <SocialLink
+            {socialLinks.map(({ href, icon: Icon, disabled }, idx) => (
+              <Link
                 key={idx}
-                href={href}
-                icon={icon}
-                disabled={disabled}
-              />
+                href={disabled ? "#" : href}
+                target={disabled ? undefined : "_blank"}
+                className={`p-2 rounded-full transition-transform transform hover:scale-150 shadow-xl ${
+                  disabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                <Icon size={24} />
+              </Link>
             ))}
           </div>
         </div>
@@ -107,29 +119,36 @@ const Footer: React.FC = () => {
         {/* Contenido Principal */}
         <div className="border-t border-white/40 pt-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            {/* Logotipo y Descripción */}
-            <div className="md:col-span-1 flex flex-col items-center md:items-start">
+            {/* Logotipo y descripción */}
+            <div className="flex flex-col items-center md:items-start">
               <Image
-                src="/image/log-blank.png"
-                alt="Corporación Inalta"
+                src={currentLogo}
+                alt="Logo Vericerts"
                 width={180}
                 height={60}
                 priority
-                className="mb-4"
               />
               <p className="mt-2 text-sm text-center md:text-left">
-                Ofrecemos cursos y diplomados certificados a través de
-                Vericerts, garantizando la validez y reconocimiento de tus
-                estudios.
+                Ofrecemos cursos y diplomados certificados, garantizando la
+                validez y reconocimiento de tus estudios.
               </p>
               <Link href="/book">
-                <div className="mt-2 text-sm text-white hover:underline flex items-center">
+                <div className="mt-2 text-sm text-black dark:text-white hover:underline flex items-center">
+                  {/* Imagen para modo claro */}
                   <Image
-                    src="/image/reclamos.png"
+                    src="/image/book-black.svg"
                     alt="Libro de Reclamaciones"
                     width={24}
                     height={24}
-                    className="mr-2"
+                    className="mr-2 block dark:hidden" // Visible en modo claro
+                  />
+                  {/* Imagen para modo oscuro */}
+                  <Image
+                    src="/image/book-white.svg"
+                    alt="Libro de Reclamaciones"
+                    width={24}
+                    height={24}
+                    className="mr-2 hidden dark:block" // Visible en modo oscuro
                   />
                   Libro de Reclamaciones
                 </div>
@@ -216,7 +235,8 @@ const Footer: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-center">
                   <HiOutlineMail size={20} className="mr-2" />
-                  <Link href="mailto:capacitaciones@inalta.edu.pe">
+                  <Link href="">
+                    {/* colocar correo */}
                     <span className="hover:underline">###############</span>
                   </Link>
                 </li>
@@ -489,8 +509,8 @@ const Footer: React.FC = () => {
         </div>
       )}
 
-      <div className="relative mt-8 text-center text-sm text-gray-300">
-        <p>© 2024 Copyright: VERICERTS</p>
+      <div className="relative mt-8 text-center text-sm text-black dark:text-gray-300">
+        <p>© 2024 Copyright: VERYCERTS</p>
         <p className="opacity-0 text-gray-300">
           página protegida por el gorko el dios astuto pero brutal
         </p>

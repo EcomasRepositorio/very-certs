@@ -32,6 +32,7 @@ module.exports = {
         'textrosa': '#ff00d4',
         'textblue': '#0060ff',
       },
+      /* certificados */
       animation: {
         'spin-slow-30': 'spin 30s linear infinite',
         'spin-slow-25': 'spin 25s linear infinite',
@@ -56,6 +57,25 @@ module.exports = {
       },
       backgroundSize: {
         '200%': '200%', // Extiende el tamaño del gradiente para permitir animación
+      },
+/* promas */
+      animation: {
+        'gradient-move': 'gradient-move 6s infinite',
+      },
+      keyframes: {
+        'gradient-move': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '200%': '200%', // Extiende el tamaño del gradiente para la animación
+      },
+      colors: {
+        primary: '#FF3F66',
+        secondary: '#C83C7A',
+        tertiary: '#390763',
       },
     },
   },

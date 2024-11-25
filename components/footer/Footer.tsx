@@ -93,7 +93,7 @@ const Footer: React.FC = () => {
   const currentLogo = theme === "dark" ? logoImages.dark : logoImages.light;
 
   return (
-    <footer className="bg-[#e0f9f6] dark:bg-fondDark text-black dark:text-white py-16 px-6 w-full">
+    <footer className="bg-[#e0f9f6] dark:bg-[#140d2f] text-black dark:text-white py-16 px-6 w-full">
       <div className="container mx-auto">
         {/* Redes Sociales */}
         <div className="flex justify-center lg:justify-between items-center mb-12">

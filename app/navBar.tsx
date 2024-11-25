@@ -11,7 +11,7 @@ function Navbar() {
 
   return (
     <div className="">
-      <nav className="w-full top-0 left-0 right-0 z-50 bg-primaryBlue/10 backdrop-blur-md fixed">
+      <nav className="w-full top-0 left-0 right-0 z-50 bg-primaryBlue/10 backdrop-blur-md fixed bg-black/10 ">
         {" "}
         {/* Cambiado a 'fixed' */}
         <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0.5">

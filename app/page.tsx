@@ -22,7 +22,7 @@ const LogosCarrousel = dynamic(
 
 export default function Main() {
   return (
-    <main className="relative z-0 bg-[#e0f9f6] dark:bg-fondDark   ">
+    <main className="relative z-0 bg-[#e0f9f6] dark:bg-[#140d2f]   ">
       {/* Botón para cambiar de tema */}
       <div className=" bg-gradient-to-r  from-cyan-450 to-blue-500  dark:bg-fondDark  ">
         <PrincipalHome />
@@ -30,16 +30,16 @@ export default function Main() {
       {/* <div className=" dark:bg-fondDark ">
         <LogosCarrousel />
       </div> */}
-      <div className=" dark:bg-fondDark">
+      <div className=" dark:bg-[#140d2f]">
         <Whatveri />
       </div>
-      <div className=" dark:bg-fondDark">
+      <div className=" dark:bg-[#140d2f]">
         <ComoVeri />
       </div>
-      <div className=" dark:bg-fondDark">
+      <div className=" dark:bg-[#140d2f]">
         <VentajVeri />
       </div>
-      <div className=" dark:bg-fondDark ">
+      <div className=" dark:bg-[#140d2f] ">
         <Beneficios />
       </div>
       {/* <div className=" dark:bg-fondDark ">
@@ -48,17 +48,17 @@ export default function Main() {
       {/*   <div className="  dark:bg-fondDark ">
       <SegSoport />
       </div> */}
-      <div className="  dark:bg-fondDark ">
+      <div className="  dark:bg-[#140d2f] ">
         <CarouselCursosDestacados />
       </div>
-      <div className="dark:bg-fondDark ">
+      <div className="dark:bg-[#140d2f] ">
         <QuienesSomos />
       </div>
-      <div className=" dark:bg-fondDark ">
+      <div className=" dark:bg-[#140d2f] ">
         <ContactForm />
       </div>
 
-      <div className=" dark:bg-fondDark">
+      <div className=" dark:bg-[#140d2f]">
         <ScrollToBotButton />
       </div>
     </main>

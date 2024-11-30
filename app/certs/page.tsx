@@ -22,7 +22,7 @@ const VideoBackground = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.playbackRate = 0.4; // Reproduce el video a la mitad de la velocidad normal
+      videoRef.current.playbackRate = 1 ; // Reproduce el video a la mitad de la velocidad normal
     }
   }, []);
 

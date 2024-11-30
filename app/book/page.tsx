@@ -32,9 +32,9 @@ const Book = () => {
         event?.preventDefault();
         console.log(data);
         setSending(true);
-        const serviceID = "service_94bs7oi";
-        const templateID = "template_483oq6u";
-        const apiKey = "UgIciLgmKy6Akg6-Z";
+        const serviceID = "service_o9ktlro";
+        const templateID = "template_lq24omc";
+        const apiKey = "NC9YsKn3imoQXWdJE";
         if (refForm.current) {
             try {
                 await emailjs.sendForm(serviceID, templateID, refForm.current, apiKey);
@@ -55,7 +55,7 @@ const Book = () => {
     };
 
     return (
-        <section className='mt-0 bg-[#e0f9f6] dark:bg-fondDark'>
+        <section className='mt-0 bg-[#e0f9f6] dark:bg-[#140d2f]  dark:bg-fondDark'>
             <div className='max-w-screen-lg mx-auto'>
                 <div className='p-2 '>
                     <h1 className='uppercase dark:text-[#00E8AE] text-[#009FB2] text-center md:text-3xl text-2xl font-extrabold mt-40'>Hoja de Reclamación</h1>

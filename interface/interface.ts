@@ -11,8 +11,9 @@ export interface SearchCodeProps {
 }
 
 export interface SearchDNIProps {
-  onSearchDNI: (data: string) => void;
+  onSearchDNI: (data: Student[]) => void; // Ahora acepta un arreglo de estudiantes
 }
+
 
 export interface SearchStudentDNIProps {
   onSearchDNI: (query: string, queryValue: string) => void;

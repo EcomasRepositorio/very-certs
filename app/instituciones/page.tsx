@@ -96,7 +96,7 @@ const Graduate = () => {
       </div>
 
       {/* Blog Section */}
-      <div className="p-10 bg-[#e0f9f6] dark:bg-fondDark ">
+      <div className="p-10 bg-[#e0f9f6] dark:bg-[#140d2f] ">
         <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
           {blogPosts.map((post, index) => (
             <div

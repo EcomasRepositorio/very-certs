@@ -53,14 +53,14 @@ const Book = () => {
         }
         return true;
     };
-
+//dark:bg-[#1a0e4b]
     return (
         <section className='mt-0 bg-[#e0f9f6] dark:bg-[#140d2f]  dark:bg-fondDark'>
             <div className='max-w-screen-lg mx-auto'>
                 <div className='p-2 '>
                     <h1 className='uppercase dark:text-[#00E8AE] text-[#009FB2] text-center md:text-3xl text-2xl font-extrabold mt-40'>Hoja de Reclamación</h1>
                     <p className='text-center mb-2 dark:text-[#00E8AE] text-[#009FB2] '>VERYCERTS</p>
-                    <h2 className='bg-[#009FB2] dark:bg-[#00E8AE] p-3 text-normal font-normal  text-gray-50 dark:text-black rounded-xl'>Identificación del consumidor</h2>
+                    <h2 className='bg-[#009FB2] dark:bg-[#1a0e4b] p-3 text-normal font-normal  text-gray-50 rounded-xl'>Identificación del consumidor</h2>
                 </div>
                 <form ref={refForm} onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-0 p-2'>
                     <div className='text-blackblue '>
@@ -286,7 +286,7 @@ const Book = () => {
                     </div>
 
                     <div className='md:col-span-2'>
-                        <h2 className='bg-[#009FB2] dark:bg-[#00E8AE] p-3 text-normal text-gray-50 dark:text-black rounded-xl'>Detalle de la reclamación y pedido del consumidor</h2>
+                        <h2 className='bg-[#009FB2] dark:bg-[#1a0e4b] p-3 text-normal text-gray-50 rounded-xl'>Detalle de la reclamación y pedido del consumidor</h2>
 
                         <div className='grid grid-cols-2 gap-4 mt-4 mb-2 p-3 '>
                             <div className="flex flex-row items-center">
@@ -341,7 +341,7 @@ const Book = () => {
                             </textarea>
                         </div>
                     </div>
-                    <input type="submit" value={sending ? 'Enviando...' : 'Enviar'} className='hover:scale-105  p-2 mb-6 rounded-xl bg-[#009FB2] dark:bg-[#00E8AE] text-gray-200 text-normal cursor-pointer' />
+                    <input type="submit" value={sending ? 'Enviando...' : 'Enviar'} className='hover:scale-105  p-2 mb-6 rounded-xl bg-[#009FB2] dark:bg-[#1a0e4b] text-gray-100 text-normal cursor-pointer' />
                 </form>
             </div>
         </section>

@@ -200,8 +200,8 @@ const Student = () => {
       });
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(dataWithoutId);
-      XLSX.utils.book_append_sheet(wb, ws, 'participantesRizo');
-      XLSX.writeFile(wb, 'participantesRizo.xlsx');
+      XLSX.utils.book_append_sheet(wb, ws, 'participantesVERYCERTS');
+      XLSX.writeFile(wb, 'participantesVERYCERTS.xlsx');
       console.log('Datos exportados exitosamente a Excel.');
     } catch (error) {
       console.error('Error al exportar datos a Excel:', error);
@@ -430,7 +430,7 @@ const Student = () => {
               {visibleData.map((student, index) => (
                 <tr
                   key={index}
-                  className="text-center dark:text-white border-b dark:border-b-blackblue2  hover:bg-blue-50 dark:hover:bg-blackblue2 "
+                  className="text-center dark:text-white border-b dark:border-b-blackblue2  hover:bg-blue-50 dark:hover:bg-[#140d2f] "
                 >
                   <th scope="row" className="px-6 py-4">
                     <span style={{ whiteSpace: "nowrap", display: "block" }}>

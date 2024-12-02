@@ -14,7 +14,9 @@ const Contacto = () => {
         {/* Columna Izquierda */}
         <div className="space-y-6">
           <p className="text-blue-600 font-bold uppercase">VERIFICACIÓN</p>
-
+          <h2 className="text-4xl font-bold leading-tight">
+              VERIFICACIÓN <br />
+            </h2>
           {/* Acordeón */}
           <div className="space-y-4">
             {/* Pregunta 1 */}
@@ -26,7 +28,9 @@ const Contacto = () => {
                   : "bg-gray-100 dark:bg-[#1a0e4b]"
               }`}
             >
+              
               <div className="flex justify-between items-center">
+                
                 <h3 className="font-bold">¿Cómo verificar un certificado?</h3>
                 <span>
                   {activeQuestion === 1 ? (

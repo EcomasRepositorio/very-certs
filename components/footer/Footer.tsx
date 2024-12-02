@@ -28,7 +28,7 @@ type MenuLink = {
 const socialLinks: SocialLink[] = [
   { href: "https://www.facebook.com", icon: FaFacebookF },
   { href: "https://www.instagram.com", icon: FaInstagram },
-  { href: "https://wa.me/51942051076", icon: FaWhatsapp, disabled: false },
+  { href: "https://wa.me/", icon: FaWhatsapp, disabled: false },
   { href: "https://www.tiktok.com", icon: FaTiktok, disabled: true },
   { href: "https://www.youtube.com", icon: FaYoutube, disabled: true },
 ];
@@ -237,13 +237,13 @@ const Footer: React.FC = () => {
                   <HiOutlineMail size={20} className="mr-2" />
                   <Link href="">
                     {/* colocar correo */}
-                    <span className="hover:underline">###############</span>
+                    <span className="hover:underline"> {/* aqui va el correo */}</span>
                   </Link>
                 </li>
                 <li className="flex items-center">
                   <HiOutlinePhone size={20} className="mr-2" />
                   <Link href="tel:+51984040264">
-                    <span className="hover:underline">+51 ### ### ###</span>
+                    <span className="hover:underline">{/* aqui va el numero  */}</span>
                   </Link>
                 </li>
               </ul>
@@ -494,11 +494,7 @@ const Footer: React.FC = () => {
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               9. <strong>Contacto</strong>
             </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Si tienes preguntas sobre esta política o sobre cómo manejamos tus
-              datos personales, puedes contactarnos a través de{" "}
-              <strong>privacidad@vericerts.com</strong>.
-            </p>
+            
             <button
               onClick={closePrivacyModal}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition mt-4"

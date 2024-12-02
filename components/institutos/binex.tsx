@@ -1,49 +1,75 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const InnovationSection = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Habilita la renderización solo en el cliente
+    setIsClient(true);
+  }, []);
+
+  const items = [
+    {
+      title: "GIUSEPPE OUR PATENTED AI",
+      description:
+        "Giuseppe is at the heart of everything we do and our key to discovering new formulas and beyond, with dazzling speed and detail.",
+      videoSrc: "/videos/1.mp4",
+    },
+    {
+      title: "SCIENCE AND R&D",
+      description:
+        "Our engine is guided by the finest minds in technology and applied sciences, ensuring every innovation is as smart as it is surprising.",
+      videoSrc: "/videos/2.mp4",
+    },
+    {
+      title: "OUR TEAM OF EXPERTS",
+      description:
+        "Talented, creative product specialists from all different areas come together to bring ideas to life, making Giuseppe even smarter by giving continuous feedback and superior real-world experiences.",
+      videoSrc: "/videos/3.mp4",
+    },
+  ];
+
   return (
-    <div className="bg-black text-white py-20">
-      <h2 className="text-3xl font-bold text-center mb-12">
+    <div className="bg-black text-white py-20 px-4">
+      {/* Título principal */}
+      <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">
         THE INNOVATION ENGINE DRIVING IT ALL FORWARD. ONLY FROM NOTCO.
       </h2>
-      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        <div className="text-center">
-          <img
-            src="/images/ai-engine.png"
-            alt="AI Engine"
-            className="w-full h-auto mb-4"
-          />
-          <h3 className="text-xl font-bold">GIUSEPPE</h3>
-          <p>
-            Our patented AI platform that accelerates product development and
-            brings bold ideas to life.
-          </p>
-        </div>
-        <div className="text-center">
-          <img
-            src="/images/rd-team.png"
-            alt="R&D Team"
-            className="w-full h-auto mb-4"
-          />
-          <h3 className="text-xl font-bold">SCIENCE AND R&D</h3>
-          <p>
-            Industry experts working to ensure every product is the best it can
-            be.
-          </p>
-        </div>
-        <div className="text-center">
-          <img
-            src="/images/solutions.png"
-            alt="Solutions"
-            className="w-full h-auto mb-4"
-          />
-          <h3 className="text-xl font-bold">REAL-WORLD SOLUTIONS</h3>
-          <p>
-            Turning challenges into opportunities for sustainable innovation.
-          </p>
-        </div>
+
+      {/* Contenedor de los items */}
+      <div className="space-y-12 max-w-7xl mx-auto">
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className={`grid grid-cols-1 md:grid-cols-2 items-center gap-6 ${
+              index % 2 === 1 ? "md:flex-row-reverse" : ""
+            }`}
+          >
+            {/* Columna de texto */}
+            <div className="text-left space-y-4 px-4">
+              <h3 className="text-2xl font-bold">{item.title}</h3>
+              <p className="text-gray-300">{item.description}</p>
+            </div>
+
+            {/* Columna de video */}
+            {isClient && (
+              <div className="relative group h-[300px] w-full overflow-hidden rounded-lg">
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={item.videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                ></video>
+                {/* Overlay (opcional) */}
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

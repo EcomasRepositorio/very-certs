@@ -55,8 +55,8 @@ const ContactForm = () => {
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
             {/* Información de contacto */}
             <div className="bg-gradient-to-r from-[#e0f9f6] via-[#e0f9f6] to-[#e0f9f6] dark:from-[#0a0326] dark:via-[#1a0e4b] dark:to-[#0a0326] rounded-3xl text-black dark:text-white p-6 md:p-8 flex flex-col items-center md:items-start md:w-1/2">
-              <p className="mb-2 text-center md:text-left">#############</p>
-              <p className="mb-6 text-center md:text-left">### ### ### ###</p>
+              <p className="mb-2 text-center md:text-left"></p>
+              <p className="mb-6 text-center md:text-left"></p>
               <div className="mb-6 flex flex-col items-center md:items-start">
               <div className="mb-6 flex flex-col items-center md:items-start">
                   <img
@@ -70,9 +70,7 @@ const ContactForm = () => {
                     alt="VERICERTS Dark"
                     className="w-40 h-40 mb-4 lg:ml-52 sm:ml-[-40] sm:mr hidden dark:block"
                   />
-                  <p className="font-semibold text-center md:text-left">
-                    VERICERTS
-                  </p>
+                 
                 </div>
                 <p className="font-semibold text-center md:text-left">
                   VERICERTS

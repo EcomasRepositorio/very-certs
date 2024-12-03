@@ -11,10 +11,10 @@ const NuestrosDiplomados = () => {
             NOSOTROS
           </span>
           <h1 className="text-4xl font-extrabold text-[#009FB2] leading-tight mb-4">
-            Cómo Funciona Vericerts
+            Cómo Funciona Verycerts
           </h1>
           <p>
-            Vericerts conecta a instituciones y verificadores en un sistema
+            Verycerts conecta a instituciones y verificadores en un sistema
             seguro y eficiente, simplificando la emisión y verificación de
             certificados educativos.
           </p> 

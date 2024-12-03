@@ -236,7 +236,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
           <div className="flex justify-center items-center mb-4 gap-2">
                         <Image
                           src={"/image/log-blank.png"}
-                          alt="vericerts"
+                          alt="verycerts"
                           className="md:w-60   w-20  object-contain mt-2"
                           width={300}
                           height={300}

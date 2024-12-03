@@ -77,7 +77,7 @@ const ExpertiseSection = () => {
         <span className="text-blue-600 uppercase font-semibold dark:text-blue-600"> NOSOTROS</span>
 
         <h2 className="text-4xl font-extrabold my-4 dark:text-white">
-          Ventajas de Usar Vericerts
+          Ventajas de Usar Verycerts
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Vericerts ofrece una solución confiable y moderna para la verificación

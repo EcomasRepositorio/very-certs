@@ -19,11 +19,15 @@ function Navbar() {
             <Link
               href="/#"
               className="mr-4 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
-            />
+            >
+              Solicite una demo
+            </Link>
             <Link
-              href="/#"
+              href="/login"
               className="mr-3 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
-            />
+            >
+              Iniciar sesion
+            </Link>
           </div>
         </div>
         <div className="justify-between px-2 lg:px-0 mx-auto lg:max-w-7xl md:items-center md:flex">
@@ -33,7 +37,7 @@ function Navbar() {
               <Link href="/">
                 {/* Logo para modo claro */}
                 <Image
-                  src="/image/log_cert.png"
+                  src="/image/verylog1.png"
                   width={900}
                   height={900}
                   alt="logo_claro"
@@ -42,7 +46,7 @@ function Navbar() {
                 />
                 {/* Logo para modo oscuro */}
                 <Image
-                  src="/image/log-blank.png"
+                  src="/image/verylog1white.png"
                   width={900}
                   height={900}
                   alt="logo_oscuro"
@@ -86,7 +90,7 @@ function Navbar() {
               <ul className="h-screen md:h-12 lg:text-sm md:text-sm text-xl items-center justify-center md:flex">
                 {/* Enlaces del menú */}
                 {/* Agrega el contenido de los enlaces aquí */}
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
+                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 ml- md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                   <Link href="/" onClick={() => setNavbar(!navbar)}>
                     Inicio
                   </Link>
@@ -102,16 +106,8 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link
-                    href="/#"
-                    onClick={() => setNavbar(!navbar)}
-                  >
-                    Instituciones
-                  </Link>
-                </li>
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                   <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                    certificados
+                    Validacion de certificados
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
@@ -119,15 +115,8 @@ function Navbar() {
                     Contactanos
                   </Link>
                 </li>
-                <li className="lg:pl-40 flex justify-center items-center hover:text-primaryBlue md:mt-0 mt-20">
-                  <Link
-                    href="/login"
-                    className="bg-secondaryCian py-1 px-4 rounded-xl mr-2 text-black dark:text-gray-100 hover:bg-white dark:hover:bg-black hover:text-primaryBlue hover:scale-125 duration-300"
-                  >
-                    <FaUserCog className="md:text-xl text-4xl" />
-                  </Link>
-                </li>
-                <div className="flex justify-end pr-4">
+                
+                <div className="flex justify-end pr-4 ml-40">
                   <ThemeSwitcher />
                 </div>
               </ul>
@@ -152,13 +141,8 @@ function Navbar() {
                 </Link>
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/#" onClick={() => setNavbar(!navbar)}>
-                  Instituciones
-                </Link>
-              </li>
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                 <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                  certificados
+                  Validacion de certificados
                 </Link>
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
@@ -166,15 +150,7 @@ function Navbar() {
                   Contactanos
                 </Link>
               </li>
-              <li className="flex justify-center items-center hover:text-primaryBlue mt-20">
-                <Link
-                  href="/login"
-                  className="bg-secondaryCian py-1 px-4 rounded-xl text-white hover:bg-gray-100 hover:text-primaryBlue hover:scale-125 duration-300 "
-                >
-                  <FaUserCog className="text-4xl" />
-                </Link>
-              </li>
-
+              
               {/* Centered ThemeSwitcher */}
               <div className="flex justify-center mt-4">
                 <div className="cursor-pointer">

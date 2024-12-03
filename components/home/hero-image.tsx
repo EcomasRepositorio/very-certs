@@ -2158,7 +2158,7 @@ const HeroImage = () => (
             fontWeight="200"
             fill="white"
           >
-            VERICERT
+            VeryCerts
           </text>
         </g>
       </svg>

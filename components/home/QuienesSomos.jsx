@@ -83,7 +83,7 @@ const Contacto = () => {
                   </p>
                   <p className="mt-2">3. Resultado de la verificación:</p>
                   <p className="mt-2">
-                    Vericerts te mostrará la información del certificado:
+                    Verycerts te mostrará la información del certificado:
                   </p>
                   <ul className="text-gray-300 mb-4 list-disc pl-5">
                     <li>Nombre del titular</li>

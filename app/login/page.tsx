@@ -129,7 +129,7 @@ const SignIn: React.FC = () => {
         </form>
         <div className="text-center mt-4">
           <p className="text-gray-400">
-            ¿Nuevo en Vericerts?{" "}
+            ¿Nuevo en Verycerts?{" "}
             <button
               onClick={handleRegisterRedirect}
               className="text-[#009FB2] hover:underline"

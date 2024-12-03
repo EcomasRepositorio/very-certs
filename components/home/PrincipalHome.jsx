@@ -1,99 +1,73 @@
 "use client";
 
-import React from "react";
-import { ArrowRightIcon } from "@heroicons/react/solid";
-import "./stylesHome.css";
-import { TypeAnimation } from "react-type-animation";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
-import HeroImage from "./hero-image"; // Asegúrate de que la ruta sea correcta
+import HeroImage from "./hero-image";
 
 const PrincipalHome = () => {
-  const { theme, setTheme } = useTheme();
+  const [currentText, setCurrentText] = useState(0);
 
-  const handleThemeChange = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  const texts = [
+    <>
+      Transforme su <span className="text-[#009FB2]">gestión</span> de certificados
+      con las <span className="text-[#009FB2]">herramientas</span> de VeryCerts.
+    </>,
+    <>
+      Verifique la <span className="text-[#009FB2]">autenticidad</span> de los certificados
+      en <span className="text-[#009FB2]">tiempo real</span> con
+     VeryCerts.
+    </>,
+    <>
+     <span className="text-[#009FB2]"> Asegure</span> la integridad y validez de sus{" "}
+      <span className="text-[#009FB2]">certificaciones</span> con tecnología{" "}
+      <span className="text-[#009FB2]">avanzada</span>.
+    </>,
+  ];
+
+  // Cambiar el texto cada 2 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentText((prev) => (prev + 1) % texts.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="relative flex justify-center items-center pt-20 md:pt-32 lg:pt-40 pl-8 bg-fixed bg-gradient-to-r dark:from-fondDark dark:to-fondDark">
-      <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial dark:from-cyan-950 from-blue-200 to-transparent right-[11%] top-0 hidden md:block"></div>
-      <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial dark:from-sky-950 from-violet-200 right-96 top-10"></div>
-      <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial dark:from-cyan-950 from-blue-100 to-transparent left-[10%] top-[10%] hidden md:block"></div>
+    <section className="relative flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen px-6 lg:px-20 py-10">
+      {/* Texto principal */}
+      <motion.div
+        className="flex-1 text-center md:text-left space-y-6"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-gray-800 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+          {texts[currentText]}
+        </h1>
+        <h2 className="text-cyan-600 dark:text-cyan-400 text-4xl md:text-5xl lg:text-6xl font-extrabold">
+          VeryCerts
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300 text-lg md:text-xl max-w-xl mx-auto md:mx-0">
+          Confiabilidad y seguridad en la gestión de certificados para el mundo
+          digital. "Construya un entorno de confianza con VeryCerts, la plataforma
+          líder en verificación de certificados. Verifique y valide cada certificado
+          de manera eficiente y segura".
+        </p>
+      </motion.div>
 
-      {/* Botón para cambiar de tema */}
-      <button
-        className="fixed z-50 top-16 right-0 mr-3 p-2 flex items-center justify-center"
-        onClick={handleThemeChange}
-      ></button>
+      {/* Imagen hero */}
+      <motion.div
+        className="flex-1 mt-10 md:mt-0 flex justify-center"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <HeroImage />
+      </motion.div>
 
-      <div className="py-8 lg:py-10 max-w-7xl sm:px-6 lg:px-8 flex flex-col md:flex-row items-start w-full">
-        {/* Texto principal */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 100, x: "-100%" },
-            visible: {
-              x: 0,
-              opacity: 1,
-              y: 0,
-              transition: { duration: 2 },
-            },
-          }}
-          initial="hidden"
-          animate="visible"
-          transition={{ type: "spring", stiffness: 100, duration: 0.9 }}
-          className="flex-1 md:mt-16"
-        >
-          <h1 className="mb-4">
-            <TypeAnimation
-              sequence={[
-                "Bienvenido a",
-                5000,
-                "Únete a ",
-                5000,
-                "Sé parte de",
-                5000,
-                () => {},
-              ]}
-              wrapper="span"
-              cursor={true}
-              repeat={Infinity}
-              className="text-gray-700 dark:text-white text-4xl md:text-5xl lg:text-6xl font-semibold"
-            />
-          </h1>
-          <h1 className="text-[#009FB2] text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2">
-            VERICERTS
-          </h1>
-          <p className="mb-8 max-w-lg font-normal text-lg md:text-xl lg:text-2xl text-gray-50">
-            {/* Contenido adicional puede ir aquí */}
-          </p>
-        </motion.div>
-
-        {/* HeroImage para pantallas grandes */}
-        <motion.div
-          className="hidden md:block md:mr-5 mt-8 md:mt-0 moveArrow"
-          variants={{
-            hidden: { opacity: 0, y: 100, x: "100%" },
-            visible: {
-              x: 0,
-              opacity: 1,
-              y: 0,
-              transition: { duration: 2 },
-            },
-          }}
-          initial="hidden"
-          animate="visible"
-          transition={{ type: "spring", stiffness: 100, duration: 0.9 }}
-        >
-          <HeroImage /> {/* Renderizamos el componente HeroImage */}
-        </motion.div>
-
-        {/* HeroImage para dispositivos móviles (debajo del texto) */}
-        <div className="block md:hidden mt-8">
-          <HeroImage />
-        </div>
-      </div>
+      {/* Gradientes decorativos */}
+      <div className="absolute w-80 h-80 bg-blue-300 rounded-full blur-3xl opacity-50 -z-10 top-10 left-10"></div>
+      <div className="absolute w-96 h-96 bg-cyan-400 rounded-full blur-3xl opacity-30 -z-10 bottom-20 right-10"></div>
     </section>
   );
 };

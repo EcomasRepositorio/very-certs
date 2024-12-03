@@ -61,19 +61,19 @@ const ContactForm = () => {
               <div className="mb-6 flex flex-col items-center md:items-start">
                   <img
                     src="/image/log-light.png"
-                    alt="VERICERTS Light"
+                    alt="VERyCERTS Light"
                     className="w-40 h-40 mb-4 lg:ml-52 md:ml-[-40] sm:mr dark:hidden "
                   />
 
                   <img
                     src="/image/log-dark.png"
-                    alt="VERICERTS Dark"
+                    alt="VERyCERTS Dark"
                     className="w-40 h-40 mb-4 lg:ml-52 sm:ml-[-40] sm:mr hidden dark:block"
                   />
                  
                 </div>
                 <p className="font-semibold text-center md:text-left">
-                  VERICERTS
+                  VERyCERTS
                 </p>
               </div>
               <p className="text-sm text-center md:text-left">

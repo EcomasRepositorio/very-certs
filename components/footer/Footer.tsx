@@ -123,7 +123,7 @@ const Footer: React.FC = () => {
             <div className="flex flex-col items-center md:items-start">
               <Image
                 src={currentLogo}
-                alt="Logo Vericerts"
+                alt="Logo Verycerts"
                 width={180}
                 height={60}
                 priority

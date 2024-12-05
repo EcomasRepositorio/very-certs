@@ -64,3 +64,6 @@ export default function Main() {
     </main>
   );
 }
+
+
+/* bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 dark:from-gray-800 dark:via-gray-900 dark:to-black  */

@@ -129,8 +129,10 @@ const Footer: React.FC = () => {
                 priority
               />
               <p className="mt-2 text-sm text-center md:text-left">
-                Ofrecemos cursos y diplomados certificados, garantizando la
-                validez y reconocimiento de tus estudios.
+              Confiabilidad y seguridad en la gestión de certificados para el mundo
+          digital. "Construya un entorno de confianza con VeryCerts, la plataforma
+          líder en verificación de certificados. Verifique y valide cada certificado
+          de manera eficiente y segura".
               </p>
               <Link href="/book">
                 <div className="mt-2 text-sm text-black dark:text-white hover:underline flex items-center">
@@ -235,14 +237,14 @@ const Footer: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-center">
                   <HiOutlineMail size={20} className="mr-2" />
-                  <Link href="">
+                  <Link href="gerencia@verycerts.com">
                     {/* colocar correo */}
-                    <span className="hover:underline"> {/* aqui va el correo */}</span>
+                    <span className="hover:underline"> gerencia@verycerts.com</span>
                   </Link>
                 </li>
                 <li className="flex items-center">
                   <HiOutlinePhone size={20} className="mr-2" />
-                  <Link href="tel:+51984040264">
+                  <Link href="tel:+51">
                     <span className="hover:underline">{/* aqui va el numero  */}</span>
                   </Link>
                 </li>

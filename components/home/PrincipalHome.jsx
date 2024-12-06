@@ -55,7 +55,7 @@ const PrincipalHome = () => {
     <section className="relative flex flex-col md:flex-row items-center justify-between bg-transparent min-h-screen px-6 lg:px-20 py-10 sm:ml-0 lg:ml-40">
       {/* Texto principal */}
       <motion.div
-        className="flex-1 text-center md:text-left space-y-4 sm:mr-0 md:mr-0 lg:mr-0 xl:mr-96 mt-20"
+        className="flex-1 text-center md:text-left space-y-4 sm:mr-0 md:mr-0 lg:mr-0 xl:mr-96 2xl:mr-0 mt-20"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}

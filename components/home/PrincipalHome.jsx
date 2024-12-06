@@ -55,7 +55,7 @@ const PrincipalHome = () => {
     <section className="relative flex flex-col md:flex-row items-center justify-between bg-transparent min-h-screen px-6 lg:px-20 py-10 sm:ml-0 lg:ml-40">
       {/* Texto principal */}
       <motion.div
-        className="flex-1 text-center md:text-left space-y-6 mt-20"
+        className="flex-1 text-center md:text-left space-y-4 sm:mr-0 md:mr-0 lg:mr-0 xl:mr-96 mt-20"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -63,8 +63,8 @@ const PrincipalHome = () => {
         <AnimatePresence mode="wait">
           <motion.h1
             key={currentText}
-            className="text-gray-800 dark:text-white text-xl md:text-2xl lg:text-5xl font-medium leading-relaxed tracking-wide max-w-md md:max-w-lg lg:max-w-x1"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="text-gray-800 dark:text-white text-xl md:text-2xl lg:text-5xl font-medium leading-relaxed tracking-wide max-w-md md:max-w-lg lg:max-w-x1 z-10"
+            style={{ fontFamily: "'omnes', sans-serif" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -74,8 +74,8 @@ const PrincipalHome = () => {
           </motion.h1>
         </AnimatePresence>
         <p
-          className="text-gray-600 dark:text-gray-300 text-lg md:text-xl max-w-xl mx-auto md:mx-0 tracking-wide"
-          style={{ fontFamily: "'arial', sans-serif" }}
+          className="text-gray-600 dark:text-white text-lg md:text-xl max-w-xl mx-auto md:mx-0 tracking-wide"
+          style={{ fontFamily: "'omnes', sans-serif" }}
         >
           Confiabilidad y seguridad en la gestión de certificados para el mundo
           digital. "Construya un entorno de confianza con VeryCerts, la
@@ -86,7 +86,7 @@ const PrincipalHome = () => {
 
       {/* Imagen hero */}
       <motion.div
-        className="flex-1 mt-6 sm:mt-[-20px] md:mt-0 lg:mt-10 flex justify-center lg:justify-start lg:-ml-96 "
+        className="flex-1 mt-6 sm:mt-[-20px] md:mt-0 lg:mt-10  sm:mr-0 md:mr-52 lg:mr-0 flex justify-center lg:justify-start lg:-ml-96 -z-10 "
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}

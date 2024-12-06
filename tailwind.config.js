@@ -59,6 +59,10 @@ module.exports = {
       backgroundSize: {
         "200%": "200%", // Extiende el tamaño del gradiente para permitir animación
       },
+
+
+
+
       /* promas */
       animation: {
         "gradient-move": "gradient-move 6s infinite",
@@ -79,6 +83,7 @@ module.exports = {
         tertiary: "#390763",
       },
       fontFamily2: {
+        omnes: ["Omnes", "sans-serif"], 
         inter: ["Inter", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
         arial: ["Arial", "sans-serif"],

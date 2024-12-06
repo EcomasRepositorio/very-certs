@@ -275,7 +275,7 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
             <h2 className="text-md font-bold text-red-500 mb-4">
               Nombres y apellidos incorrectos.
             </h2>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
+            <h3 className="text-sm font-semibold text-gray-100">
               Los nombres y apellidos que ingresaste no se encuentran en nuestra
               base de datos.
             </h3>

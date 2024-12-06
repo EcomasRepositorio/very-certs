@@ -279,7 +279,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
           <h2 className="text-md font-bold text-red-500 mb-4">
             Código incorrecto
           </h2>
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
+          <h3 className="text-sm font-semibold text-gray-100">
             El código que ingresaste no se encuentra en nuestra base de datos.
           </h3>
         </div>

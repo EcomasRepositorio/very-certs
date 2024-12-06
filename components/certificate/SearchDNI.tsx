@@ -309,7 +309,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           <h2 className="text-md font-bold text-red-500 mb-4">
             Error en la búsqueda
           </h2>
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
+          <h3 className="text-sm font-semibold text-gray-100">
             No se encontraron resultados para el DNI o código ingresado.
           </h3>
         </div>

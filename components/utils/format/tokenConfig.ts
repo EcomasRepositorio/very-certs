@@ -5,10 +5,10 @@ export const tokenConfig = (value: string) => {
 };
 
 // Primera API
-export const URL = () => "http://localhost:8000/api/v1";
+export const URL = () => "https://backend.verycerts.com/api/v1";
 
 // Segunda API
-export const getURL = () => "https://backend.ecomas.pe/api/v1";
+export const getURL = () => "https://backend.verycerts.com/api/v1";
 
 export default tokenConfig;
 

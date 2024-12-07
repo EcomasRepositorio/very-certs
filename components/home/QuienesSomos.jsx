@@ -328,34 +328,12 @@ const Contacto = () => {
         {/* Columna Derecha */}
         <div className="relative">
           <Image
-            src="/image/verifi.jpg"
+            src="/image/verIFi.png"
             alt="Mechanic Image"
             width={700}
             height={500}
             className="rounded-lg shadow-lg object-cover"
           />
-          <div className="absolute bottom-8 left-8 bg-white p-4 rounded-lg shadow-lg  items-center hidden lg:flex md:ml-[400px] xl:mt-20">
-            <div className="mr-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-10 h-10 text-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-xl text-black font-bold">250+</h3>
-              <p className="text-sm text-gray-600">Servicios ofrecidos</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@ const SecurityFeatureWithImage = () => {
     <section className="flex flex-col md:flex-row items-center bg-transparent text-white dark:text-white p-10 md:p-20">
       {/* Contenedor de la imagen */}
       <div className="flex-shrink-0 w-full md:w-1/2 mb-8 md:mb-0 md:mr-8">
-        <div className="lg:ml-20 md:ml-10  sm:md-5 xl:ml-0 2xl:ml-40 lg:w-[600px] lg:h-[600px] md:w-[100px] md:h-[100px] bg-transparent rounded-lg overflow-hidden flex items-center justify-center relative">
+        <div className="lg:ml-20 md:ml-10  sm:md-5 xl:ml-0 2xl:ml-40 md:w-[350px] md:h-[350px]   lg:w-[400px] lg:h-[400px] xl:w-[600px] xl:h-[600px]  2xl:w-[600px] 2xl:h-[600px]   bg-transparent rounded-lg overflow-hidden flex items-center justify-center relative">
           {/* Imagen con tamaño limitado */}
           <img
             src="image/about1.png"

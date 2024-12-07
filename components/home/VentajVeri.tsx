@@ -5,11 +5,11 @@ import { FaTools } from "react-icons/fa";
 
 const ExpertiseSection = () => {
   return (
-    <section className="flex flex-col md:flex-row items-center bg-transparent p-10 md:p-20 max-w-screen-xl mx-auto gap-10">
+    <section className="flex flex-col md:flex-row items-center bg-transparent p-10 md:p-20 max-w-screen-xl mx-auto gap-10 ">
       {/* Contenedor de las imágenes */}
-      <div className="md:w-1/2 flex flex-col items-center gap-4 relative">
+      <div className="md:w-1/2 flex flex-col items-center gap-4 relative   md:mr-20 lg:mr-96 xl:mr-00 2xl:mr-10">
         {/* Imagen principal (siempre visible) */}
-        <div className="relative z-10">
+        <div className="relative z-50 ">
           <Image
             src="/image/noso2.jpg"
             alt="Mechanic working on car"
@@ -20,7 +20,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Imagen secundaria detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block absolute top-10 left-10 z-1">
+        <div className="hidden md:block absolute top-10 left-10 z-40">
           <Image
             src="/image/noso1.jpg"
             alt="Secondary mechanic image"
@@ -31,7 +31,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Otra imagen detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block absolute top-60 left-12 -z-10">
+        <div className="hidden md:block absolute top-60 left-12 -z-1">
           <Image
             src="/image/fondcian.jpg"
             alt="Background mechanic image"
@@ -42,7 +42,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Imagen adicional detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block relative bottom-80 left-16 z-1">
+        <div className="hidden md:block relative bottom-80 left-32 mt-10 -z-1">
           <Image
             src="/image/fondcian.jpg"
             alt="Background mechanic image"
@@ -53,7 +53,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Elemento hexagonal */}
-        <div
+        {/* <div
           className="hidden lg:flex absolute text-white p-4 flex-col items-center justify-center mt-28 ml-[900px] z-10"
           style={{
             clipPath:
@@ -65,11 +65,11 @@ const ExpertiseSection = () => {
             left: "20px", // Ajusta esta posición para mover el hexágono horizontalmente
           }}
         >
-          {/* Icono de herramientas */}
+          {/* Icono de herramientas 
           <FaTools className="w-6 h-6 mb-1" />{" "}
           <span className="text-xl font-bold">2+</span>{" "}
           <span className="text-xs text-center">Años de experiencia</span>{" "}
-        </div>
+        </div> */}
       </div>
 
       {/* Contenedor de texto e información */}

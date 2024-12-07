@@ -26,10 +26,10 @@ type MenuLink = {
 
 // Definición de los enlaces de redes sociales y menús
 const socialLinks: SocialLink[] = [
-  { href: "https://www.facebook.com", icon: FaFacebookF },
+  { href: "https://www.facebook.com/profile.php?id=61567708557735", icon: FaFacebookF },
   { href: "https://www.instagram.com", icon: FaInstagram },
   { href: "https://wa.me/", icon: FaWhatsapp, disabled: false },
-  { href: "https://www.tiktok.com", icon: FaTiktok, disabled: true },
+  { href: "https://www.facebook.com/profile.php?id=61567708557735", icon: FaTiktok, disabled: false },
   { href: "https://www.youtube.com", icon: FaYoutube, disabled: true },
 ];
 
@@ -190,15 +190,6 @@ const Footer: React.FC = () => {
                     Nosotros
                   </Link>
                 </div>
-                <div>
-                  <Link
-                    href="/about"
-                    className="text-darkblue dark:text-white dark:hover:text-blue-100 transition duration-100 hover:text-primaryblue active:text-primaryblue"
-                  >
-                    Instituciones
-                  </Link>
-                </div>
-
                 <div>
                   <Link
                     href="/"
@@ -510,7 +501,7 @@ const Footer: React.FC = () => {
       <div className="relative mt-8 text-center text-sm text-black dark:text-gray-300">
         <p>© 2024 Copyright: VERYCERTS</p>
         <p className="opacity-0 text-gray-300">
-          página protegida por el gorko el dios astuto pero brutal
+          página protegida por gorko el dios astuto pero brutal
         </p>
       </div>
     </footer>

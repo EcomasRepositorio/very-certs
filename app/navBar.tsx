@@ -17,7 +17,7 @@ function Navbar() {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0.5">
           <div className="md:text-right text-center font-semibold w-full border-b border-[#00dbb8] py-1 mb-4">
             <Link
-              href="/#"
+              href="https://api.whatsapp.com/send?phone= &text=Hola, vengo para solicitar una demo de  VERICERTs"
               className="mr-4 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
             >
               Solicite una demo

@@ -8,10 +8,10 @@ const ExpertiseSection = () => {
     <section className="flex flex-col md:flex-row items-center bg-transparent p-10 md:p-20 max-w-screen-xl mx-auto gap-10 ">
       {/* Contenedor de las imágenes */}
       <div className="md:w-1/2 flex flex-col items-center gap-4 relative   md:mr-20 lg:mr-96 xl:mr-00 2xl:mr-10">
-        {/* Imagen principal (siempre visible) */}
-        <div className="relative z-50 ">
+      {/* Imagen principal (siempre visible) */}
+        <div className="relative z-50  sm:mr-20 xl:mr-0 ">
           <Image
-            src="/image/noso2.jpg"
+            src="/image/noso2.webp"
             alt="Mechanic working on car"
             width={400}
             height={300}
@@ -22,7 +22,7 @@ const ExpertiseSection = () => {
         {/* Imagen secundaria detrás (solo visible en pantallas md o mayores) */}
         <div className="hidden md:block absolute top-10 left-10 z-40">
           <Image
-            src="/image/noso1.jpg"
+            src="/image/noso1.webp"
             alt="Secondary mechanic image"
             width={350}
             height={250}
@@ -31,7 +31,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Otra imagen detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block absolute top-60 left-12 -z-1">
+        <div className="hidden md:block absolute top-60 left-12  -z-1">
           <Image
             src="/image/fondcian.jpg"
             alt="Background mechanic image"
@@ -42,7 +42,7 @@ const ExpertiseSection = () => {
         </div>
 
         {/* Imagen adicional detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block relative bottom-80 left-32 mt-10 -z-1">
+        <div className="hidden md:block relative bottom-80 left-12 mb-20 sm:mr-10 -z-1">
           <Image
             src="/image/fondcian.jpg"
             alt="Background mechanic image"

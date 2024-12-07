@@ -5,21 +5,21 @@ import { motion } from "framer-motion";
 const cursosDestacados = [
   {
     id: 1,
-    imageUrl: "/image/seguridad.jpg",
+    imageUrl: "/image/seguridad2.webp",
     title: "Seguridad y Cumplimiento:",
     description:
       "Usamos encriptación avanzada para proteger los datos y cumplimos con normativas internacionales como el GDPR.",
   },
   {
     id: 2,
-    imageUrl: "/image/soporte.jpg",
+    imageUrl: "/image/soporte.webp",
     title: "Soporte y Atención al Cliente",
     description:
       "Ofrecemos soporte técnico por correo electrónico, chat en línea, y teléfono, además de consultoría personalizada para instituciones grandes",
   },
   {
     id: 3,
-    imageUrl: "/image/planes.jpg",
+    imageUrl: "/image/planes.webp",
     title: "Planes de Suscripción",
     description:
       "Ofrecemos planes de suscripción variados, desde básicos hasta premium, diseñados para satisfacer las necesidades específicas de cada institución.",

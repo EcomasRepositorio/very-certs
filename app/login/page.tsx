@@ -57,7 +57,7 @@ const SignIn: React.FC = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
         style={{
-          backgroundImage: "url(/image/fond-wite.jpg)",
+          backgroundImage: "url(/image/fond-wite.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

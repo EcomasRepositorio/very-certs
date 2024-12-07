@@ -97,7 +97,7 @@ const PrincipalHome = () => {
 
       {/* Gradientes decorativos */}
       <div className="absolute w-80 h-80 bg-blue-300 rounded-full blur-3xl opacity-50 -z-10 top-20 left-10"></div>
-      <div className="absolute w-96 h-96 bg-cyan-400 rounded-full blur-3xl opacity-30 -z-10 bottom-20 right-10"></div>
+      <div className="absolute w-96 h-96 bg-cyan-400 rounded-full blur-3xl opacity-30 -z-40 bottom-20 right-10"></div>
     </section>
   );
 };

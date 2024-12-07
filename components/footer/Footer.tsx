@@ -29,7 +29,7 @@ const socialLinks: SocialLink[] = [
   { href: "https://www.facebook.com/profile.php?id=61567708557735", icon: FaFacebookF },
   { href: "https://www.instagram.com", icon: FaInstagram },
   { href: "https://wa.me/", icon: FaWhatsapp, disabled: false },
-  { href: "https://www.facebook.com/profile.php?id=61567708557735", icon: FaTiktok, disabled: false },
+  { href: "https://www.tiktok.com/@verycerts", icon: FaTiktok, disabled: false },
   { href: "https://www.youtube.com", icon: FaYoutube, disabled: true },
 ];
 

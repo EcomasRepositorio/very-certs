@@ -328,7 +328,7 @@ const Contacto = () => {
         {/* Columna Derecha */}
         <div className="relative">
           <Image
-            src="/image/verIFi.png"
+            src="/image/veriFi.webp"
             alt="Mechanic Image"
             width={700}
             height={500}

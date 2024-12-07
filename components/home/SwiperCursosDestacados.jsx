@@ -19,7 +19,7 @@ const cursosDestacados = [
   },
   {
     id: 3,
-    imageUrl: "/image/planes.webp",
+    imageUrl: "/image/plan.webp",
     title: "Planes de Suscripción",
     description:
       "Ofrecemos planes de suscripción variados, desde básicos hasta premium, diseñados para satisfacer las necesidades específicas de cada institución.",

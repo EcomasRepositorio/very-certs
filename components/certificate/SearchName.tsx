@@ -1,30 +1,36 @@
 import React, { useState, FormEvent } from "react";
-import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchNameProps, Student } from "@/interface/interface";
 import Modal from "../share/ModalCerti";
 import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
 
+interface BackendConfig {
+  url: string;
+  active: boolean; // Indica si el backend está activado
+}
+
 interface StudentCode extends Student {
   hour: string;
   institute: string;
 }
 
+// Lista de backends configurables
+const backends: BackendConfig[] = [
+  { url: "https://backend.verycerts.com/api/v1", active: true },
+  { url: "https://backend.ecomas.pe/api/v1", active: true },
+  { url: "https://backend.extra.com/api/v1", active: false }, // Nuevo backend desactivado
+];
+
 const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [queryValue, setQueryValue] = useState<string>("");
-  const [searchType, setSearchType] = useState<string>();
-  const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<Student[]>();
-  const [closeTable, setCloseTable] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isNameIncomplete, setIsNameIncomplete] = useState(false);
+  const [queryValue, setQueryValue] = useState<string>(""); // Input value
+  const [loading, setLoading] = useState(false); // Loading state
+  const [studentData, setStudentData] = useState<Student[]>([]); // Combined results
+  const [closeTable, setCloseTable] = useState(false); // Table visibility
+  const [modalOpen, setModalOpen] = useState(false); // Error modal
   const [selectedStudentData, setSelectedStudentData] =
     useState<StudentCode | null>(null);
-  const [openModals, setOpenModals] = useState<boolean[]>(
-    Array(selectedStudentData ? 1 : 0).fill(false)
-  );
+  const [openModals, setOpenModals] = useState<boolean[]>([]);
 
   const openStudentModal = (selectedStudent: StudentCode, index: number) => {
     setSelectedStudentData(selectedStudent);
@@ -32,177 +38,64 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
     updatedOpenModals[index] = true;
     setOpenModals(updatedOpenModals);
   };
+
   const closeStudentModal = (index: number) => {
     const updatedOpenModals = [...openModals];
     updatedOpenModals[index] = false;
     setOpenModals(updatedOpenModals);
   };
 
-  const toggleIsActive = () => {
-    setIsActive(!isActive);
-  };
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQueryValue(event.target.value);
     setCloseTable(false);
-    setSearchType(queryValue);
   };
 
-  const openErrorModal = () => {
-    setModalOpen(true);
-  };
-  const closeErrorModal = () => {
-    setModalOpen(false);
-  };
+  const openErrorModal = () => setModalOpen(true);
+  const closeErrorModal = () => setModalOpen(false);
 
   const searchName = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (queryValue.trim()) {
-      setLoading(true);
-    }
+    if (!queryValue.trim()) return;
+
+    setLoading(true);
     try {
       const value = queryValue.trim();
-      if (value.split(" ").length <= 2) {
-        setIsNameIncomplete(true);
-        setLoading(false);
-        return;
+
+      // Array para combinar los resultados de todos los backends
+      const combinedData: Student[] = [];
+
+      // Iterar sobre los backends activos
+      for (const backend of backends) {
+        if (backend.active) {
+          try {
+            const res = await axios.get(
+              `${backend.url}/student/name/${value}/type/name`
+            );
+            combinedData.push(...res.data); // Añadir los resultados de este backend
+          } catch (error) {
+            console.warn(`Error en el backend ${backend.url}:`, error);
+          }
+        }
       }
-      const res = await axios.get(
-        `${URL()}/student/name/${value.trim()}/type/${searchType}`
-      );
-      if (res.data.length > 0) {
-      } else {
-        setIsNameIncomplete(true);
-        setLoading(false);
-        return;
+
+      // Validación: Sin resultados
+      if (combinedData.length === 0) {
+        throw new Error(
+          "No se encontraron resultados en ninguna base de datos."
+        );
       }
-      const filteredData = res.data.filter((student: Student) => {
-        const normalizedInput = value.trim().toLowerCase();
-        const normalizedName = student.name.trim().toLowerCase();
-        const isMatch = normalizedName === normalizedInput;
-        return isMatch;
-      });
-      console.log(filteredData);
-      console.log(res.data);
-      setStudentData(filteredData);
-      onSearchName(filteredData);
+
+      // Guardar datos en el estado
+      setStudentData(combinedData);
+      onSearchName(combinedData);
       setCloseTable(true);
     } catch (error) {
-      console.error("Error: Nombre invalido", error);
+      console.error("Error general durante la búsqueda:", error);
       openErrorModal();
     } finally {
       setLoading(false);
     }
-  };
-  // Función para dividir el texto según palabras clave o cantidad de palabras
-  const splitText = (text: string): string[] => {
-    const cleanText = text.trim();
-
-    // Identificar posiciones clave en el texto
-    const indexCorporacion = cleanText.indexOf(
-      "ECOMÁS Consultoría y Capacitación"
-    );
-    const indexFundenorp = cleanText.indexOf("FUNDENORP");
-    const indexEscuela = cleanText.indexOf(
-      "Escuela de Posgrado - Universidad Nacional de Piura"
-    );
-    const indexUniversidadPiura = cleanText.indexOf(
-      "Universidad Nacional de Piura"
-    );
-    const indexColegioIngenierosHuancavelica = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Huancavelica"
-    );
-    const indexColegioIngenierosCallao = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Callao"
-    );
-    const indexColegioIngenierosPuno = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Puno"
-    );
-    const indexColegioIngenierosIca = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Ica"
-    );
-
-    // Caso 1: 3 líneas - "ECOMÁS Consultoría y Capacitación Escuela de Posgrado - Universidad Nacional de Piura FUNDENORP"
-    if (
-      indexCorporacion !== -1 &&
-      indexEscuela !== -1 &&
-      indexFundenorp !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexEscuela)
-        .trim();
-      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim();
-      const fundenorp = cleanText.substring(indexFundenorp).trim();
-      return [corporacion, escuela, fundenorp];
-    }
-
-    // Caso 2: 3 líneas - "ECOMÁS Consultoría y Capacitación Universidad Nacional de Piura FUNDENORP"
-    if (
-      indexCorporacion !== -1 &&
-      indexUniversidadPiura !== -1 &&
-      indexFundenorp !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexUniversidadPiura)
-        .trim();
-      const universidad = cleanText
-        .substring(indexUniversidadPiura, indexFundenorp)
-        .trim();
-      const fundenorp = cleanText.substring(indexFundenorp).trim();
-      return [corporacion, universidad, fundenorp];
-    }
-
-    // Caso 3: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Huancavelica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosHuancavelica !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosHuancavelica)
-        .trim();
-      const colegioIngenierosHuancavelica = cleanText
-        .substring(indexColegioIngenierosHuancavelica)
-        .trim();
-      return [corporacion, colegioIngenierosHuancavelica];
-    }
-
-    // Caso 4: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Callao"
-    if (indexCorporacion !== -1 && indexColegioIngenierosCallao !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosCallao)
-        .trim();
-      const colegioIngenierosCallao = cleanText
-        .substring(indexColegioIngenierosCallao)
-        .trim();
-      return [corporacion, colegioIngenierosCallao];
-    }
-
-    // Caso 5: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Puno"
-    if (indexCorporacion !== -1 && indexColegioIngenierosPuno !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosPuno)
-        .trim();
-      const colegioIngenierosPuno = cleanText
-        .substring(indexColegioIngenierosPuno)
-        .trim();
-      return [corporacion, colegioIngenierosPuno];
-    }
-
-    // Caso 6: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Ica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosIca !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosIca)
-        .trim();
-      const colegioIngenierosIca = cleanText
-        .substring(indexColegioIngenierosIca)
-        .trim();
-      return [corporacion, colegioIngenierosIca];
-    }
-
-    // Caso general: Divide el texto en líneas basadas en cantidad de palabras, máximo 3 líneas
-    const words = cleanText.split(" ");
-    const firstLine = words.slice(0, 9).join(" ");
-    const secondLine = words.slice(9, 15).join(" ");
-    const thirdLine = words.slice(15).join(" ");
-    return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
   };
 
   const tableRows = [
@@ -234,177 +127,113 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
   ];
 
   return (
-    <div className="">
-      <form onSubmit={searchName} className="w-full ">
-        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2">
-          <div
-            className={`flex-1 transition-all duration-300 ${
-              closeTable ? "w-[600px]" : "w-[400px]"
-            }`}
-          >
-            <input
-              type="search"
-              id="default-search"
-              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent focus:border-primaryblue p-3 transition-all duration-300"
-              placeholder={`Ingrese su NOMBRE${
-                searchType === "name" ? "nombre" : ""
-              }`}
-              required
-              onClick={toggleIsActive}
-              onChange={onChange}
-              value={queryValue}
-            />
-          </div>
-          <div className="ml-2 mb-2">
-            <Button
-              type="submit"
-              className="bg-black text-white border border-white/50 rounded-lg"
-            >
-              Buscar
-            </Button>
-          </div>
-        </div>
+    <div className="w-full">
+      {/* Formulario de búsqueda */}
+      <form onSubmit={searchName} className="flex items-center space-x-2 mt-4">
+        <input
+          type="search"
+          placeholder="Ingrese el nombre completo"
+          value={queryValue}
+          onChange={onChange}
+          className="w-full border rounded-lg p-2 bg-transparent text-black"
+          required
+        />
+        <Button type="submit" className="bg-black text-white">
+          Buscar
+        </Button>
       </form>
-      {loading && <Spinner />}
-      {isNameIncomplete && (
-        <Modal
-          open={isNameIncomplete}
-          onClose={() => setIsNameIncomplete(false)}
-        >
-          <div className=" p-2 rounded-lg">
-            <h2 className="text-md font-bold text-red-500 mb-4">
-              Nombres y apellidos incorrectos.
-            </h2>
-            <h3 className="text-sm font-semibold text-gray-100">
-              Los nombres y apellidos que ingresaste no se encuentran en nuestra
-              base de datos.
-            </h3>
-          </div>
-        </Modal>
-      )}
+
+      {/* Spinner de carga */}
+      {loading && <Spinner color="primary" />}
+
+      {/* Tabla de resultados */}
       {closeTable && studentData && (
         <div className="relative overflow-x-auto shadow-xl rounded-xl mt-8">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 font-semibold">
-            <thead className="text-xm text-center text-gray-600 uppercase bg-gray-300">
+            <thead className="text-sm text-center text-gray-600 uppercase bg-gray-300">
               <tr>
-                <th scope="col" className="px-6 py-3">
-                  #
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Nombre
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Actividad academica
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Fecha
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Accción
-                </th>
+                <th className="px-6 py-3">#</th>
+                <th className="px-6 py-3">Nombre</th>
+                <th className="px-6 py-3">Actividad académica</th>
+                <th className="px-6 py-3">Fecha</th>
+                <th className="px-6 py-3">Acción</th>
               </tr>
             </thead>
             <tbody>
-              {studentData?.map((student, index) => (
+              {studentData.map((student, index) => (
                 <tr
                   key={index}
                   className="bg-white border-b text-center hover:bg-gray-100"
                 >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium whitespace-nowrap w-12"
-                  >
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {index + 1}
-                    </span>
-                  </th>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.name}
-                    </span>
+                  <td className="px-6 py-4 font-medium">{index + 1}</td>
+                  <td className="px-6 py-4">{student.name}</td>
+                  <td className="px-6 py-4 truncate">
+                    {student.activityAcademy}
                   </td>
-                  <td className="px-6 py-4 truncate max-w-lg">
-                    {/* Truncate long text */}
-                    <span title={student.activityAcademy}>
-                      {student.activityAcademy}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.date}
-                    </span>
-                  </td>
+                  <td className="px-6 py-4">{student.date}</td>
                   <td className="px-6 py-4">
                     <button
                       type="button"
                       onClick={() =>
                         openStudentModal(student as StudentCode, index)
                       }
-                      className="font-medium text-primaryblue dark:text-primaryblue hover:underline"
+                      className="font-medium text-primaryblue hover:underline"
                     >
                       Ver
                     </button>
                   </td>
-                  {selectedStudentData && (
-                    <Modal
-                      open={openModals.findIndex(Boolean) !== -1}
-                      onClose={() =>
-                        closeStudentModal(openModals.findIndex(Boolean))
-                      }
-                    >
-                      <div className="flex justify-center items-center mb-4 gap-2">
-                        <Image
-                          src={"/image/log-blank.png"}
-                          alt="verycerts"
-                          className="md:w-60   w-20  object-contain mt-2"
-                          width={300}
-                          height={300}
-                          priority={true}
-                        />
-                      </div>
-                      <div className="max-w-md text-center mx-auto">
-                        {tableRows.map((row, index) => (
-                          <div key={index} className="mb-4">
-                            <div className="inline-flex items-center text-white text-sm p-1 w-72 rounded-lg bg-slate-600 font-semibold">
-                              {row.imgSrc && (
-                                <Image
-                                  src={row.imgSrc}
-                                  alt={row.label}
-                                  className="w-5 h-5 object-contain ml-1"
-                                  width={200}
-                                  height={200}
-                                />
-                              )}
-                              <div className="flex-1 text-center">
-                                {row.label}
-                              </div>
-                            </div>
-                            <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                              {row.label === "Organizado por:" && row.value
-                                ? splitText(row.value).map((line, index) => (
-                                    <p key={index}>{line}</p>
-                                  ))
-                                : row.value}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Modal>
-                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
+      {/* Modal de detalles */}
+      {selectedStudentData && (
+        <Modal
+          open={openModals.findIndex(Boolean) !== -1}
+          onClose={() => closeStudentModal(openModals.findIndex(Boolean))}
+        >
+          <div className="p-4">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/image/log-blank.png"
+                alt="verycerts"
+                width={200}
+                height={200}
+              />
+            </div>
+            {tableRows.map((row, index) => (
+              <div key={index} className="mb-4">
+                <div className="flex items-center justify-center bg-slate-600 text-white p-2 rounded-lg  ">
+                {row.imgSrc && (
+
+                  <Image
+                    src={row.imgSrc}
+                    alt={row.label}
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
+                )}
+
+                  <span>{row.label}</span>
+                </div>
+                <p className="text-gray-100 mt-2 text-center">{row.value}</p>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal de error */}
       <Modal open={modalOpen} onClose={closeErrorModal}>
-        <div className="border-2 p-2 rounded-lg">
-          <h2 className="text-md font-bold text-red-600 mb-4">
-            Nombre incorrecto
-          </h2>
-          <h3 className="text-sm font-semibold text-white">
-            El nombre que ingresaste no se encuentra en nuestra base de datos.
-          </h3>
+        <div className="p-4 text-center">
+          <h2 className="text-red-500 font-bold">Nombre incorrecto</h2>
+          <p className="text-gray-400">
+            No se encontraron resultados para el nombre ingresado.
+          </p>
         </div>
       </Modal>
     </div>

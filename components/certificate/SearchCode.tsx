@@ -1,65 +1,82 @@
 import React, { useState, FormEvent } from "react";
-import { URL } from "@/components/utils/format/tokenConfig";
+import { URL, getURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchCodeProps, StudentCode } from "../../interface/interface";
 import Modal from "../share/ModalCerti";
-import { Button } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
 
 const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [queryValue, setQueryValue] = useState<string>("");
-  const [searchType, setSearchType] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<StudentCode>();
-  const [open, setOpen] = useState<boolean>(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [closeTable, setCloseTable] = useState(false);
+  const [queryValue, setQueryValue] = useState<string>(""); // Input del usuario
+  const [searchType, setSearchType] = useState<string | null>(null); // Tipo de búsqueda
+  const [loading, setLoading] = useState<boolean>(false); // Indicador de carga
+  const [studentData, setStudentData] = useState<StudentCode | null>(null); // Datos del estudiante
+  const [modalOpen, setModalOpen] = useState<boolean>(false); // Modal de error
+  const [open, setOpen] = useState<boolean>(false); // Modal de resultados
 
-  const toggleIsActive = () => {
-    setIsActive(!isActive);
-  };
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value, "onChange ejecutado");
     setQueryValue(event.target.value);
-    setSearchType(event.target.value);
   };
 
-  const openErrorModal = () => {
-    setModalOpen(true);
-  };
-  const closeErrorModal = () => {
-    setModalOpen(false);
-  };
+  const openErrorModal = () => setModalOpen(true);
+  const closeErrorModal = () => setModalOpen(false);
 
   const searchCode = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (queryValue.trim()) {
-      setLoading(true);
-    }
+    if (!queryValue.trim()) return;
+
+    setLoading(true);
     try {
       const value = queryValue.trim();
-      const apiUrl = `${URL()}/student/code/${value}/type/${searchType}`;
-      console.log(apiUrl);
-      const res = await axios.get(
-        `${URL()}/student/code/${value.trim()}/type/${searchType}`
-      );
-      console.log(res);
-      setStudentData(res.data);
-      onSearchCode(res.data);
-      if (queryValue.trim() !== "") {
-        setOpen(true);
+
+      // Variables para resultados de ambos backends
+      let resultsLocal: StudentCode | null = null;
+      let resultsRemote: StudentCode | null = null;
+
+      // Consulta en el backend local
+      try {
+        const resLocal = await axios.get(
+          `${URL()}/student/code/${value.trim()}/type/${searchType}`
+        );
+        resultsLocal = resLocal.data;
+      } catch (error) {
+        console.warn("Error en la base de datos local:", error);
       }
+
+      // Consulta en el backend remoto
+      try {
+        const resRemote = await axios.get(
+          `${getURL()}/student/code/${value.trim()}/type/${searchType}`
+        );
+        resultsRemote = resRemote.data;
+      } catch (error) {
+        console.warn("Error en la base de datos remoto:", error);
+      }
+
+      // Combinación de resultados
+      const combinedData = resultsLocal || resultsRemote;
+
+      // Validación: Sin resultados
+      if (!combinedData) {
+        throw new Error(
+          "No se encontraron resultados en ninguna base de datos."
+        );
+      }
+
+      // Guardar datos en el estado
+      setStudentData(combinedData);
+      onSearchCode(combinedData);
+      setOpen(true);
     } catch (error) {
-      console.error("Error: Codigo invalido", error);
+      console.error("Error general durante la búsqueda:", error);
       openErrorModal();
       setOpen(false);
     } finally {
       setLoading(false);
     }
   };
+
   const tableRows = [
     {
       imgSrc: "/icons/organizadopor.svg",
@@ -91,7 +108,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
   const splitText = (text: string): string[] => {
     const cleanText = text.trim();
 
-    // Identificar posiciones clave en el texto
+    // Casos específicos para dividir el texto
     const indexCorporacion = cleanText.indexOf(
       "ECOMÁS Consultoría y Capacitación"
     );
@@ -99,23 +116,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
     const indexEscuela = cleanText.indexOf(
       "Escuela de Posgrado - Universidad Nacional de Piura"
     );
-    const indexUniversidadPiura = cleanText.indexOf(
-      "Universidad Nacional de Piura"
-    );
-    const indexColegioIngenierosHuancavelica = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Huancavelica"
-    );
-    const indexColegioIngenierosCallao = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Callao"
-    );
-    const indexColegioIngenierosPuno = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Puno"
-    );
-    const indexColegioIngenierosIca = cleanText.indexOf(
-      "Colegio de ingenieros del Perú CD-Ica"
-    );
 
-    // Caso 1: 3 líneas - "ECOMÁS Consultoría y Capacitación Escuela de Posgrado - Universidad Nacional de Piura FUNDENORP"
     if (
       indexCorporacion !== -1 &&
       indexEscuela !== -1 &&
@@ -129,67 +130,7 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
       return [corporacion, escuela, fundenorp];
     }
 
-    // Caso 2: 3 líneas - "ECOMÁS Consultoría y Capacitación Universidad Nacional de Piura FUNDENORP"
-    if (
-      indexCorporacion !== -1 &&
-      indexUniversidadPiura !== -1 &&
-      indexFundenorp !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexUniversidadPiura)
-        .trim();
-      const universidad = cleanText
-        .substring(indexUniversidadPiura, indexFundenorp)
-        .trim();
-      const fundenorp = cleanText.substring(indexFundenorp).trim();
-      return [corporacion, universidad, fundenorp];
-    }
-
-    // Caso 3: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Huancavelica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosHuancavelica !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosHuancavelica)
-        .trim();
-      const colegioIngenierosHuancavelica = cleanText
-        .substring(indexColegioIngenierosHuancavelica)
-        .trim();
-      return [corporacion, colegioIngenierosHuancavelica];
-    }
-
-    // Caso 4: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Callao"
-    if (indexCorporacion !== -1 && indexColegioIngenierosCallao !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosCallao)
-        .trim();
-      const colegioIngenierosCallao = cleanText
-        .substring(indexColegioIngenierosCallao)
-        .trim();
-      return [corporacion, colegioIngenierosCallao];
-    }
-
-    // Caso 5: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Puno"
-    if (indexCorporacion !== -1 && indexColegioIngenierosPuno !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosPuno)
-        .trim();
-      const colegioIngenierosPuno = cleanText
-        .substring(indexColegioIngenierosPuno)
-        .trim();
-      return [corporacion, colegioIngenierosPuno];
-    }
-
-    // Caso 6: 2 líneas - "ECOMÁS Consultoría y Capacitación Colegio de ingenieros del Perú CD-Ica"
-    if (indexCorporacion !== -1 && indexColegioIngenierosIca !== -1) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexColegioIngenierosIca)
-        .trim();
-      const colegioIngenierosIca = cleanText
-        .substring(indexColegioIngenierosIca)
-        .trim();
-      return [corporacion, colegioIngenierosIca];
-    }
-
-    // Caso general: Divide el texto en líneas basadas en cantidad de palabras, máximo 3 líneas
+    // Caso general: Dividir en líneas
     const words = cleanText.split(" ");
     const firstLine = words.slice(0, 9).join(" ");
     const secondLine = words.slice(9, 15).join(" ");
@@ -198,90 +139,63 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
   };
 
   return (
-    <div className="">
-      <form onSubmit={searchCode} className="w-full ">
-        <div className="flex items-center space-x-2 w-full transition-all duration-300 mt-2">
-          <div
-            className={`flex-1 transition-all duration-300 ${
-              closeTable ? "w-[600px]" : "w-[400px]"
-            }`}
-          >
-            <input
-              type="search"
-              id="default-search"
-              className="w-full font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-transparent focus:border-primaryblue p-3 transition-all duration-300"
-              placeholder={`Ingrese su CODIGO${
-                searchType === "name" ? "nombre" : ""
-              }`}
-              required
-              onClick={toggleIsActive}
-              onChange={onChange}
-              value={queryValue}
-            />
-          </div>
-          <div className="ml-2 mb-2">
-            <Button
-              type="submit"
-              className="bg-black text-white border border-white/50 rounded-lg"
-            >
-              Buscar
-            </Button>
-          </div>
-        </div>
+    <div className="w-full">
+      {/* Formulario de búsqueda */}
+      <form onSubmit={searchCode} className="flex items-center space-x-2 mt-4">
+        <input
+          type="search"
+          placeholder="Ingrese su CÓDIGO "
+          value={queryValue}
+          onChange={onChange}
+          className="w-full border rounded-lg p-2 bg-transparent text-black"
+          required
+        />
+        <Button type="submit" className="bg-black text-white">
+          Buscar
+        </Button>
       </form>
 
+      {/* Spinner de carga */}
       {loading && <Spinner color="primary" />}
+
+      {/* Modal de datos encontrados */}
       {studentData && (
         <Modal open={open} onClose={() => setOpen(false)}>
-          <div className="flex justify-center items-center mb-4 gap-2">
-                        <Image
-                          src={"/image/log-blank.png"}
-                          alt="verycerts"
-                          className="md:w-60   w-20  object-contain mt-2"
-                          width={300}
-                          height={300}
-                          priority={true}
-                        />
-                      </div>
-          <div className=" max-w-md text-center  rounded-md mx-auto">
+          <div className="p-6 bg-transparent rounded-lg shadow-lg">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/image/log-blank.png"
+                alt="verycerts"
+                width={300}
+                height={300}
+              />
+            </div>
             {tableRows.map((row, index) => (
               <div key={index} className="mb-4">
-                <div className="inline-flex items-center text-white  text-sm p-1 md:w-80 w-72 rounded-lg bg-slate-600 font-semibold">
-                  {row.imgSrc && (
-                    <Image
-                      src={row.imgSrc}
-                      alt={row.label}
-                      className="flex lg:w-5 lg:h-5 w-5 h-5 object-contain ml-1"
-                      width={800}
-                      height={800}
-                    />
-                  )}
-                  <div className="flex-1 text-center">{row.label}</div>
+                <div className="flex items-center justify-center bg-slate-600 text-white p-2 rounded-lg">
+                  <Image
+                    src={row.imgSrc}
+                    alt={row.label}
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
+                  <span>{row.label}</span>
                 </div>
-
-                <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                  {row.value === studentData?.institute &&
-                    row.value &&
-                    splitText(row.value).map((line, index) => (
-                      <p key={index} className="mb-1">
-                        {line}
-                      </p>
-                    ))}
-                  {row.value !== studentData?.institute && row.value}
-                </div>
+                <p className="text-gray-300 mt-2 text-center">{row.value}</p>
               </div>
             ))}
           </div>
         </Modal>
       )}
+
+      {/* Modal de error */}
       <Modal open={modalOpen} onClose={closeErrorModal}>
-        <div className="p-2 rounded-lg">
-          <h2 className="text-md font-bold text-red-500 mb-4">
-            Código incorrecto
-          </h2>
-          <h3 className="text-sm font-semibold text-gray-100">
-            El código que ingresaste no se encuentra en nuestra base de datos.
-          </h3>
+        <div className="p-4 text-center">
+          <h2 className="text-red-500 font-bold">Código incorrecto</h2>
+          <p className="text-gray-400">
+            No se encontraron resultados para el código ingresado.
+          </p>
         </div>
       </Modal>
     </div>

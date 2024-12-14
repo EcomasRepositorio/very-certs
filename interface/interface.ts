@@ -3,12 +3,14 @@ export interface SearchProps {
 }
 
 export interface SearchNameProps {
-  onSearchName: (data: string) => void;
+  onSearchName: (data: Student[]) => void;
 }
 
+
 export interface SearchCodeProps {
-  onSearchCode: (data: string) => void;
+  onSearchCode: (data: StudentCode | null) => void; // Cambiar de string a StudentCode
 }
+
 
 export interface SearchDNIProps {
   onSearchDNI: (data: Student[]) => void; // Ahora acepta un arreglo de estudiantes

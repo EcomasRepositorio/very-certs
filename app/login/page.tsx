@@ -4,13 +4,37 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 
+interface BackendConfig {
+  name: string;
+  url: string;
+  active: boolean;
+}
+
 const SignIn: React.FC = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [resErrors, setResErrors] = useState<{ message: string } | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentBackend, setCurrentBackend] = useState<string>(""); // Indica el backend en progreso
+
+  // Lista de backends configurados
+  const backends: BackendConfig[] = [
+    {
+      name: "VeryCerts",
+      url: "https://backend.verycerts.com/api/v1/user/login",
+      active: true,
+    },
+    {
+      name: "Prueba",
+      url: "http://localhost:8000/api/v1/user/login",
+      active: true,
+    },
+    {
+      name: "AnotherBackend",
+      url: "http://localhost:9000/api/v1/user/login",
+      active: false,
+    },
+  ];
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -24,22 +48,35 @@ const SignIn: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "https://backend.verycerts.com/api/v1/user/login",
-        form
-      );
+    setLoading(true);
+    setResErrors(null);
+    setCurrentBackend("");
 
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        window.location.href = "/student";
+    // Iterar sobre los backends activos
+    for (const backend of backends) {
+      if (backend.active) {
+        try {
+          setCurrentBackend(backend.name); // Mostrar en qué backend está procesando
+          const response = await axios.post(backend.url, form);
+
+          if (response.data.token) {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("backendURL", backend.url); // Guardar la URL del backend
+            localStorage.setItem("backendName", backend.name); // Guardar el nombre del backend
+            window.location.href = "/student";
+
+            return; // Detener el proceso si la autenticación es exitosa
+          }
+        } catch (error: any) {
+          console.warn(`Error en el backend ${backend.name}:`, error.message);
+        }
       }
-    } catch (error: any) {
-      setResErrors({
-        message: error?.response?.data?.message || "Error desconocido",
-      });
-      setTimeout(() => setResErrors(null), 3000);
     }
+
+    // Si ningún backend valida las credenciales
+    setResErrors({ message: "Credenciales inválidas o cuenta no encontrada." });
+    setLoading(false);
+    setCurrentBackend("");
   };
 
   const handleRegisterRedirect = () => {
@@ -80,9 +117,20 @@ const SignIn: React.FC = () => {
         <p className="text-sm text-gray-400 text-center mb-6">
           Mantén todo en orden y estarás bien
         </p>
+
+        {/* Errores */}
         {resErrors && (
           <p className="text-center text-red-500 mb-4">{resErrors.message}</p>
         )}
+
+        {/* Indicador de Backend */}
+        {loading && (
+          <p className="text-center text-blue-500 mb-4">
+            Verificando en <span className="font-bold">{currentBackend}</span>
+            ...
+          </p>
+        )}
+
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           {/* Campo de Email */}
           <div>
@@ -124,12 +172,13 @@ const SignIn: React.FC = () => {
             type="submit"
             className="w-full py-3 bg-[#009FB2] text-white font-semibold rounded-md hover:bg-[#007C92] transition"
           >
-            Iniciar Sesión
+            {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
           </button>
         </form>
+
         <div className="text-center mt-4">
           <p className="text-gray-400">
-            ¿Nuevo en Verycerts?{" "}
+            ¿Nuevo en la plataforma?{" "}
             <button
               onClick={handleRegisterRedirect}
               className="text-[#009FB2] hover:underline"

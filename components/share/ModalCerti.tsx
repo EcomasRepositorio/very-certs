@@ -16,7 +16,7 @@ const Modal: React.FC<{
       onClick={onClose}
     >
       <div
-        className={`bg-gradient-to-br from-black via-cyan-600 to-black bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow p-5 transition-all max-w-md sm:w-full w-full ${modalClass}`}
+        className={`bg-gradient-to-br from-black via-[#001A6E] to-black bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow p-5 transition-all max-w-md sm:w-full w-full ${modalClass}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button

@@ -14,7 +14,7 @@ interface BackendConfig {
 const backends: BackendConfig[] = [
   { url: "https://backclassroom.ecomas.pe/api/v1", active: true },
   { url: "https://backend.ecomas.pe/api/v1", active: true },
-  { url: "http://localhost:8000//api/v1", active: false },
+  { url: "https://backend.verycerts.com/api/v1", active: true },
 ];
 
 const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {

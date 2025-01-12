@@ -17,9 +17,7 @@ const SearchName = dynamic(
   () => import("@/components/certificate/SearchName"),
   { suspense: true }
 );
-const SearchQR = dynamic(() => import("@/components/certificate/SearchQR"), {
-  suspense: true,
-});
+
 const VideoBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -105,15 +103,6 @@ const TestingPage: React.FC = () => {
                   <Card>
                     <CardBody className="bg-white  w-full">
                       <SearchName onSearchName={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-              <Tab key="qr" title="Buscar por QR">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-white w-full">
-                      <SearchQR />
                     </CardBody>
                   </Card>
                 </Suspense>

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const { nextui } = require("@nextui-org/react");
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: [
@@ -18,6 +19,7 @@ module.exports = {
       },
       fontFamily: {
         roboto: ["Roboto", "system-ui"],
+        custom: ['"My Custom Font"', ...fontFamily.sans],
       },
       colors: {
         primary: "#0e7ac2",

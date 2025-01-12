@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "My custom font";
+  src: url("/public/font/CrimsonPro-Italic-VariableFont_wght.ttf") format("opentype");
+  font-weight: 600; /* Semi Bold */
+  font-style: normal;
+}
+
+
 input {
     display: block;
     box-sizing: border-box;

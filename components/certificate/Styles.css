@@ -1,3 +1,11 @@
+
+@font-face {
+  font-family: "Scorno Semi Bold";
+  src: url("/font/simpleFont.otf") format("opentype");
+  font-weight: 600; /* Semi Bold */
+  font-style: normal;
+}
+
 input {
     display: block;
     box-sizing: border-box;
@@ -8,4 +16,6 @@ input {
     margin-bottom: 10px;
     font-size: 14px;
   }
+
+
 

@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "./Style.css";
 import Image from "next/image";
 import animationData from "../../public/certificate/qr/animation/check-animation.json";
 import { Player } from "@lottiefiles/react-lottie-player";
-
-// Imports de Lucide
 import {
   GraduationCap as LucideGraduationCap,
   Clock3 as LucideClock,
@@ -15,51 +13,85 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { format } from "date-fns";
 
 interface CertificateDetailsProps {
-    courseData: {
-    fullName: string;
-    code: string;
-    graduate: [
-      {
-        graduate: {
-          name: string; // Nombre del curso
-          corporation: [
-            {
-              credits: string; // Créditos
-              hours: string; // Horas
-            }
-          ];
-        };
-      }
-    ];
+  courseData: {
+    id: number;
+    fullName: string; // Nombre completo del participante
+    code: string; // Código del certificado
+    uuidCode: string; // Código único del certificado
+    quota: {
+      id: number;
+      name: string; // Nombre de la cuota
+      code: string; // Código de la cuota
+      dateReceipt: string; // Fecha de recibo
+      hourReceipt: string; // Hora de recibo
+      price: string; // Precio de la cuota
+      state: boolean; // Estado de la cuota (pagado o no)
+      date: string; // Fecha de vencimiento de la cuota
+      observation: string; // Observaciones
+      observationOption: string; // Opción de observación
+      moduleId: number; // ID del módulo relacionado
+      createdAt: string; // Fecha de creación
+      updatedAt: string; // Fecha de actualización
+      studentCourseId: number; // ID del curso del estudiante
+    }[];
+    module: {
+      module: {
+        id: number; // ID del módulo
+        name: string; // Nombre del módulo
+        endDate: string; // Fecha de fin del módulo
+        corporation: {
+          institute: string | null; // Instituto relacionado (puede ser nulo)
+        }[];
+      };
+    }[];
+    corporation: {
+      corporation: {
+        id: number; // ID de la corporación
+        name: string; // Nombre de la corporación
+        icon: string; // URL del icono de la corporación
+        image: string; // URL de la imagen de la corporación
+      };
+    }[];
   };
 }
 
 const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
-  // Estado para controlar si el modal se muestra o no
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
-  // Si showModal es false, no renderizamos nada (cierra el modal)
+  const corporationData = courseData?.corporation?.[0]?.corporation || {
+    name: "Corporación no disponible",
+    icon: "",
+    image: "",
+  };
+
+  const formattedDate = courseData?.module[0].module.endDate
+  ? format(new Date(courseData?.module[0].module.endDate), "dd/MM/yyyy")
+  : "Fecha no disponible";
+
+
+  const moduleNames =
+    courseData?.module?.map((mod) => mod.module.name).join(", ") ||
+    "Nombre del curso no disponible";
+
   if (!showModal) {
     return null;
   }
-
-  const graduateData = courseData.graduate?.[0]?.graduate || {};
-  const corporationData = graduateData.corporation?.[0] || {};
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/80 z-50">
       <div className="relative bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 max-w-4xl w-full">
         {/* Botón para cerrar el modal */}
         <button
+          aria-label="Cerrar modal"
           onClick={() => {
-            router.push("/certs/"); // Redirige a la página de inicio
+            setShowModal(false);
+            setTimeout(() => router.push("/certs/"), 300);
           }}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700
-                     dark:text-gray-300 dark:hover:text-gray-100"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
         >
           <X size={24} />
         </button>
@@ -70,7 +102,6 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
           <div className="flex-1 p-6">
             {/* Encabezado con logo */}
             <div className="flex items-center justify-between mb-10">
-              {/* Texto ORGANIZADO POR */}
               <div>
                 <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                   ORGANIZADO POR:
@@ -79,18 +110,17 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
                   VERY CERTS
                 </p>
               </div>
-              {/* Logo al extremo derecho */}
               <div>
                 <Image
                   src={"/certificate/qr/log-light.png"}
-                  alt="Logo_verycerts"
+                  alt="Logo de Very Certs claro"
                   width={200}
                   height={200}
                   className="h-32 w-auto object-contain block dark:hidden"
                 />
                 <Image
                   src={"/certificate/qr/log-dark.png"}
-                  alt="Logo_verycerts"
+                  alt="Logo de Very Certs oscuro"
                   width={200}
                   height={200}
                   className="h-32 w-auto object-contain hidden dark:block"
@@ -105,20 +135,18 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
 
             {/* Nombre del participante */}
             <div className="font-semibold text-3xl text-gray-800 dark:text-gray-100 mb-6">
-              {courseData?.fullName || "Nombre del participante"}
+              {courseData?.fullName || "Nombre del participante no disponible"}
             </div>
 
             {/* Curso */}
             <p className="text-base text-gray-800 dark:text-gray-100 mb-4">
-              Por culminar con éxito el Curso:
+              Por culminar con éxito el curso:
             </p>
             <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 border-l-4 border-cyan-500">
-              {/* Nombre del curso */}
               <div>
                 <div className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                  {graduateData?.name || "Nombre del curso no disponible"}
+                  {moduleNames}
                 </div>
-                {/* Texto "Completado" con el ícono al costado */}
                 <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
                   Completado
                   <div className="w-6 h-6 ml-0">
@@ -137,52 +165,29 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
             <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
-                <strong>ID del certificado:</strong>{" "}
+                <strong>ID del certificado: </strong>{" "}
                 {courseData?.code || "Código no disponible"}
               </span>
             </div>
 
-            {/* Detalles adicionales */}
             <div className="mt-4 text-gray-600 dark:text-gray-300 text-base space-y-3">
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
                   <strong>Horas de capacitación:</strong>{" "}
-                  {corporationData?.hours || "0"} horas
+                 50 horas
                 </span>
+               
               </div>
 
-              <div className="flex items-center space-x-2">
-                <LucideGraduationCap className="text-cyan-500" size={20} />
-                <span>
-                  <strong>Créditos:</strong> {corporationData?.credits || "0"}{" "}
-                  créditos
-                </span>
-              </div>
 
               <div className="flex items-center space-x-2">
                 <LucideCalendarDays className="text-cyan-500" size={20} />
                 <span>
-                  <strong>Fecha:</strong> 23/03/2025
+                  <strong>Fecha de emisión: </strong> {formattedDate}
                 </span>
               </div>
             </div>
-
-            {/* 
-            Si deseas mostrar el enlace al certificado, descomenta esta sección:
-            
-            <div className="mt-4">
-              <span className="font-medium">Enlace:</span>{" "}
-              <a
-                href="https://www.youtube.com/watch?v=z3NsAtCWfjw"
-                className="text-blue-600 underline dark:text-blue-400"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Link de certificado
-              </a>
-            </div>
-            */}
           </div>
         </div>
       </div>

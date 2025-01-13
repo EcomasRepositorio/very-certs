@@ -1,118 +1,93 @@
-"use client";
+// app/certs/[uuid]/page.tsx
+import React, { Suspense } from "react";
+import VideoBackground from "@/components/certificate-qr/VideoBackground";
+import CertificateDetails from "@/components/certificate-qr/certificateDetails";
+import CertificateDetailsCourse from "@/components/certificate-qr/certificateDetailsCourse";
+import { ParticipantData, CourseData } from "@/components/utils/format/types";
 
-import React, { Suspense, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-
-const SearchCode = dynamic(
-  () => import("@/components/certificate/SearchCode"),
-  {
-    suspense: true,
-  }
-);
-const SearchDNI = dynamic(() => import("@/components/certificate/SearchDNI"), {
-  suspense: true,
-});
-const SearchName = dynamic(
-  () => import("@/components/certificate/SearchName"),
-  { suspense: true }
-);
-
-const VideoBackground = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 1; // Reproduce el video a la mitad de la velocidad normal
-    }
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      className="absolute top-0 left-0 w-full h-full object-cover"
-      src="/image/fond2.mp4" // Cambia esta ruta a tu video
-      autoPlay
-      loop
-      muted
-      playsInline
-    />
-  );
-};
-
-const TestingPage: React.FC = () => {
-  const handleSearch = (data: any) => {
-    console.log(data);
+interface CertPageProps {
+  params: {
+    uuid: string;
   };
+}
 
-  return (
-    <section className="relative min-h-screen w-full">
-      {/* Video de fondo */}
-      <VideoBackground />
+export default async function CertPage({ params }: CertPageProps) {
+  const { uuid } = params;
 
-      {/* Superposición transparente */}
-      <div className="absolute inset-0 bg-[#009FB2] opacity-30"></div>
+  let participantData: ParticipantData | null = null;
+  let courseData: CourseData | null = null;
+  let isCourse = false;
 
-      {/* Contenido principal */}
-      <div className="relative py-12 mx-auto max-w-screen-lg px-4 w-full">
-        <div className="bg-transparent rounded-lg shadow-lg p-8 md:p-12 mb-12 w-full mt-56">
-          {/* Título */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-100 mb-6 md:text-4xl">
-              VERIFICAR CERTIFICADO
-            </h2>
-            <p className="text-gray-100 text-lg mb-8">
-              Verifica la validez de tu certificado introduciendo tu DNI, nombre
-              completo o código de certificado. Nos esforzamos en proteger la
-              privacidad y el manejo confidencial de tus datos personales.
+  try {
+    // Fetch participante
+    const participantRes = await fetch(
+      `https://backclassroom.ecomas.pe/api/v1/certificate/graduate/${uuid}`,
+      { cache: "no-store" }
+    );
+
+    if (participantRes.ok) {
+      const participantResponse: ParticipantData = await participantRes.json();
+      // Opcionalmente, podrías validar que el objeto realmente coincida con el uuid
+      // si tu API retorna un campo distintivo. Por ejemplo:
+      // if (participantResponse?.uuidParticipant === uuid) {
+      //   participantData = participantResponse;
+      // }
+      participantData = participantResponse;
+    }
+
+    // Fetch curso
+    const courseRes = await fetch(
+      `https://backclassroom.ecomas.pe/api/v1/certificate/course/${uuid}`,
+      { cache: "no-store" }
+    );
+
+    if (courseRes.ok) {
+      const courseResponse: CourseData = await courseRes.json();
+      // Lo mismo que arriba: valida si coincide con el uuid
+      // if (courseResponse?.uuidCode === uuid) {
+      //   courseData = courseResponse;
+      //   isCourse = true;
+      // }
+      courseData = courseResponse;
+      // Revisamos si devuelven algo que indique que efectivamente es un curso
+      if (courseData?.uuidCode === uuid) {
+        isCourse = true;
+      }
+    }
+
+    // Si luego de ambas peticiones no tenemos datos de participante ni de curso:
+    if (!participantData && !courseData) {
+      throw new Error("No se encontró información asociada a este QR");
+    }
+
+  } catch (error) {
+    // Cualquier error (o falta de datos) nos lleva directo al "modal de error"
+    return (
+      <section className="relative min-h-screen w-full">
+        <VideoBackground />
+        <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+          <div className="bg-gradient-to-br from-black via-[#001A6E] to-black bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow p-5 max-w-md w-full text-center">
+            <h2 className="text-2xl text-red-500 font-bold mb-4">Error</h2>
+            <p className="text-white">
+              No se pudo encontrar la información asociada a este QR.
             </p>
-
-            {/* Pestañas */}
-            <Tabs
-              aria-label="Opciones de búsqueda"
-              color="secondary"
-              classNames={{
-                tabList:
-                  "w-full flex flex-col md:flex-row bg-transparent border border-gray-300/40",
-                cursor: "bg-transparent text-gray-100",
-                tab: "py-2 px-4 rounded-t-lg text-gray-100",
-                tabContent:
-                  "group-data-[selected=true]:text-gray-100 text-g-100  ",
-              }}
-            >
-              <Tab key="dni" title="Buscar por DNI">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className=" bg-white w-full">
-                      <SearchDNI onSearchDNI={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-              <Tab key="code" title="Buscar por Código">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-white w-full">
-                      <SearchCode onSearchCode={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-              <Tab key="name" title="Buscar por Nombres">
-                <Suspense fallback={<div className="loader">Cargando...</div>}>
-                  <Card>
-                    <CardBody className="bg-white  w-full">
-                      <SearchName onSearchName={handleSearch} />
-                    </CardBody>
-                  </Card>
-                </Suspense>
-              </Tab>
-            </Tabs>
           </div>
         </div>
-      </div>
+      </section>
+    );
+  }
+
+  // Renderizar el contenido apropiado
+  return (
+    <section className="relative min-h-screen w-full">
+      <VideoBackground />
+      <Suspense fallback={<p className="text-white">Cargando...</p>}>
+        {isCourse && courseData ? (
+          <CertificateDetailsCourse courseData={courseData} />
+        ) : (
+          participantData && <CertificateDetails participantData={participantData} />
+        )}
+      </Suspense>
     </section>
   );
-};
-
-export default TestingPage;
+}

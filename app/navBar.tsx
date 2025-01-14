@@ -11,17 +11,11 @@ function Navbar() {
 
   return (
     <div className="">
-      <nav className="w-full top-0 left-0 right-0 z-50 bg-primaryBlue/10 backdrop-blur-md fixed bg-black/10 ">
+      <nav className="w-full h-44 top-0 left-0 right-0 z-50 bg-primaryBlue/10 backdrop-blur-md fixed bg-black/10 ">
         {" "}
         {/* Cambiado a 'fixed' */}
         <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0.5">
           <div className="md:text-right text-center font-semibold w-full border-b border-[#00dbb8] py-1 mb-4">
-            <Link
-              href="https://api.whatsapp.com/send?phone= &text=Hola, vengo para solicitar una demo de  VERICERTs"
-              className="mr-4 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
-            >
-              Solicite una demo
-            </Link>
             <Link
               href="/login"
               className="mr-3 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
@@ -37,20 +31,20 @@ function Navbar() {
               <Link href="/">
                 {/* Logo para modo claro */}
                 <Image
-                  src="/image/verylog1.png"
+                  src="/certificate/logos/HORIZONTAL_BLANCO.svg"
                   width={900}
                   height={900}
                   alt="logo_claro"
-                  className="w-36 h-10 dark:hidden" // Visible solo en modo claro
+                  className="w-36 h-36 dark:hidden" // Visible solo en modo claro
                   priority={true}
                 />
                 {/* Logo para modo oscuro */}
                 <Image
-                  src="/image/verylog1white.png"
+                  src="/certificate/logos/HORIZONTAL_COLOR.svg"
                   width={900}
                   height={900}
                   alt="logo_oscuro"
-                  className="w-36 h-10 hidden dark:block" // Visible solo en modo oscuro
+                  className="w-36 h-36 hidden dark:block" // Visible solo en modo oscuro
                   priority={true}
                 />
               </Link>
@@ -107,15 +101,15 @@ function Navbar() {
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                   <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                    Validacion de certificados
+                    Validación de certificados
                   </Link>
                 </li>
                 <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                   <Link href="/#contact" onClick={() => setNavbar(!navbar)}>
-                    Contactanos
+                    Contáctanos
                   </Link>
                 </li>
-                
+
                 <div className="flex justify-end pr-4 ml-40">
                   <ThemeSwitcher />
                 </div>
@@ -142,7 +136,7 @@ function Navbar() {
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
                 <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                  Validacion de certificados
+                  Validación de certificados
                 </Link>
               </li>
               <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
@@ -150,7 +144,7 @@ function Navbar() {
                   Contactanos
                 </Link>
               </li>
-              
+
               {/* Centered ThemeSwitcher */}
               <div className="flex justify-center mt-4">
                 <div className="cursor-pointer">

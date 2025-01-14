@@ -56,7 +56,7 @@ const ContactForm = () => {
             {/* Información de contacto */}
             <div className="bg-gradient-to-r from-[#e0f9f6] via-[#e0f9f6] to-[#e0f9f6] dark:from-[#0a0326] dark:via-[#1a0e4b] dark:to-[#0a0326] rounded-3xl text-black dark:text-white p-6 md:p-8 flex flex-col items-center md:items-start md:w-1/2">
               <p className="mb-2 text-center text-2xl md:text-left">correo</p>
-              <p className="mb-6 text-center md:text-left">gerencia@verycerts.com</p>
+              <p className="mb-6 text-center md:text-left">contacto@verycerts.com</p>
               <div className="mb-6 flex flex-col items-center md:items-start">
               <div className="mb-6 flex flex-col items-center md:items-start">
                   <img

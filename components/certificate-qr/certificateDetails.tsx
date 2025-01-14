@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 
-
 interface CertificateDetailsProps {
   participantData: {
     fullName: string;
@@ -55,7 +54,6 @@ interface CertificateDetailsProps {
   };
 }
 
-
 const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
   const [showModal, setShowModal] = useState(true);
   const [date, setDate] = useState(""); // Fecha dinámica en estado
@@ -73,9 +71,8 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
     corporation: [],
   };
   const formattedDate = participantData.endDate
-  ? format(new Date(participantData.endDate), "dd/MM/yyyy")
-  : "Fecha no disponible";
-
+    ? format(new Date(participantData.endDate), "dd/MM/yyyy")
+    : "Fecha no disponible";
 
   if (!showModal) {
     return null;
@@ -158,7 +155,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
             <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
-                <strong>ID del certificado:</strong>{" "}
+                <strong>ID del certificado:</strong>&nbsp;
                 {participantData?.code || "Código no disponible"}
               </span>
             </div>
@@ -169,16 +166,18 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
                 <span>
                   <strong>Horas de capacitación:</strong>{" "}
                   {/* {participantData.corporation[0]?.corporation.graduate[0].hours || "0" } horas */}
-                  {participantData.corporation?.[0]?.corporation?.graduate?.[0]?.hours || "0"} horas
-
+                  {participantData.corporation?.[0]?.corporation?.graduate?.[0]
+                    ?.hours || "0"}{" "}
+                  horas
                 </span>
-               
               </div>
 
               <div className="flex items-center space-x-2">
                 <LucideGraduationCap className="text-cyan-500" size={20} />
                 <span>
-                  <strong>Créditos:</strong> {participantData.corporation?.[0]?.corporation?.graduate?.[0]?.credits || "0"}{" "}
+                  <strong>Créditos:</strong>{" "}
+                  {participantData.corporation?.[0]?.corporation?.graduate?.[0]
+                    ?.credits || "0"}{" "}
                   créditos
                 </span>
               </div>
@@ -190,7 +189,6 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
                 </span>
               </div>
             </div>
-
           </div>
         </div>
       </div>

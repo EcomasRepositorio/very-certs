@@ -230,7 +230,7 @@ const Footer: React.FC = () => {
                   <HiOutlineMail size={20} className="mr-2" />
                   <Link href="gerencia@verycerts.com">
                     {/* colocar correo */}
-                    <span className="hover:underline"> gerencia@verycerts.com</span>
+                    <span className="hover:underline"> contacto@verycerts.com</span>
                   </Link>
                 </li>
                 <li className="flex items-center">

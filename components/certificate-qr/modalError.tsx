@@ -43,18 +43,18 @@ export const ModalError = () => {
         <p className="text-gray-800 font-light text-lgmb-2">
           No encontramos información asociada a este código QR. Si necesitas
           ayuda, ponte en contacto con nuestro equipo de soporte.
-        </p>
-        <p className="text-gray-600 text-lg font-semibold text-center flex items-center space-x-2 mt-2">
-          {/* Enlace que redirige a WhatsApp con un mensaje predefinido */}
-          <a
-            href="https://wa.me/994946573?text=Hola,%20el%20código%20QR%20de%20mi%20certificado%20me%20lleva%20a%20un%20error."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-center space-x-2 hover:underline"
-          >
-            <span className="underline ml-24 ">Haz click aquí</span>
-            <FcOnlineSupport className="text-2xl" />
-          </a>
+          <p className="text-gray-600 text-lg font-semibold text-center mt-2 flex items-center justify-center">
+            {/* Enlace que redirige a WhatsApp con un mensaje predefinido */}
+            <a
+              href="https://wa.me/994946573?text=Hola,%20el%20código%20QR%20de%20mi%20certificado%20me%20lleva%20a%20un%20error."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-center space-x-2 hover:underline"
+            >
+              <span className="underline ">Haz click aquí</span>
+              <FcOnlineSupport className="text-2xl" />
+            </a>
+          </p>
         </p>
 
         {/* Espaciado para una mejor simetría */}

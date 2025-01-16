@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import errorAnimation from "../../public/certificate/qr/animation/error.json";
+import { FcOnlineSupport } from "react-icons/fc";
 
 export const ModalError = () => {
   const [showModal, setShowModal] = useState(true);
@@ -12,7 +13,7 @@ export const ModalError = () => {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/60 dark:bg-black/80 bg-opacity-60 z-50">
-      <div className="relative bg-gradient-to-br from-white via-gray-100 to-gray-300 dark:from-black dark:via-[#001A6E] dark:to-black bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow-lg p-6 sm:p-8 transition-all max-w-md w-[90%] text-center">
+      <div className="relative  bg-slate-200 bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow-lg p-6 sm:p-8 transition-all max-w-md w-[90%] text-center">
         {/* Botón para cerrar */}
         <button
           aria-label="Cerrar modal"
@@ -26,24 +27,34 @@ export const ModalError = () => {
         </button>
 
         {/* Animación Lottie */}
-        <div className="flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center mb-2 mt-6">
           <Player
             autoplay
             loop
             src={errorAnimation}
-            style={{ height: "350px", width: "350px" }}
+            style={{ height: "320px", width: "320px" }}
           />
         </div>
 
         {/* Contenido del Modal */}
-        <div className="text-2xl font-bold text-red-500 mb-4">
+        <div className="text-3xl font-bold text-red-500 mb-4">
           Ups, algo salió mal!
         </div>
-        <p className="text-gray-800 dark:text-white mb-2">
-          No encontramos información asociada a este código QR.
+        <p className="text-gray-800 font-light text-lgmb-2">
+          No encontramos información asociada a este código QR. Si necesitas
+          ayuda, ponte en contacto con nuestro equipo de soporte.
         </p>
-        <p className="text-gray-600 dark:text-gray-300 text-sm">
-          Si necesitas ayuda, ponte en contacto con nuestro equipo de soporte.
+        <p className="text-gray-600 text-lg font-semibold text-center flex items-center space-x-2 mt-2">
+          {/* Enlace que redirige a WhatsApp con un mensaje predefinido */}
+          <a
+            href="https://wa.me/994946573?text=Hola,%20el%20código%20QR%20de%20mi%20certificado%20me%20lleva%20a%20un%20error."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center text-center space-x-2 hover:underline"
+          >
+            <span className="underline ml-24 ">Haz click aquí</span>
+            <FcOnlineSupport className="text-2xl" />
+          </a>
         </p>
 
         {/* Espaciado para una mejor simetría */}

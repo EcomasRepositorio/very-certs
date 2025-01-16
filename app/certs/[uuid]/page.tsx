@@ -26,14 +26,7 @@ export default async function CertPage({ params }: CertPageProps) {
     return (
       <section className="relative min-h-screen w-full">
         <VideoBackground />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-          <div className="bg-gradient-to-br from-black via-[#001A6E] to-black bg-[length:200%] animate-gradient-move font-semibold rounded-2xl shadow p-5 max-w-md w-full text-center">
-            <h2 className="text-2xl text-red-500 font-bold mb-4">Error</h2>
-            <p className="text-white">
-              El identificador ingresado no es válido. Por favor, verifica el QR.
-            </p>
-          </div>
-        </div>
+        <ModalError />
       </section>
     );
   }

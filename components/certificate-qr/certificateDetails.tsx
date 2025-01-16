@@ -49,7 +49,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/80 z-50">
-      <div className="relative bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 max-w-4xl w-full">
+      <div className="relative bg-slate-200 rounded-xl shadow-lg p-8 max-w-4xl w-full">
         <button
           aria-label="Cerrar modal"
           onClick={() => {
@@ -71,14 +71,14 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
             height={200}
             className="h-24 w-auto object-contain hidden dark:hidden lg:block"
           />
-          {/* Logo para pantallas oscuras */}
-          <Image
+        
+          {/* <Image
             src={"/certificate/logos/VERTICAL_BLANCO.svg"}
             alt="Logo de Very Certs Dark"
             width={200}
             height={200}
             className="h-24 w-auto object-contain hidden dark:block lg:block"
-          />
+          /> */}
         </div>
 
         <div className="flex">

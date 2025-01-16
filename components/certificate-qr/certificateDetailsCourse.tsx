@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./Style.css";
 import Image from "next/image";
@@ -14,64 +14,21 @@ import {
   X,
 } from "lucide-react";
 import { format } from "date-fns";
+import { CertificateDetailsPropsCourse } from "@/components/utils/format/types";
 
-interface CertificateDetailsProps {
-  courseData: {
-    id: number;
-    fullName: string; // Nombre completo del participante
-    code: string; // Código del certificado
-    uuidCode: string; // Código único del certificado
-    quota: {
-      id: number;
-      name: string; // Nombre de la cuota
-      code: string; // Código de la cuota
-      dateReceipt: string; // Fecha de recibo
-      hourReceipt: string; // Hora de recibo
-      price: string; // Precio de la cuota
-      state: boolean; // Estado de la cuota (pagado o no)
-      date: string; // Fecha de vencimiento de la cuota
-      observation: string; // Observaciones
-      observationOption: string; // Opción de observación
-      moduleId: number; // ID del módulo relacionado
-      createdAt: string; // Fecha de creación
-      updatedAt: string; // Fecha de actualización
-      studentCourseId: number; // ID del curso del estudiante
-    }[];
-    module: {
-      module: {
-        id: number; // ID del módulo
-        name: string; // Nombre del módulo
-        endDate: string; // Fecha de fin del módulo
-        corporation: {
-          institute: string | null; // Instituto relacionado (puede ser nulo)
-        }[];
-      };
-    }[];
-    corporation: {
-      corporation: {
-        id: number; // ID de la corporación
-        name: string; // Nombre de la corporación
-        icon: string; // URL del icono de la corporación
-        image: string; // URL de la imagen de la corporación
-      };
-    }[];
-  };
-}
-
-const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
+const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
-  const corporationData = courseData?.corporation?.[0]?.corporation || {
-    name: "Corporación no disponible",
-    icon: "",
-    image: "",
-  };
+  const API_BASE_URL = "https://backclassroom.ecomas.pe";
+
+  const corpotationImageUrl = courseData.corporation?.[0]?.corporation?.icon
+    ? `${API_BASE_URL}${courseData.corporation[0].corporation.icon}`
+    : null;
 
   const formattedDate = courseData?.module[0].module.endDate
-  ? format(new Date(courseData?.module[0].module.endDate), "dd/MM/yyyy")
-  : "Fecha no disponible";
-
+    ? format(new Date(courseData?.module[0].module.endDate), "dd/MM/yyyy")
+    : "Fecha no disponible";
 
   const moduleNames =
     courseData?.module?.map((mod) => mod.module.name).join(", ") ||
@@ -96,35 +53,47 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
           <X size={24} />
         </button>
 
+        {/* Logo de Very Certs alineado en la esquina superior derecha */}
+        <div className="hidden lg:flex absolute top-20 right-16  flex-col items-end space-y-2">
+          <Image
+            src={"/certificate/logos/VERTICAL_COLOR.svg"}
+            alt="Logo de Very Certs claro"
+            width={200}
+            height={200}
+            className="h-24 w-auto object-contain hidden dark:hidden lg:block"
+          />
+          <Image
+            src={"/certificate/logos/VERTICAL_BLANCO.svg"}
+            alt="Logo de Very Certs oscuro"
+            width={200}
+            height={200}
+            className="h-24 w-auto object-contain hidden dark:block lg:block"
+          />
+        </div>
+
         {/* Barra lateral azul */}
         <div className="flex">
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
           <div className="flex-1 p-6">
             {/* Encabezado con logo */}
-            <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                <div className="text-xl font-bold text-gray-800 dark:text-gray-100">
                   ORGANIZADO POR:
-                </h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">
-                  VERY CERTS
-                </p>
-              </div>
-              <div>
-                <Image
-                  src={"/certificate/qr/log-light.png"}
-                  alt="Logo de Very Certs claro"
-                  width={200}
-                  height={200}
-                  className="h-32 w-auto object-contain block dark:hidden"
-                />
-                <Image
-                  src={"/certificate/qr/log-dark.png"}
-                  alt="Logo de Very Certs oscuro"
-                  width={200}
-                  height={200}
-                  className="h-32 w-auto object-contain hidden dark:block"
-                />
+                </div>
+                <div className="mt-6">
+                  {corpotationImageUrl ? (
+                    <Image
+                      src={corpotationImageUrl}
+                      alt="Logo de la corporación - courses"
+                      width={250}
+                      height={250}
+                      className="rounded-lg object-cover"
+                    />
+                  ) : (
+                    <p>Logo no disponible</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -165,8 +134,8 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
             <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
-                <strong>ID del certificado: </strong>{" "}
-                {courseData?.code || "Código no disponible"}
+                <strong>Doc. de Identidad: </strong>&nbsp;
+                {courseData?.documentNumber || "Código no disponible"}
               </span>
             </div>
 
@@ -174,12 +143,9 @@ const CertificateDetails = ({ courseData }: CertificateDetailsProps) => {
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
-                  <strong>Horas de capacitación:</strong>{" "}
-                 50 horas
+                  <strong>Horas de capacitación:</strong> 50 horas
                 </span>
-               
               </div>
-
 
               <div className="flex items-center space-x-2">
                 <LucideCalendarDays className="text-cyan-500" size={20} />

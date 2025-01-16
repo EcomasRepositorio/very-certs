@@ -14,52 +14,21 @@ import {
   X,
 } from "lucide-react";
 import { format } from "date-fns";
-
-interface CertificateDetailsProps {
-  participantData: {
-    fullName: string;
-    code: string;
-    graduate: {
-      graduate: {
-        id: number;
-        name: string; // Nombre del curso
-      };
-    }[];
-    corporation: {
-      corporation: {
-        id: number;
-        name: string; // Nombre de la corporación
-        image: string; // URL del logo de la corporación
-        graduate: {
-          credits: string; // Créditos
-          hours: string; // Horas
-          institute: {
-            id: number;
-            name: string; // Nombre del instituto
-            image: string; // URL del logo del instituto
-            icon: string | null; // Ícono del instituto
-          };
-        }[];
-        module: {
-          module: {
-            id: number;
-            name: string; // Nombre del módulo
-            startDate: string; // Fecha de inicio
-            endDate: string; // Fecha de fin
-          };
-        }[];
-      };
-    }[];
-    endDate: string; // Fecha de fin del curso
-  };
-}
+import { CertificateDetailsProps } from "@/components/utils/format/types";
 
 const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
   const [showModal, setShowModal] = useState(true);
   const [date, setDate] = useState(""); // Fecha dinámica en estado
   const router = useRouter();
 
+  const API_BASE_URL = "https://backclassroom.ecomas.pe";
+
   console.log(participantData);
+
+  const corpotationImageUrl = participantData.corporation?.[0]?.corporation
+    ?.icon
+    ? `${API_BASE_URL}${participantData.corporation[0].corporation.icon}`
+    : null;
 
   useEffect(() => {
     // Establecer la fecha dinámica solo en el cliente
@@ -92,33 +61,47 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
           <X size={24} />
         </button>
 
+        {/* Logo de Very Certs posicionado en la esquina superior derecha */}
+        <div className="hidden lg:flex absolute top-20 right-16 flex-col items-end space-y-2">
+          {/* Logo para pantallas claras */}
+          <Image
+            src={"/certificate/logos/VERTICAL_COLOR.svg"}
+            alt="Logo de Very Certs Light"
+            width={200}
+            height={200}
+            className="h-24 w-auto object-contain hidden dark:hidden lg:block"
+          />
+          {/* Logo para pantallas oscuras */}
+          <Image
+            src={"/certificate/logos/VERTICAL_BLANCO.svg"}
+            alt="Logo de Very Certs Dark"
+            width={200}
+            height={200}
+            className="h-24 w-auto object-contain hidden dark:block lg:block"
+          />
+        </div>
+
         <div className="flex">
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
           <div className="flex-1 p-6">
-            <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                <div className="text-xl font-bold text-gray-800 dark:text-gray-100">
                   ORGANIZADO POR:
-                </h1>
-                <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">
-                  VERY CERTS
-                </p>
-              </div>
-              <div>
-                <Image
-                  src={"/certificate/qr/log-light.png"}
-                  alt="Logo de Very Certs claro"
-                  width={200}
-                  height={200}
-                  className="h-32 w-auto object-contain block dark:hidden"
-                />
-                <Image
-                  src={"/certificate/qr/log-dark.png"}
-                  alt="Logo de Very Certs oscuro"
-                  width={200}
-                  height={200}
-                  className="h-32 w-auto object-contain hidden dark:block"
-                />
+                </div>
+                <div className="mt-6">
+                  {corpotationImageUrl ? (
+                    <Image
+                      src={corpotationImageUrl}
+                      alt="Logo de la corporación - graduates"
+                      width={250}
+                      height={250}
+                      className=" object-cover"
+                    />
+                  ) : (
+                    <p>Logo no disponible</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -155,8 +138,8 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
             <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
-                <strong>ID del certificado:</strong>&nbsp;
-                {participantData?.code || "Código no disponible"}
+                <strong>Doc. de Identidad:</strong>&nbsp;
+                {participantData?.documentNumber || "Código no disponible"}
               </span>
             </div>
 
@@ -165,7 +148,6 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
                   <strong>Horas de capacitación:</strong>{" "}
-                  {/* {participantData.corporation[0]?.corporation.graduate[0].hours || "0" } horas */}
                   {participantData.corporation?.[0]?.corporation?.graduate?.[0]
                     ?.hours || "0"}{" "}
                   horas

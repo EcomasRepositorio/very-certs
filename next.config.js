@@ -3,8 +3,19 @@
  */
 const nextConfig = {
   reactStrictMode: true, // Habilita el modo estricto para encontrar problemas.
-  swcMinify: true, // Asegura que se use el nuevo minificador de Next.js.
-  output: 'standalone', // Opcional, útil si estás usando contenedores.
+  swcMinify: true, // Usa el minificador SWC de Next.js para optimización.
+  output: 'standalone', // Útil si despliegas en contenedores.
+
+  // Configuración para imágenes externas
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'backclassroom.ecomas.pe', // Reemplaza con tu dominio
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

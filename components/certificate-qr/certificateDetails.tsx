@@ -49,14 +49,14 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/80 z-50">
-      <div className="relative bg-slate-200 rounded-xl shadow-lg p-8 max-w-4xl w-full">
+      <div className="relative bg-slate-200 dark:bg-slate-200 rounded-xl shadow-lg p-8 max-w-4xl w-full">
         <button
           aria-label="Cerrar modal"
           onClick={() => {
             setShowModal(false);
             setTimeout(() => router.push("/certs/"), 300);
           }}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-700 dark:hover:text-gray-900"
         >
           <X size={24} />
         </button>
@@ -86,7 +86,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
           <div className="flex-1 p-6">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <div className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                <div className="text-xl font-bold text-gray-800 dark:text-gray-800">
                   ORGANIZADO POR:
                 </div>
                 <div className="mt-6">
@@ -105,23 +105,23 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
               </div>
             </div>
 
-            <p className="text-base text-gray-600 dark:text-gray-300 mb-2">
+            <p className="text-base text-gray-600 dark:text-gray-600 mb-2">
               Certificado verificado a nombre de:
             </p>
 
-            <div className="font-semibold text-3xl text-gray-800 dark:text-gray-100 mb-6">
+            <div className="font-semibold text-3xl text-gray-800 dark:text-gray-800 mb-6">
               {participantData?.fullName || "Nombre del participante"}
             </div>
 
-            <p className="text-base text-gray-800 dark:text-gray-100 mb-4">
+            <p className="text-base text-gray-800 dark:text-gray-800 mb-4">
               Por culminar con éxito el Diplomado:
             </p>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 border-l-4 border-cyan-500">
+            <div className="bg-gray-100 dark:bg-gray-100 rounded-lg p-4 border-l-4 border-cyan-500">
               <div>
-                <div className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                <div className="text-lg font-semibold text-gray-800 dark:text-gray-800">
                   {graduateData?.name || "Nombre del curso no disponible"}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                <div className="text-sm text-gray-600 dark:text-gray-600 flex items-center">
                   Completado
                   <div className="w-6 h-6 ml-0">
                     <Player
@@ -135,7 +135,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
               </div>
             </div>
 
-            <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
+            <div className="flex items-center text-gray-600 dark:text-gray-600 mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
                 <strong>Doc. de Identidad:</strong>&nbsp;
@@ -143,7 +143,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
               </span>
             </div>
 
-            <div className="mt-4 text-gray-600 dark:text-gray-300 text-base space-y-3">
+            <div className="mt-4 text-gray-600 dark:text-gray-600 text-base space-y-3">
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>

@@ -21,7 +21,7 @@ export const ModalError = () => {
             setShowModal(false);
             setTimeout(() => router.push("/certs/"), 300);
           }}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 "
         >
           <X size={24} />
         </button>
@@ -40,10 +40,10 @@ export const ModalError = () => {
         <div className="text-3xl font-bold text-red-500 mb-4">
           Ups, algo salió mal!
         </div>
-        <p className="text-gray-800 font-light text-lgmb-2">
+        <div className="text-gray-800 font-light text-lgmb-2">
           No encontramos información asociada a este código QR. Si necesitas
           ayuda, ponte en contacto con nuestro equipo de soporte.
-          <p className="text-gray-600 text-lg font-semibold text-center mt-2 flex items-center justify-center">
+          <div className="text-gray-600 text-lg font-semibold text-center mt-2 flex items-center justify-center">
             {/* Enlace que redirige a WhatsApp con un mensaje predefinido */}
             <a
               href="https://wa.me/994946573?text=Hola,%20el%20código%20QR%20de%20mi%20certificado%20me%20lleva%20a%20un%20error."
@@ -54,8 +54,8 @@ export const ModalError = () => {
               <span className="underline ">Haz click aquí</span>
               <FcOnlineSupport className="text-2xl" />
             </a>
-          </p>
-        </p>
+          </div>
+        </div>
 
         {/* Espaciado para una mejor simetría */}
         <div className="mt-4" />

@@ -88,7 +88,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
                       alt="Logo de la corporación - courses"
                       width={250}
                       height={250}
-                      className="rounded-lg object-cover"
+                      className="object-cover"
                     />
                   ) : (
                     <p>Logo no disponible</p>

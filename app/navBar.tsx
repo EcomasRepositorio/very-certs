@@ -1,46 +1,114 @@
-// Navbar.js
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaUserCog } from "react-icons/fa";
 import ThemeSwitcher from "../components/ThemeSwitcher"; // Asegúrate de que la ruta sea correcta
+import { useTheme } from "next-themes";
+import NavLinks from "./nav-links";
+import { PiUserCircleFill } from "react-icons/pi";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
+  NavbarContent,
+  NavbarItem,
+  Button,
+} from "@nextui-org/react";
 
-function Navbar() {
-  const [navbar, setNavbar] = useState(false);
+const Header = () => {
+  const { theme, resolvedTheme } = useTheme();
+  const [imageSrc, setImageSrc] = useState("/certificate/logos/HORIZONTAL_COLOR.svg"); // imagen por defecto
+
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  useEffect(() => {
+    // actualiza la imagen cuando el tema cambia
+    setImageSrc(
+      resolvedTheme === "dark"
+        ? "/certificate/logos/HORIZONTAL_BLANCO.svg"
+        : "/certificate/logos/HORIZONTAL_COLOR.svg"
+    );
+  }, [resolvedTheme]);
+  const handleMenuItemClick = () => {
+    // Cierra el menú al hacer clic en un elemento
+    setIsMenuOpen(false);
+  };
+  const menuItems = [
+    {
+      name: "Inicio",
+      href: "/",
+    },
+    {
+      name: "Servicios",
+      href: "/#servicios",
+    },
+    {
+      name: "Validación de certificados",
+      href: "/certs",
+    },
+    {
+      name: "Contáctanos",
+      href: "/#contact",
+    },
+  ];
 
   return (
-    <div className="">
-      <nav className="w-full h-44 top-0 left-0 right-0 z-50 bg-primaryBlue/10 backdrop-blur-md fixed bg-black/10 ">
-        {" "}
-        {/* Cambiado a 'fixed' */}
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0.5">
-          <div className="md:text-right text-center font-semibold w-full border-b border-[#00dbb8] py-1 mb-4">
-            <Link
-              href="/login"
-              className="mr-3 p-2 hover:bg-testCian/20 hover:text-white rounded-sm font-extralight"
-            >
-              Iniciar sesion
+    <>
+      <Navbar
+        shouldHideOnScroll
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        maxWidth={"full"}
+        position="sticky"
+        className="z-0 hidden md:block   bg-white dark:bg-blackblue"
+      >
+        <Link href="/">
+          <Image
+            src={imageSrc}
+            alt="Imagen banner"
+            width={150}
+            height={150}
+            className="hidden md:block "
+          />
+        </Link>
+        <NavbarContent justify="center">
+          <NavbarItem>
+            <Link href="/login" passHref legacyBehavior>
+              <Button className="bg-customBlue dark:bg-blackblue2 border-blue-200 border text-white hover:scale-105">
+                Iniciar Sesión
+                <PiUserCircleFill className="text-2xl text-customWhiteOcean hover:text-customOrange dark:hover:text-customOrange dark:text-customWhiteOcean" />
+              </Button>
             </Link>
-          </div>
-        </div>
-        <div className="justify-between px-2 lg:px-0 mx-auto lg:max-w-7xl md:items-center md:flex">
-          <div>
-            <div className="items-center inline-flex justify-between py-0 md:py- lg:py- md:block">
-              {/* LOGO */}
+          </NavbarItem>
+        </NavbarContent>
+      </Navbar>
+      <Navbar
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        className="z-20  bg-customGreen dark:bg-blackblue2 "
+        position="sticky"
+      >
+        <NavbarContent className="sm:hidden w-full" justify="center">
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          />
+          <NavbarBrand>
+            <div className="flex items-center justify-between w-full">
               <Link href="/">
                 {/* Logo para modo claro */}
                 <Image
-                  src="/certificate/logos/HORIZONTAL_BLANCO.svg"
+                  src="/certificate/logos/HORIZONTAL_COLOR.svg"
                   width={900}
                   height={900}
                   alt="logo_claro"
-                  className="w-36 h-36 dark:hidden" // Visible solo en modo claro
+                  className="w-32 h-32 dark:hidden" // Visible solo en modo claro
                   priority={true}
                 />
                 {/* Logo para modo oscuro */}
                 <Image
-                  src="/certificate/logos/HORIZONTAL_COLOR.svg"
+                  src="/certificate/logos/HORIZONTAL_BLANCO.svg"
                   width={900}
                   height={900}
                   alt="logo_oscuro"
@@ -48,117 +116,46 @@ function Navbar() {
                   priority={true}
                 />
               </Link>
-              {/* HAMBURGER BUTTON FOR MOBILE */}
-              <div className="md:hidden ml-44 ">
-                <button
-                  className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
-                  onClick={() => setNavbar(!navbar)}
-                >
-                  {navbar ? (
-                    <Image
-                      src="/icons/close.png"
-                      width={30}
-                      height={30}
-                      alt="logo"
-                      className="text-white"
-                      priority={true}
-                    />
-                  ) : (
-                    <Image
-                      src="/icons/menu.png"
-                      width={30}
-                      height={30}
-                      alt="logo"
-                      className="focus:border-none active:border-none"
-                      priority={true}
-                    />
-                  )}
+              <div>
+                <Link href="/certs">
+                  <Button className="bg-customBlue dark:bg-blackblue2 border-blue-200 border text-white hover:scale-105">
+                    Iniciar Sesión
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </NavbarBrand>
+        </NavbarContent>
+
+        <NavbarContent className="hidden sm:flex gap-4 " justify="end">
+          <NavLinks />
+
+          <NavbarContent justify="end">
+            <ThemeSwitcher />
+          </NavbarContent>
+        </NavbarContent>
+        <NavbarMenu>
+          {menuItems.map((link, index) => (
+            <NavbarMenuItem key={index}>
+              <Link
+                color="primary"
+                href={link.href}
+                className="text-lg mr-4"
+                onClick={handleMenuItemClick} // Agrega un manejador de clic para cerrar el menú
+              >
+                <button className=" w-full bg-customBlue dark:bg-customDark border border-customGreenm dark:border-white text-white  py-2 px-6 rounded-2xl">
+                  {link.name}
                 </button>
-              </div>
-            </div>
+              </Link>
+            </NavbarMenuItem>
+          ))}
+          <div className="flex justify-center mt-4">
+            <ThemeSwitcher />
           </div>
-
-          {/* Contenido para dispositivos de escritorio */}
-          <div className={`hidden md:block ${navbar ? "block" : "hidden"}`}>
-            <div className="flex-1 justify-self-center rounded-lg pb-3 mt-2">
-              <ul className="h-screen md:h-12 lg:text-sm md:text-sm text-xl items-center justify-center md:flex">
-                {/* Enlaces del menú */}
-                {/* Agrega el contenido de los enlaces aquí */}
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 ml- md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/" onClick={() => setNavbar(!navbar)}>
-                    Inicio
-                  </Link>
-                </li>
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/#servicios" onClick={() => setNavbar(!navbar)}>
-                    Servicios
-                  </Link>
-                </li>
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/#nosotros" onClick={() => setNavbar(!navbar)}>
-                    Nosotros
-                  </Link>
-                </li>
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                    Validación de certificados
-                  </Link>
-                </li>
-                <li className="font-extralight text-xl text-black dark:text-gray-100 lg:mb-0 md:mb-0 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                  <Link href="/#contact" onClick={() => setNavbar(!navbar)}>
-                    Contáctanos
-                  </Link>
-                </li>
-
-                <div className="flex justify-end pr-4 ml-40">
-                  <ThemeSwitcher />
-                </div>
-              </ul>
-            </div>
-          </div>
-          <div className={`md:hidden ${navbar ? "block" : "hidden"}`}>
-            <ul>
-              {/* Mobile menu links */}
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/" onClick={() => setNavbar(!navbar)}>
-                  Inicio
-                </Link>
-              </li>
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/#servicios" onClick={() => setNavbar(!navbar)}>
-                  Servicios
-                </Link>
-              </li>
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/graduate" onClick={() => setNavbar(!navbar)}>
-                  Nosotros
-                </Link>
-              </li>
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/certs" onClick={() => setNavbar(!navbar)}>
-                  Validación de certificados
-                </Link>
-              </li>
-              <li className="font-extralight text-xl text-black dark:text-gray-100 mb-6 py-1 px-6 text-center border border-transparent hover:border-testCian hover:bg-white/15 rounded transition-transform transform hover:scale-125">
-                <Link href="/#contact" onClick={() => setNavbar(!navbar)}>
-                  Contactanos
-                </Link>
-              </li>
-
-              {/* Centered ThemeSwitcher */}
-              <div className="flex justify-center mt-4">
-                <div className="cursor-pointer">
-                  <ThemeSwitcher />
-                </div>
-              </div>
-            </ul>
-          </div>
-
-          {/* Agregar el ThemeSwitcher al final de la barra de navegación */}
-        </div>
-      </nav>
-    </div>
+        </NavbarMenu>
+      </Navbar>
+    </>
   );
-}
+};
 
-export default Navbar;
+export default Header;

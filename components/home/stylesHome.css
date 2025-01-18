@@ -1,49 +1,28 @@
-/*MOVE ANIMATION*/
-.moveArrow {
-    animation-name : mymove;
-    animation-iteration-count : infinite;
-    animation-direction : alternate;
-    animation-duration : 2s;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+.fonty {
+
+  font-family: "Poppins", sans-serif;
   
-  @keyframes mymove {
-    from {transform: translateY(0px);}
-    to {transform: translateY(20px)}
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #009FB2, #00E8AE);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 3s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
   }
-  
-  .swiper-card-container {
-    display: flex;
+  50% {
+    background-position: 100% 50%;
   }
-  
-  .swiper-card-container > div {
-    flex-grow: 1;
+  100% {
+    background-position: 0% 50%;
   }
-  
-  #wave {
-    position: relative;
-    height: 70px;
-    width: 600px;
-    background: #e0efe3;
-  }
-  #wave:before {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 340px;
-    height: 80px;
-    background-color: white;
-    right: -5px;
-    top: 40px;
-  }
-  #wave:after {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 300px;
-    height: 70px;
-    background-color: #e0efe3;
-    left: 0;
-    top: 27px;
-  }
+}

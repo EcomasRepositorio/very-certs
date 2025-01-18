@@ -20,6 +20,7 @@ module.exports = {
       fontFamily: {
         roboto: ["Roboto", "system-ui"],
         custom: ['"My Custom Font"', ...fontFamily.sans],
+        poppins: ["Poppins", ...fontFamily.sans],
       },
       colors: {
         primary: "#0e7ac2",
@@ -27,20 +28,24 @@ module.exports = {
         blackblue: "#1e293b",
         blackblue2: "#0f172a",
         primaryblue: "#0e7ac2",
-        primaryblack: "#262626",
-        fondDark: "#140d2f",
+        customGreen: "#e0f9f6",
+        customDark: "#140d2f",
+        customBlue: "#009FB2",
+        customCian: "#00E8AE",
+        textrosa: "#ff00d4",
+        textblue: "#0060ff",
+        tertiary: "#390763", // Mover colores adicionales aquí
       },
       textColor: {
         textrosa: "#ff00d4",
         textblue: "#0060ff",
       },
-      /* certificados */
       animation: {
         "spin-slow-30": "spin 30s linear infinite",
         "spin-slow-25": "spin 25s linear infinite",
         "spin-slow-10": "spin 10s linear infinite",
         "marquee-infinite": "marquee 25s linear infinite",
-        "gradient-move": "gradient-move 6s infinite",
+        "gradient-move": "gradient-move 4s infinite",
       },
       keyframes: {
         marquee: {
@@ -57,45 +62,14 @@ module.exports = {
           "100%": { backgroundPosition: "0% 50%" },
         },
       },
-
       backgroundSize: {
         "200%": "200%", // Extiende el tamaño del gradiente para permitir animación
-      },
-
-
-
-
-      /* promas */
-      animation: {
-        "gradient-move": "gradient-move 6s infinite",
-      },
-      keyframes: {
-        "gradient-move": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
-      },
-      backgroundSize: {
-        "200%": "200%", // Extiende el tamaño del gradiente para la animación
-      },
-      colors: {
-        primary: "#FF3F66",
-        secondary: "#C83C7A",
-        tertiary: "#390763",
-      },
-      fontFamily2: {
-        omnes: ["Omnes", "sans-serif"], 
-        inter: ["Inter", "sans-serif"],
-        roboto: ["Roboto", "sans-serif"],
-        arial: ["Arial", "sans-serif"],
       },
       fontWeight: {
         "custom-550": "550",
       },
     },
   },
-
   darkMode: "class",
   plugins: [
     nextui({

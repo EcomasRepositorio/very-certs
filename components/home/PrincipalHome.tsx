@@ -23,7 +23,10 @@ const PrincipalHome = () => {
       <span className="font-poppins tracking-wide">autenticidad</span>
       <span className="font-light"> de los certificados en </span>
       <span className="font-poppins tracking-wide">tiempo real</span>
-      <span className="font-light"> con soluciones de confianza como VeryCerts.</span>
+      <span className="font-light">
+        {" "}
+        con soluciones de confianza como VeryCerts.
+      </span>
     </>,
     <>
       <span className="font-poppins tracking-wide">Asegure</span>
@@ -34,7 +37,6 @@ const PrincipalHome = () => {
       <span className="font-light"> y simplificada.</span>
     </>,
   ];
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,7 +46,7 @@ const PrincipalHome = () => {
   }, []);
 
   return (
-    <section className="relative flex flex-col md:flex-row items-center justify-between bg-transparent min-h-screen px-6 lg:px-20 py-10">
+    <section className="relative flex flex-col md:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-12">
       {/* Texto principal */}
       <motion.div
         className="flex-1 text-center md:text-left space-y-4 mt-10 md:mt-20 lg:-mt-40"
@@ -80,8 +82,8 @@ const PrincipalHome = () => {
         </div>
       </motion.div>
 
-      {/* Imagen hero */}
-      <div className="">
+      {/* Vista PC */}
+      <div className="hidden lg:block">
         <motion.div
           className="flex-1 mt-40 lg:mt-0 flex justify-center lg:justify-start"
           initial={{ opacity: 0, x: 50 }}
@@ -92,10 +94,22 @@ const PrincipalHome = () => {
           <HeroImage />
         </motion.div>
       </div>
+      {/* Vista Movil */}
+      <div className="block lg:hidden -mt-4">
+        <motion.div
+          className="flex-1 mb-5  lg:mt-0 flex justify-center lg:justify-start"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          style={{ transform: "scale(1.2)" }}
+        >
+          <HeroImage />
+        </motion.div>
+      </div>
 
-      {/* Gradientes decorativos */}
-      <div className="absolute w-64 h-64 bg-blue-300 rounded-full blur-3xl opacity-50 -z-10 top-20 left-4 sm:top-32 md:top-36 lg:top-40"></div>
-      <div className="absolute w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-30 -z-40 bottom-10 right-6"></div>
+      <div className="absolute w-64 h-64 bg-[#1AFFD5]/50 dark:bg-[#fff]/25 rounded-full blur-3xl opacity-30 -z-10 top-20 left-4 sm:top-32 md:top-36 lg:mt-48 lg:ml-6"></div>
+      {/* Elemento decorativo 2 */}
+      <div className="absolute w-72 h-72 bg-[#1AFFD5] dark:bg-[#fff]/40 rounded-full blur-3xl opacity-30 -z-40 bottom-10 right-6"></div>
     </section>
   );
 };

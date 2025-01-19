@@ -49,7 +49,7 @@ import {
             <Link
               key={link.name}
               href={link.href}
-              className={` font-extralight  text-xl text-gray-800 dark:text-gray-200 lg:mb-0 md:mb-0 mb-6 py-1 px-3 text-center border border-transparent hover:border-testCian hover:bg-white/15 dark:hover:bg-white/15 rounded transition-transform transform hover:scale-125
+              className={` font-light  text-xl text-gray-800 dark:text-gray-200 lg:mb-0 md:mb-0 mb-6 py-1 px-3 text-center border border-transparent hover:border-testCian hover:bg-customCian/30 dark:hover:bg-white/15 rounded-xl transition-transform transform hover:scale-125
               }`}
             >
               <p className="hidden md:block">{link.name}</p>

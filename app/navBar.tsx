@@ -1,12 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { FaUserCog } from "react-icons/fa";
-import ThemeSwitcher from "../components/ThemeSwitcher"; // Asegúrate de que la ruta sea correcta
-import { useTheme } from "next-themes";
-import NavLinks from "./nav-links";
-import { PiUserCircleFill } from "react-icons/pi";
+import React from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -17,10 +12,17 @@ import {
   NavbarItem,
   Button,
 } from "@nextui-org/react";
-
+import ThemeSwitcher from "../components/ThemeSwitcher";
+import { useTheme } from "next-themes";
+import NavLinks from "./nav-links";
+import Link from "next/link";
+import { UserCircleIcon } from "@heroicons/react/solid";
+import { PiUserCircleFill } from "react-icons/pi";
 const Header = () => {
   const { theme, resolvedTheme } = useTheme();
-  const [imageSrc, setImageSrc] = useState("/certificate/logos/HORIZONTAL_COLOR.svg"); // imagen por defecto
+  const [imageSrc, setImageSrc] = useState(
+    "/certificate/logos/HORIZONTAL_COLOR.svg"
+  ); // imagen por defecto
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   useEffect(() => {
@@ -36,22 +38,10 @@ const Header = () => {
     setIsMenuOpen(false);
   };
   const menuItems = [
-    {
-      name: "Inicio",
-      href: "/",
-    },
-    {
-      name: "Servicios",
-      href: "/#servicios",
-    },
-    {
-      name: "Validación de certificados",
-      href: "/certs",
-    },
-    {
-      name: "Contáctanos",
-      href: "/#contact",
-    },
+    { name: "Inicio", href: "/" },
+    { name: "Servicios", href: "/#servicios" },
+    { name: "Validación de certificados", href: "/certs" },
+    { name: "Contáctanos", href: "/#contact" },
   ];
 
   return (
@@ -62,23 +52,24 @@ const Header = () => {
         onMenuOpenChange={setIsMenuOpen}
         maxWidth={"full"}
         position="sticky"
-        className="z-0 hidden md:block   bg-white dark:bg-blackblue"
+        className="z-0 hidden md:block bg-customGreen dark:bg-customDark"
       >
-        <Link href="/">
+        <Link href="/" passHref>
           <Image
             src={imageSrc}
-            alt="Imagen banner"
+            alt="Logo"
             width={150}
-            height={150}
-            className="hidden md:block "
+            height={50}
+            className="hidden md:block"
+            priority // Mejora el rendimiento
           />
         </Link>
         <NavbarContent justify="center">
           <NavbarItem>
-            <Link href="/login" passHref legacyBehavior>
-              <Button className="bg-customBlue dark:bg-blackblue2 border-blue-200 border text-white hover:scale-105">
+            <Link href="/login" passHref>
+              <Button className="bg-customBlue dark:bg-customDark border-blue-200 border text-white hover:scale-105">
                 Iniciar Sesión
-                <PiUserCircleFill className="text-2xl text-customWhiteOcean hover:text-customOrange dark:hover:text-customOrange dark:text-customWhiteOcean" />
+                <PiUserCircleFill className="text-2xl ml-2 text-customWhiteOcean hover:text-customOrange dark:text-customWhiteOcean" />
               </Button>
             </Link>
           </NavbarItem>
@@ -87,7 +78,7 @@ const Header = () => {
       <Navbar
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-        className="z-20  bg-customGreen dark:bg-blackblue2 "
+        className="z-20  bg-white dark:bg-[#0f0a23] "
         position="sticky"
       >
         <NavbarContent className="sm:hidden w-full" justify="center">
@@ -96,44 +87,40 @@ const Header = () => {
           />
           <NavbarBrand>
             <div className="flex items-center justify-between w-full">
-              <Link href="/">
-                {/* Logo para modo claro */}
+              <Link href="/" passHref>
                 <Image
                   src="/certificate/logos/HORIZONTAL_COLOR.svg"
-                  width={900}
-                  height={900}
-                  alt="logo_claro"
-                  className="w-32 h-32 dark:hidden" // Visible solo en modo claro
-                  priority={true}
+                  alt="Logo Claro"
+                  width={120}
+                  height={40}
+                  className="dark:hidden" // Visible en tema claro
                 />
-                {/* Logo para modo oscuro */}
                 <Image
                   src="/certificate/logos/HORIZONTAL_BLANCO.svg"
-                  width={900}
-                  height={900}
-                  alt="logo_oscuro"
-                  className="w-36 h-36 hidden dark:block" // Visible solo en modo oscuro
-                  priority={true}
+                  alt="Logo Oscuro"
+                  width={120}
+                  height={40}
+                  className="hidden dark:block" // Visible en tema oscuro
                 />
               </Link>
-              <div>
-                <Link href="/certs">
-                  <Button className="bg-customBlue dark:bg-blackblue2 border-blue-200 border text-white hover:scale-105">
+              {/* Botón de inicio de sesión */}
+              <NavbarItem>
+                <Link href="/login/" passHref>
+                  <Button className="bg-customBlue dark:bg-customDark border-blue-200 border text-white hover:scale-105">
                     Iniciar Sesión
                   </Button>
                 </Link>
-              </div>
+              </NavbarItem>
             </div>
           </NavbarBrand>
         </NavbarContent>
-
         <NavbarContent className="hidden sm:flex gap-4 " justify="end">
           <NavLinks />
-
           <NavbarContent justify="end">
             <ThemeSwitcher />
           </NavbarContent>
         </NavbarContent>
+
         <NavbarMenu>
           {menuItems.map((link, index) => (
             <NavbarMenuItem key={index}>
@@ -143,7 +130,7 @@ const Header = () => {
                 className="text-lg mr-4"
                 onClick={handleMenuItemClick} // Agrega un manejador de clic para cerrar el menú
               >
-                <button className=" w-full bg-customBlue dark:bg-customDark border border-customGreenm dark:border-white text-white  py-2 px-6 rounded-2xl">
+                <button className="w-full bg-customBlue dark:bg-customDark border border-customGreenm dark:border-white text-white py-2 px-6 rounded-2xl">
                   {link.name}
                 </button>
               </Link>

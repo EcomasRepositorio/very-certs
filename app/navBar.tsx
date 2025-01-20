@@ -105,10 +105,10 @@ const Header = () => {
               </Link>
               {/* Botón de inicio de sesión */}
               <NavbarItem>
-                <Link href="/login/" passHref>
-                  <Button className="bg-customBlue dark:bg-customDark border-blue-200 border text-white hover:scale-105">
+                <Link href="/login" passHref>
+                  <div className="bg-customBlue dark:bg-customDark text-base border-blue-200 border text-white hover:scale-105 p-2 rounded-xl">
                     Iniciar Sesión
-                  </Button>
+                  </div>
                 </Link>
               </NavbarItem>
             </div>

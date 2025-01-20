@@ -7,48 +7,49 @@ const NuestrosDiplomados = () => {
       <div className="flex flex-col md:flex-row items-center bg-transparent p-8 md:p-20 rounded-lg max-w-screen-xl mx-auto">
         {/* Contenedor de texto */}
         <div className="md:w-1/2 p-4 md:pr-8">
-          <span className="text-blue-600 font-semibold uppercase text-sm tracking-wide mb-2 inline-block">
+          <span className="bg-customBlue text-white py-1 px-4 rounded-full text-sm inline-block mb-4">
             NOSOTROS
           </span>
-          <h1 className="text-4xl font-extrabold text-[#009FB2] leading-tight mb-4">
-            Cómo Funciona Verycerts
-          </h1>
-          <p>
+          <div className="text-3xl md:text-4xl font-extrabold text-gray-700 dark:text-white leading-tight mb-4">
+            ¿ Cómo Funciona ?
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 font-poppins mb-6 leading-relaxed">
             Verycerts conecta a instituciones y verificadores en un sistema
             seguro y eficiente, simplificando la emisión y verificación de
             certificados educativos.
-          </p> 
-          <p className="text-gray-600 dark:text-white mb-6">
-          Para Instituciones Educativas 
+          </p>
+          <p className="text-gray-600 text-lg font-poppins font-bold dark:text-white mb-6">
+            Para Instituciones Educativas
           </p>
           <ul className="space-y-3 mb-6">
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Registro y Configuración</span>
+              <span className="font-poppins">Registro y Configuración</span>
             </li>
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Emisión</span>
+              <span className="font-poppins">Emisión</span>
             </li>
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Gestión y Almacenamiento</span>
+              <span className="font-poppins">Gestión y Almacenamiento</span>
             </li>
           </ul>
-          <p className="text-gray-600 dark:text-white mb-6">
-          Para Verificadores          </p>
+          <p className="text-gray-600 font-poppins font-bold dark:text-white mb-6">
+            Para Verificadores{" "}
+          </p>
           <ul className="space-y-3 mb-6">
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Acceso al Portal</span>
+              <span className="font-poppins">Acceso al Portal</span>
             </li>
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Verificación en Tiempo Real</span>
+              <span className="font-poppins">Verificación en Tiempo Real</span>
             </li>
             <li className="flex items-center">
               <span className="text-blue-500 text-xl mr-2">✔</span>
-              <span className="font-semibold">Informes</span>
+              <span className="font-poppins">Informes</span>
             </li>
           </ul>
         </div>
@@ -61,7 +62,6 @@ const NuestrosDiplomados = () => {
               alt="Tech Solution Image "
               className="w-[500px] h-[500px] object-cover "
             />
-           
           </div>
         </div>
       </div>

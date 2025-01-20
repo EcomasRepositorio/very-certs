@@ -16,6 +16,10 @@ module.exports = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-linear": "linear-gradient(var(--tw-gradient-stops))",
+        'green-pink-gradient': 'linear-gradient(90deg, #009FB2, #00E8AE)',
+      },
+      boxShadow: {
+        'card': '0px 10px 20px rgba(0, 0, 0, 0.15)',
       },
       fontFamily: {
         roboto: ["Roboto", "system-ui"],

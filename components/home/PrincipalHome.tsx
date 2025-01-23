@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroImage from "./hero-image";
 import { styles } from "../../components/constants/styles";
 import { config } from "../../components/constants/config";
-import "./StylesHome.css";
+import './StylesHome.css';
 
 const PrincipalHome = () => {
   const [currentText, setCurrentText] = useState(0);

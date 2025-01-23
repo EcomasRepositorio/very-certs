@@ -1,9 +1,8 @@
-//search dni con  un consumo de doble backend
 import React, { useState, FormEvent } from "react";
-import { URL, getURL } from "@/components/utils/format/tokenConfig";
+import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps, Student } from "@/interface/interface";
-import Modal from "../share/ModalCerti";
+import Modal from "../share/Modal";
 import "./Styles.css";
 import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
@@ -12,43 +11,21 @@ interface StudentCode extends Student {
   hour: string;
   institute: string;
 }
-const splitText = (text: string): string[] => {
-  const cleanText = text.trim();
 
-  const indexCorporacion = cleanText.indexOf(
-    "ECOMÁS Consultoría y Capacitación"
-  );
-  const indexFundenorp = cleanText.indexOf("FUNDENORP");
-  const indexEscuela = cleanText.indexOf(
-    "Escuela de Posgrado - Universidad Nacional de Piura"
-  );
-
-  if (indexCorporacion !== -1 && indexEscuela !== -1 && indexFundenorp !== -1) {
-    const corporacion = cleanText 
-      .substring(indexCorporacion, indexEscuela)
-      .trim();
-    const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim();
-    const fundenorp = cleanText.substring(indexFundenorp).trim();
-    return [corporacion, escuela, fundenorp];
-  }
-
-  const words = cleanText.split(" ");
-  const firstLine = words.slice(0, 9).join(" ");
-  const secondLine = words.slice(9, 15).join(" ");
-  const thirdLine = words.slice(15).join(" ");
-  return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
-};
 const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const [isActive, setIsActive] = useState(false);
-  const [queryValue, setQueryValue] = useState<string>(""); // Input value
-  const [searchType, setSearchType] = useState<string | null>(null); // Search type
-  const [loading, setLoading] = useState(false); // Loading indicator
-  const [studentData, setStudentData] = useState<Student[]>([]); // Combined results
+  const [queryValue, setQueryValue] = useState<string>("");
+  const [searchType, setSearchType] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [studentData, setStudentData] = useState<Student[]>();
   const [closeTable, setCloseTable] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [openModals, setOpenModals] = useState<boolean[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
   const [selectedStudentData, setSelectedStudentData] =
     useState<StudentCode | null>(null);
+  const [openModals, setOpenModals] = useState<boolean[]>(
+    Array(selectedStudentData ? 1 : 0).fill(false)
+  );
 
   const openStudentModal = (selectedStudent: StudentCode, index: number) => {
     setSelectedStudentData(selectedStudent);
@@ -75,64 +52,74 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const openErrorModal = () => setModalOpen(true);
   const closeErrorModal = () => setModalOpen(false);
 
-  // Adjusted function for searching in both APIs
   const searchDNI = async (event: FormEvent) => {
     event.preventDefault();
     if (queryValue.trim()) setLoading(true);
     try {
       const value = queryValue.trim();
-
-      let resultsLocal: Student[] = [];
-      let resultsRemote: Student[] = [];
-
-      // Consultar en la primera base de datos (localhost)
-      try {
-        const resLocal = await axios.get(
-          `${URL()}/student/dni/${value.trim()}/type/${searchType}`
-        );
-        resultsLocal = resLocal.data;
-      } catch (error) {
-        if (error instanceof Error) {
-          console.warn("Error en la base de datos local:", error.message);
-        } else {
-          console.warn("Error desconocido en la base de datos local:", error);
-        }
-      }
-
-      // Consultar en la segunda base de datos (API remota)
-      try {
-        const resRemote = await axios.get(
-          `${getURL()}/student/dni/${value.trim()}/type/${searchType}`
-        );
-        resultsRemote = resRemote.data;
-      } catch (error) {
-        if (error instanceof Error) {
-            console.warn("Error en la base de datos local:", error.message);
-        } else {
-            console.warn("Error desconocido en la base de datos local:", error);
-        }
-    }
-
-      // Combinar resultados de ambas bases de datos
-      const combinedData = [...resultsLocal, ...resultsRemote];
-
-      // Verificar si hay datos encontrados
-      if (combinedData.length === 0) {
-        throw new Error(
-          "No se encontraron resultados en ninguna base de datos."
-        );
-      }
-
-      // Guardar los datos en el estado
-      setStudentData(combinedData);
-      onSearchDNI(combinedData);
+      const res = await axios.get(
+        `${URL()}/student/dni/${value.trim()}/type/${searchType}`
+      );
+      setStudentData(res.data);
+      onSearchDNI(res.data);
       setCloseTable(true);
     } catch (error) {
-      console.error("Error general durante la búsqueda:", error);
+      console.error("Error: DNI inválido", error);
       openErrorModal();
     } finally {
       setLoading(false);
     }
+  };
+
+  // Función para dividir el texto según palabras clave o cantidad de palabras
+  const splitText = (text: string): string[] => {
+    // Elimina espacios innecesarios
+    const cleanText = text.trim();
+
+    // Identificamos las posiciones de las palabras clave dentro del texto
+    const indexCorporacion = cleanText.indexOf("BINEX Educación Continúa");
+    const indexFundenorp = cleanText.indexOf("FUNDENORP");
+    const indexEscuela = cleanText.indexOf("Escuela de Posgrado");
+    const indexUniversidad = cleanText.indexOf("Universidad Nacional de Piura");
+
+    // Si contiene "Escuela de Posgrado"
+    if (
+      indexCorporacion !== -1 &&
+      indexFundenorp !== -1 &&
+      indexEscuela !== -1
+    ) {
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexEscuela)
+        .trim(); // Desde "Corporación SAYAN" hasta "Escuela de Posgrado"
+      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim(); // Desde "Escuela de Posgrado" hasta "FUNDENORP"
+      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
+
+      return [corporacion, escuela, fundenorp];
+    }
+
+    // Si contiene "Universidad Nacional de Piura" (y no "Escuela de Posgrado")
+    if (
+      indexCorporacion !== -1 &&
+      indexFundenorp !== -1 &&
+      indexUniversidad !== -1
+    ) {
+      const corporacion = cleanText
+        .substring(indexCorporacion, indexUniversidad)
+        .trim(); // Desde "Corporación SAYAN" hasta "Universidad Nacional de Piura"
+      const universidad = cleanText
+        .substring(indexUniversidad, indexFundenorp)
+        .trim(); // Desde "Universidad Nacional de Piura" hasta "FUNDENORP"
+      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
+
+      return [corporacion, universidad, fundenorp];
+    }
+
+    // Si no encuentra las palabras clave, devuelve el texto dividido en palabras
+    const words = cleanText.split(" ");
+    const firstLine = words.slice(0, 9).join(" "); // Primeras 9 palabras
+    const secondLine = words.slice(9, 10).join(" "); // Palabra 10
+    const thirdLine = words.slice(10).join(" "); // Resto de las palabras
+    return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
   };
 
   const tableRows = [
@@ -184,7 +171,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           <div className=" ml-2 h-full">
             <Button
               type="submit"
-              className="bg-black  text-white border border-white/50 rounded-lg"
+              className="bg-customBlue dark:bg-customDark  text-white border border-white/50 rounded-lg"
             >
               Buscar
             </Button>
@@ -205,13 +192,13 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
                   Nombre
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Actividad académica
+                  Actividad academica
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Fecha
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Acción
+                  Accción
                 </th>
               </tr>
             </thead>
@@ -235,6 +222,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
                     </span>
                   </td>
                   <td className="px-6 py-4 truncate max-w-lg">
+                    {/* Truncate long text */}
                     <span title={student.activityAcademy}>
                       {student.activityAcademy}
                     </span>
@@ -267,13 +255,29 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           open={openModals.findIndex(Boolean) !== -1}
           onClose={() => closeStudentModal(openModals.findIndex(Boolean))}
         >
-          <div className="flex justify-center items-center mb-4 gap-2">
+          <div className="flex justify-center mb-4 gap-2">
             <Image
-              src={"/image/log-blank.png"}
-              alt="verycerts"
-              className="md:w-60   w-20  object-contain mt-2"
-              width={300}
-              height={300}
+              src={"/img/logo/unp-piura.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+            <Image
+              src={"/img/logo/logo.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+            <Image
+              src={"/img/logo/funde.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
               priority={true}
             />
           </div>
@@ -308,10 +312,10 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
       <Modal open={modalOpen} onClose={closeErrorModal}>
         <div className="p-2 rounded-lg">
           <h2 className="text-md font-bold text-red-500 mb-4">
-            Error en la búsqueda
+            DNI incorrecto
           </h2>
-          <h3 className="text-sm font-semibold text-gray-100">
-            No se encontraron resultados para el DNI o código ingresado.
+          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
+            El DNI que ingresaste no se encuentra en nuestra base de datos.
           </h3>
         </div>
       </Modal>

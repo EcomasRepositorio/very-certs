@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 interface CounterState {
   validatedCount: number; // Contador actual
   incrementCount: (value: number) => void; // Incrementar el contador
+  setCount: (value: number) => void;
 }
 
 const useCounterStore = create<CounterState>()(
@@ -13,6 +14,10 @@ const useCounterStore = create<CounterState>()(
       incrementCount: (value: number) =>
         set((state) => ({
           validatedCount: state.validatedCount + value,
+        })),
+      setCount: (value: number) =>
+        set(() => ({
+          validatedCount: value, // Establecer un nuevo valor
         })),
     }),
     {

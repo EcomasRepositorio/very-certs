@@ -1,27 +1,50 @@
 import React, { useState, FormEvent } from "react";
 import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
-import { SearchCodeProps, StudentCode } from "../../interface/interface";
+import {
+  // DataStudent,
+  SearchCodeProps,
+  StudentCode,
+} from "../../interface/interface";
 import Modal from "../share/Modal";
 import { Button } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
+
+export interface Student {
+  id: number;
+  documentNumber: string;
+  name: string;
+  code: string;
+  activityAcademy: string;
+  participation: string;
+  institute: string;
+  hour: string;
+  date: string;
+  imageCertificate: string | null;
+}
+
+export interface DataStudent {
+  count: number;
+  students: Student;
+}
 
 const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
   const [isActive, setIsActive] = useState(false);
   const [queryValue, setQueryValue] = useState<string>("");
   const [searchType, setSearchType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<StudentCode>();
+  const [studentData, setStudentData] = useState<DataStudent>();
   const [open, setOpen] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleIsActive = () => {
     setIsActive(!isActive);
   };
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value, "onChange ejecutado");
-    setQueryValue(event.target.value);
+    setQueryValue(event.target.value.trim());
     setSearchType(event.target.value);
   };
 
@@ -41,13 +64,16 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
     try {
       const value = queryValue.trim();
       const apiUrl = `${URL()}/student/code/${value}/type/${searchType}`;
-      console.log(apiUrl);
       const res = await axios.get(
         `${URL()}/student/code/${value.trim()}/type/${searchType}`
       );
-      console.log(res);
-      setStudentData(res.data);
-      onSearchCode(res.data);
+      const jsonData = res.data; // Accedes a `data` dentro de la respuesta principal
+      console.log(jsonData);
+      // Configura el estado con los datos del estudiante
+      setStudentData(jsonData);
+      onSearchCode(jsonData);
+      // setStudentData(res.data);
+      // onSearchCode(res.data);
       if (queryValue.trim() !== "") {
         setOpen(true);
       }
@@ -59,31 +85,36 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
       setLoading(false);
     }
   };
+  
+  const newStudentData = studentData?.students;
+   const count=studentData?.count
+  console.log(count)
+  console.log(studentData?.students);
   const tableRows = [
     {
       imgSrc: "/icons/organizadopor.svg",
       label: "Organizado por:",
-      value: studentData?.institute,
+      value: newStudentData?.institute,
     },
     {
       imgSrc: "/icons/otorgado.svg",
       label: "Otorgado a:",
-      value: studentData?.name,
+      value: newStudentData?.name,
     },
     {
       imgSrc: "/icons/nom_evento.svg",
       label: "Nombre del evento:",
-      value: studentData?.activityAcademy,
+      value: newStudentData?.activityAcademy,
     },
     {
       imgSrc: "/icons/creditos_horas.svg",
       label: "Creditos/Horas:",
-      value: studentData?.hour,
+      value: newStudentData?.hour,
     },
     {
       imgSrc: "/icons/fecha_emision.svg",
       label: "Fecha de emisión:",
-      value: studentData?.date,
+      value: newStudentData?.date,
     },
   ];
 
@@ -213,14 +244,14 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
                 </div>
 
                 <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                  {row.value === studentData?.institute &&
+                  {row.value === newStudentData?.institute &&
                     row.value &&
                     splitText(row.value).map((line, index) => (
                       <p key={index} className="mb-1">
                         {line}
                       </p>
                     ))}
-                  {row.value !== studentData?.institute && row.value}
+                  {row.value !== newStudentData?.institute && row.value}
                 </div>
               </div>
             ))}

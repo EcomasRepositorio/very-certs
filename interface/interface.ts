@@ -36,6 +36,11 @@ export interface StudentCode {
   date: string;
 };
 
+export interface DataStudent {
+  count: string;
+  student: StudentCode;
+};
+
 export interface StudentCodeModal extends Student {
   institute: string;
   hour: string;

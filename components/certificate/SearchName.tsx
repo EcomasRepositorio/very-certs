@@ -5,6 +5,7 @@ import { SearchNameProps, Student } from "@/interface/interface";
 import Modal from "../share/Modal";
 import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
+import useCounterStore from "@/store/counterStore";
 
 interface StudentCode extends Student {
   hour: string;
@@ -12,6 +13,7 @@ interface StudentCode extends Student {
 }
 
 const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
+  const { incrementCount } = useCounterStore();
   const [isActive, setIsActive] = useState(false);
   const [queryValue, setQueryValue] = useState<string>("");
   const [searchType, setSearchType] = useState<string>();
@@ -43,7 +45,7 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQueryValue(event.target.value);
+    setQueryValue(event.target.value); // Eliminar espacios innecesarios
     setCloseTable(false);
     setSearchType(queryValue);
   };
@@ -61,40 +63,53 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
     if (queryValue.trim()) {
       setLoading(true);
     }
+
     try {
-      const value = queryValue.trim();
+      const value = queryValue.trim(); // Limpiar el input de espacios
       if (value.split(" ").length <= 2) {
         setIsNameIncomplete(true);
         setLoading(false);
         return;
       }
+
       const res = await axios.get(
-        `${URL()}/student/name/${value.trim()}/type/${searchType}`
+        `${URL()}/student/name/${value}/type/${searchType}`
       );
-      if (res.data.length > 0) {
-      } else {
+
+      console.log("respuesta del servidor:", res.data);
+
+      if (!res.data || !Array.isArray(res.data.students)) {
+        console.error("Error: La respuesta no contiene el array 'students'");
         setIsNameIncomplete(true);
         setLoading(false);
         return;
       }
-      const filteredData = res.data.filter((student: Student) => {
-        const normalizedInput = value.trim().toLowerCase();
-        const normalizedName = student.name.trim().toLowerCase();
-        const isMatch = normalizedName === normalizedInput;
-        return isMatch;
+
+      const filteredData = res.data.students.filter((student: Student) => {
+        const normalizedInput = value.replace(/\s+/g, " ").toLowerCase(); // Normalizar entrada
+        const normalizedName = student.name.replace(/\s+/g, " ").toLowerCase(); // Normalizar nombre del estudiante
+        return normalizedName === normalizedInput; // Comparación exacta
       });
+
       console.log(filteredData);
-      console.log(res.data);
-      setStudentData(filteredData);
-      onSearchName(filteredData);
-      setCloseTable(true);
-    } catch (error) {
-      console.error("Error: Nombre invalido", error);
-      openErrorModal();
-    } finally {
-      setLoading(false);
+      if (filteredData.length > 0) {
+        setStudentData(filteredData);
+        onSearchName(filteredData);
+        setCloseTable(true);
+
+      // Aumentar el contador
+      console.log("Incrementando el contador...");
+      incrementCount(1); // Verifica que esta línea se ejecute
+    } else {
+      setIsNameIncomplete(true);
     }
-  };
+  } catch (error) {
+    console.error("Error: Nombre inválido", error);
+    openErrorModal();
+  } finally {
+    setLoading(false);
+  }
+};
   // Función para dividir el texto según palabras clave o cantidad de palabras
   const splitText = (text: string): string[] => {
     // Elimina espacios innecesarios

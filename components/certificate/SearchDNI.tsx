@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
-import { SearchDNIProps, Student } from "@/interface/interface";
+import { SearchDNIProps } from "@/interface/interface";
 import Modal from "../share/Modal";
 import "./Styles.css";
 import { Button, Spinner } from "@nextui-org/react";
@@ -12,12 +12,29 @@ interface StudentCode extends Student {
   institute: string;
 }
 
+export interface Student {
+  id: number;
+  documentNumber: string;
+  name: string;
+  code: string;
+  activityAcademy: string;
+  participation: string;
+  institute: string;
+  hour: string;
+  date: string;
+  imageCertificate: string | null;
+}
+
+export interface DataStudent {
+  students: Student[]; // Ahora es un arreglo
+}
+
 const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const [isActive, setIsActive] = useState(false);
   const [queryValue, setQueryValue] = useState<string>("");
   const [searchType, setSearchType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<Student[]>();
+  const [studentData, setStudentData] = useState<DataStudent>();
   const [closeTable, setCloseTable] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -60,6 +77,8 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
       const res = await axios.get(
         `${URL()}/student/dni/${value.trim()}/type/${searchType}`
       );
+
+      
       setStudentData(res.data);
       onSearchDNI(res.data);
       setCloseTable(true);
@@ -71,6 +90,8 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
     }
   };
 
+  const newStudentData = studentData?.students;
+  console.log(newStudentData);
   // Función para dividir el texto según palabras clave o cantidad de palabras
   const splitText = (text: string): string[] => {
     // Elimina espacios innecesarios
@@ -203,7 +224,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
               </tr>
             </thead>
             <tbody>
-              {studentData?.map((student, index) => (
+              {newStudentData?.map((student, index) => (
                 <tr
                   key={index}
                   className="bg-white border-b text-center hover:bg-gray-100"

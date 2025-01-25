@@ -28,7 +28,7 @@ function ScrollToTopButton() {
 
     return (
         <button
-            className={` animate-bounce mr-5 fixed bottom-10 right-0 bg-customBlue text-white rounded-full px-4 py-2 mb-[71px] z-50 items-center text-xs flex gap-2 transition-opacity duration-500 ${
+            className={` animate-none mr-5 fixed bottom-10 right-0 bg-customBlue text-white rounded-full px-4 py-2 mb-[71px] z-50 items-center text-xs flex gap-2 transition-opacity duration-1000 ${
                 isVisible ? 'opacity-100' : 'opacity-0'
             }`}
             onClick={scrollToTop}

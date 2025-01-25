@@ -1,9 +1,18 @@
 import React, { useState, FormEvent } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchNameProps, Student } from "@/interface/interface";
 import Modal from "../share/Modal";
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import useCounterStore from "@/store/counterStore";
 
@@ -97,19 +106,19 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
         onSearchName(filteredData);
         setCloseTable(true);
 
-      // Aumentar el contador
-      console.log("Incrementando el contador...");
-      incrementCount(1); // Verifica que esta línea se ejecute
-    } else {
-      setIsNameIncomplete(true);
+        // Aumentar el contador
+        console.log("Incrementando el contador...");
+        incrementCount(1); // Verifica que esta línea se ejecute
+      } else {
+        setIsNameIncomplete(true);
+      }
+    } catch (error) {
+      console.error("Error: Nombre inválido", error);
+      openErrorModal();
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error: Nombre inválido", error);
-    openErrorModal();
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   // Función para dividir el texto según palabras clave o cantidad de palabras
   const splitText = (text: string): string[] => {
     // Elimina espacios innecesarios
@@ -236,135 +245,108 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
       )}
       {closeTable && studentData && (
         <div className="relative overflow-x-auto shadow-xl rounded-xl mt-8">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 font-semibold">
-            <thead className="text-xm text-center text-gray-600 uppercase bg-gray-300">
-              <tr>
-                <th scope="col" className="px-6 py-3">
+          <Table className="border border-transparent bg-gray-50 dark:bg-gray-700/30 ">
+            <TableHeader>
+              <TableRow className="border border-transparent rounded-xl bg-gray-300 dark:bg-customDark">
+                <TableHead className="text-center text-gray-800 dark:text-gray-200 ">
                   #
-                </th>
-                <th scope="col" className="px-6 py-3">
+                </TableHead>
+                <TableHead className="text-center text-gray-800 dark:text-gray-200">
                   Nombre
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Actividad academica
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Fecha
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Accción
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+                <TableHead className="text-center text-gray-800 dark:text-gray-200">
+                  Acción
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {studentData?.map((student, index) => (
-                <tr
+                <TableRow
                   key={index}
-                  className="bg-white border-b text-center hover:bg-gray-100"
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
                 >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium whitespace-nowrap w-12"
-                  >
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {index + 1}
-                    </span>
-                  </th>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.name}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 truncate max-w-lg">
-                    {/* Truncate long text */}
-                    <span title={student.activityAcademy}>
-                      {student.activityAcademy}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.date}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      type="button"
+                  <TableCell className="text-center text-gray-700 dark:text-gray-100">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="text-center text-gray-700 dark:text-gray-100">
+                    {student.name}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      className="bg-customBlue text-primary-foreground hover:bg-primary/90 dark:bg-customDark dark:text-gray-100 dark:hover:bg-customDark/70"
                       onClick={() =>
                         openStudentModal(student as StudentCode, index)
                       }
-                      className="font-medium text-primaryblue dark:text-primaryblue hover:underline"
                     >
                       Ver
-                    </button>
-                  </td>
-                  {selectedStudentData && (
-                    <Modal
-                      open={openModals.findIndex(Boolean) !== -1}
-                      onClose={() =>
-                        closeStudentModal(openModals.findIndex(Boolean))
-                      }
-                    >
-                      <div className="flex justify-center mb-4 gap-2">
-                        <Image
-                          src={"/img/logo/unp-piura.png"}
-                          alt="binex"
-                          className="md:w-20 w-16  object-contain mt-2"
-                          width={400}
-                          height={400}
-                          priority={true}
-                        />
-                        <Image
-                          src={"/img/logo/logo.png"}
-                          alt="binex"
-                          className="md:w-20 w-16  object-contain mt-2"
-                          width={400}
-                          height={400}
-                          priority={true}
-                        />
-                        <Image
-                          src={"/img/logo/funde.png"}
-                          alt="binex"
-                          className="md:w-20 w-16  object-contain mt-2"
-                          width={400}
-                          height={400}
-                          priority={true}
-                        />
-                      </div>
-                      <div className="max-w-md text-center mx-auto">
-                        {tableRows.map((row, index) => (
-                          <div key={index} className="mb-4">
-                            <div className="inline-flex items-center text-white text-sm p-1 w-72 rounded-lg bg-slate-600 font-semibold">
-                              {row.imgSrc && (
-                                <Image
-                                  src={row.imgSrc}
-                                  alt={row.label}
-                                  className="w-5 h-5 object-contain ml-1"
-                                  width={200}
-                                  height={200}
-                                />
-                              )}
-                              <div className="flex-1 text-center">
-                                {row.label}
-                              </div>
-                            </div>
-                            <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                              {row.label === "Organizado por:" && row.value
-                                ? splitText(row.value).map((line, index) => (
-                                    <p key={index}>{line}</p>
-                                  ))
-                                : row.value}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Modal>
-                  )}
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
+
+      {selectedStudentData && (
+        <Modal
+          open={openModals.findIndex(Boolean) !== -1}
+          onClose={() => closeStudentModal(openModals.findIndex(Boolean))}
+        >
+          <div className="flex justify-center mb-4 gap-2">
+            <Image
+              src={"/img/logo/unp-piura.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+            <Image
+              src={"/img/logo/logo.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+            <Image
+              src={"/img/logo/funde.png"}
+              alt="binex"
+              className="md:w-20 w-16  object-contain mt-2"
+              width={400}
+              height={400}
+              priority={true}
+            />
+          </div>
+          <div className="max-w-md text-center mx-auto">
+            {tableRows.map((row, index) => (
+              <div key={index} className="mb-4">
+                <div className="inline-flex items-center text-white text-sm p-1 w-72 rounded-lg bg-slate-600 font-semibold">
+                  {row.imgSrc && (
+                    <Image
+                      src={row.imgSrc}
+                      alt={row.label}
+                      className="w-5 h-5 object-contain ml-1"
+                      width={200}
+                      height={200}
+                    />
+                  )}
+                  <div className="flex-1 text-center">{row.label}</div>
+                </div>
+                <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
+                  {row.label === "Organizado por:" && row.value
+                    ? splitText(row.value).map((line, index) => (
+                        <p key={index}>{line}</p>
+                      ))
+                    : row.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
+
       <Modal open={modalOpen} onClose={closeErrorModal}>
         <div className="border-2 p-2 rounded-lg">
           <h2 className="text-md font-bold text-red-600 mb-4">

@@ -13,7 +13,7 @@ interface Props {}
 
 const TestingPage: React.FC<Props> = () => {
   const { validatedCount } = useCounterStore();
-  
+
   const handleSearch = (data: any) => {
     console.log("Search data:", data);
 
@@ -24,18 +24,31 @@ const TestingPage: React.FC<Props> = () => {
   };
 
   return (
-    <section className="bg-fixed">
-      <div
-        style={{
-          backgroundAttachment: "fixed",
-          backgroundImage: "url(/certificate/image/test_bg.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+    <section className=" bg-fixed  " style={{}}>
+      <div className="relative">
+        {/* Imagen para modo Light */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
+          style={{
+            backgroundImage: "url(/certificate/image/blue_bg_5.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+
+        {/* Imagen para modo Dark */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
+          style={{
+            backgroundImage: "url(/certificate/image/test_bg.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+
         <div className="py-8 mx-auto max-w-screen-xl lg:py-10">
           <div style={{ position: "relative", width: "100%" }}>
-            <div className="bg-transparent border border-white/55 rounded-lg p-4 sm:p-6 md:p-8 lg:p-12 mx-2">
+            <div className="bg-transparent backdrop-blur-sm border border-white/30 rounded-lg p-4 sm:p-6 md:p-8 lg:p-12 mx-2">
               <div className="flex flex-col items-center justify-center mx-auto px-4 py-8 max-w-screen-xl gap-6 md:flex-row md:gap-12">
                 {/* Left Section */}
 
@@ -53,7 +66,7 @@ const TestingPage: React.FC<Props> = () => {
                         tabList:
                           "w-full flex flex-col md:flex-row bg-transparent rounded-md border border-gray-300/40",
                         cursor:
-                          "bg-customDark rounded-md border border-white/70 text-gray-100",
+                          "bg-customBlue dark:bg-[#240c60] rounded-md border border-white/70 text-gray-100",
                         tab: "py-2 px-4 rounded-t-lg text-gray-100",
                         tabContent:
                           "group-data-[selected=true]:text-gray-100 text-g-100",
@@ -98,7 +111,7 @@ const TestingPage: React.FC<Props> = () => {
 
                 {/* Right Section */}
                 <div className="grid grid-cols-1 gap-6 md:mt-0 md:w-1/2">
-                  <div className="text-white text-center font-poppins bg-[#021221]/70 p-4 rounded-lg">
+                  <div className="text-white text-center font-poppins bg-[#1a4671]/70 dark:bg-[#021221]/70 p-4 rounded-lg">
                     <h3 className="text-lg md:text-xl font-semibold">
                       ¿Cómo verificar un certificado?
                     </h3>
@@ -110,7 +123,7 @@ const TestingPage: React.FC<Props> = () => {
                       personales.
                     </p>
                   </div>
-                  <div className="text-center text-white bg-[#021221]/70 p-4 rounded-lg">
+                  <div className="text-center text-white bg-[#1a4671]/70 dark:bg-[#021221]/70 p-4 rounded-lg">
                     <h3 className="text-lg md:text-xl font-semibold">
                       Certificados Validados
                     </h3>
@@ -119,7 +132,7 @@ const TestingPage: React.FC<Props> = () => {
                     </p>
                     <p className="text-sm md:text-base mt-2">¡Y contando!</p>
                   </div>
-                  <div className="text-white text-center font-poppins bg-[#021221]/70 p-4 rounded-lg">
+                  <div className="text-white text-center font-poppins bg-[#1a4671]/70 dark:bg-[#021221]/70 p-4 rounded-lg">
                     <h3 className="text-lg md:text-xl font-semibold">
                       Soporte Técnico
                     </h3>

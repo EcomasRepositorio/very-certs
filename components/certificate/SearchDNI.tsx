@@ -1,10 +1,19 @@
 import React, { useState, FormEvent } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { URL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps } from "@/interface/interface";
 import Modal from "../share/Modal";
 import "./Styles.css";
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import Image from "next/image";
 
 interface StudentCode extends Student {
@@ -78,13 +87,26 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
         `${URL()}/student/dni/${value.trim()}/type/${searchType}`
       );
 
-      
-      setStudentData(res.data);
-      onSearchDNI(res.data);
-      setCloseTable(true);
+      if (
+        res.data &&
+        Array.isArray(res.data.students) &&
+        res.data.students.length > 0
+      ) {
+        // Hay coincidencias, muestra los datos
+        setStudentData(res.data);
+        onSearchDNI(res.data);
+        setCloseTable(true);
+      } else {
+        // No hay coincidencias, muestra el modal de error
+        openErrorModal();
+        setStudentData(undefined); // Asegúrate de limpiar los datos de estudiantes
+        setCloseTable(false);
+      }
     } catch (error) {
       console.error("Error: DNI inválido", error);
       openErrorModal();
+      setStudentData(undefined); // Limpia los datos si hay un error
+      setCloseTable(false);
     } finally {
       setLoading(false);
     }
@@ -179,8 +201,8 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
             <input
               type="search"
               id="default-search"
-              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white  focus:border-primaryblue  m-0"
-              placeholder={`Ingrese su DNI${
+              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white  focus:border-transparent  m-0"
+              placeholder={`Ingrese su Documento de Identidad${
                 searchType === "name" ? "nombre" : ""
               }`}
               required
@@ -202,72 +224,48 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
 
       {loading && <Spinner />}
       {closeTable && studentData && (
-        <div className="relative overflow-x-auto shadow-xl rounded-xl mt-8">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 font-semibold">
-            <thead className="text-xm text-center text-gray-600 uppercase bg-gray-300">
-              <tr>
-                <th scope="col" className="px-6 py-3">
+        <div className="relative overflow-x-auto rounded-lg border border-white/30  mt-8">
+          {/* Tabla utilizando shadcn/ui */}
+          <Table className="border border-transparent bg-gray-50 dark:bg-gray-700/30 ">
+            <TableHeader>
+              <TableRow className="border border-transparent rounded-xl bg-gray-300 dark:bg-customDark">
+                <TableHead className="text-center text-gray-800 dark:text-gray-200 ">
                   #
-                </th>
-                <th scope="col" className="px-6 py-3">
+                </TableHead>
+                <TableHead className="text-center text-gray-800 dark:text-gray-200">
                   Nombre
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Actividad academica
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Fecha
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Accción
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+                <TableHead className="text-center text-gray-800 dark:text-gray-200">
+                  Acción
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {newStudentData?.map((student, index) => (
-                <tr
+                <TableRow
                   key={index}
-                  className="bg-white border-b text-center hover:bg-gray-100"
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
                 >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium whitespace-nowrap w-12"
-                  >
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {index + 1}
-                    </span>
-                  </th>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.name}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 truncate max-w-lg">
-                    {/* Truncate long text */}
-                    <span title={student.activityAcademy}>
-                      {student.activityAcademy}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span style={{ whiteSpace: "nowrap", display: "block" }}>
-                      {student.date}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      type="button"
+                  <TableCell className="text-center text-gray-700 dark:text-gray-100">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="text-center text-gray-700 dark:text-gray-100">
+                    {student.name}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      className="bg-customBlue text-primary-foreground hover:bg-primary/90 dark:bg-customDark dark:text-gray-100 dark:hover:bg-customDark/70"
                       onClick={() =>
                         openStudentModal(student as StudentCode, index)
                       }
-                      className="font-medium text-primaryblue dark:text-primaryblue hover:underline"
                     >
                       Ver
-                    </button>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
 

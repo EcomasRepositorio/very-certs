@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { URL } from "@/components/utils/format/tokenConfig";
+import { getURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import {
   // DataStudent,
@@ -65,8 +66,15 @@ const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
       const value = queryValue.trim();
       const apiUrl = `${URL()}/student/code/${value}/type/${searchType}`;
       const res = await axios.get(
-        `${URL()}/student/code/${value.trim()}/type/${searchType}`
+        `${URL()}/search/students/${value.trim()}/type/${searchType}`
       );
+
+
+       // const value = queryValue.trim();
+      // const apiUrl = `${veryURL()}/student/code/${value}/type/${searchType}`;
+      // const res = await axios.get(
+      //   `${veryURL()}/search/students?search=${searchType}`
+      // );
       const jsonData = res.data; // Accedes a `data` dentro de la respuesta principal
       console.log(jsonData);
       // Configura el estado con los datos del estudiante

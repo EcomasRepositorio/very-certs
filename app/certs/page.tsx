@@ -90,7 +90,7 @@ const TestingPage: React.FC<Props> = () => {
                       >
                         <div>
                           <div className="bg-transparent dark:bg-transparent">
-                            <SearchCode onSearchCode={handleSearch} />
+                            <SearchCode  />
                           </div>
                         </div>
                       </Tab>

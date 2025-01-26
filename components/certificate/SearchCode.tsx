@@ -1,283 +1,103 @@
 import React, { useState, FormEvent } from "react";
-import { URL } from "@/components/utils/format/tokenConfig";
-import { getURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
-import {
-  // DataStudent,
-  SearchCodeProps,
-  StudentCode,
-} from "../../interface/interface";
-import Modal from "../share/Modal";
-import { Button } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
+import Modal from "../share/ModalSearch";
+import { LucideClock, LucideCalendarDays, ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import ModalGraduate from "@/components/certificate/modals/ModalGraduate";
+import ModalCourse from "@/components/certificate/modals/ModalCourse";
 
-export interface Student {
-  id: number;
-  documentNumber: string;
-  name: string;
-  code: string;
-  activityAcademy: string;
-  participation: string;
-  institute: string;
-  hour: string;
-  date: string;
-  imageCertificate: string | null;
-}
-
-export interface DataStudent {
-  count: number;
-  students: Student;
-}
-
-const SearchName: React.FC<SearchCodeProps> = ({ onSearchCode }) => {
-  const [isActive, setIsActive] = useState(false);
+const SearchCode: React.FC = () => {
   const [queryValue, setQueryValue] = useState<string>("");
-  const [searchType, setSearchType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<DataStudent>();
-  const [open, setOpen] = useState<boolean>(false);
+  const [studentData, setStudentData] = useState<any>(null); // Puede ser Course o Graduate
   const [modalOpen, setModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [isCourse, setIsCourse] = useState<boolean | null>(null); // Identifica si es Course o Graduate
 
-  const toggleIsActive = () => {
-    setIsActive(!isActive);
-  };
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value, "onChange ejecutado");
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQueryValue(event.target.value.trim());
-    setSearchType(event.target.value);
-  };
-
-  const openErrorModal = () => {
-    setModalOpen(true);
-  };
-  const closeErrorModal = () => {
-    setModalOpen(false);
   };
 
   const searchCode = async (event: FormEvent) => {
     event.preventDefault();
+    setLoading(true);
 
-    if (queryValue.trim()) {
-      setLoading(true);
-    }
     try {
-      const value = queryValue.trim();
-      const apiUrl = `${URL()}/student/code/${value}/type/${searchType}`;
       const res = await axios.get(
-        `${URL()}/search/students/${value.trim()}/type/${searchType}`
+        `https://backclassroom.ecomas.pe/api/v1/search/students?search=${queryValue}`
       );
 
-
-       // const value = queryValue.trim();
-      // const apiUrl = `${veryURL()}/student/code/${value}/type/${searchType}`;
-      // const res = await axios.get(
-      //   `${veryURL()}/search/students?search=${searchType}`
-      // );
-      const jsonData = res.data; // Accedes a `data` dentro de la respuesta principal
-      console.log(jsonData);
-      // Configura el estado con los datos del estudiante
-      setStudentData(jsonData);
-      onSearchCode(jsonData);
-      // setStudentData(res.data);
-      // onSearchCode(res.data);
-      if (queryValue.trim() !== "") {
-        setOpen(true);
+      if (res.data) {
+        if (res.data.studentCourse) {
+          setStudentData(res.data.studentCourse[0]);
+          setIsCourse(true); // Es un curso
+        } else if (res.data.studentGraduate) {
+          setStudentData(res.data.studentGraduate[0]);
+          setIsCourse(false); // Es un diplomado
+        }
+        setModalOpen(true);
       }
     } catch (error) {
-      console.error("Error: Codigo invalido", error);
-      openErrorModal();
-      setOpen(false);
+      console.error("Error fetching data:", error);
+      setErrorModalOpen(true);
     } finally {
       setLoading(false);
     }
   };
-  
-  const newStudentData = studentData?.students;
-   const count=studentData?.count
-  console.log(count)
-  console.log(studentData?.students);
-  const tableRows = [
-    {
-      imgSrc: "/icons/organizadopor.svg",
-      label: "Organizado por:",
-      value: newStudentData?.institute,
-    },
-    {
-      imgSrc: "/icons/otorgado.svg",
-      label: "Otorgado a:",
-      value: newStudentData?.name,
-    },
-    {
-      imgSrc: "/icons/nom_evento.svg",
-      label: "Nombre del evento:",
-      value: newStudentData?.activityAcademy,
-    },
-    {
-      imgSrc: "/icons/creditos_horas.svg",
-      label: "Creditos/Horas:",
-      value: newStudentData?.hour,
-    },
-    {
-      imgSrc: "/icons/fecha_emision.svg",
-      label: "Fecha de emisión:",
-      value: newStudentData?.date,
-    },
-  ];
 
-  const splitText = (text: string): string[] => {
-    // Elimina espacios innecesarios
-    const cleanText = text.trim();
-
-    // Identificamos las posiciones de las palabras clave dentro del texto
-    const indexCorporacion = cleanText.indexOf("BINEX Educación Continúa");
-    const indexFundenorp = cleanText.indexOf("FUNDENORP");
-    const indexEscuela = cleanText.indexOf("Escuela de Posgrado");
-    const indexUniversidad = cleanText.indexOf("Universidad Nacional de Piura");
-
-    // Si contiene "Escuela de Posgrado"
-    if (
-      indexCorporacion !== -1 &&
-      indexFundenorp !== -1 &&
-      indexEscuela !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexEscuela)
-        .trim(); // Desde "Corporación SAYAN" hasta "Escuela de Posgrado"
-      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim(); // Desde "Escuela de Posgrado" hasta "FUNDENORP"
-      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
-
-      return [corporacion, escuela, fundenorp];
-    }
-
-    // Si contiene "Universidad Nacional de Piura" (y no "Escuela de Posgrado")
-    if (
-      indexCorporacion !== -1 &&
-      indexFundenorp !== -1 &&
-      indexUniversidad !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexUniversidad)
-        .trim(); // Desde "Corporación SAYAN" hasta "Universidad Nacional de Piura"
-      const universidad = cleanText
-        .substring(indexUniversidad, indexFundenorp)
-        .trim(); // Desde "Universidad Nacional de Piura" hasta "FUNDENORP"
-      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
-
-      return [corporacion, universidad, fundenorp];
-    }
-
-    // Si no encuentra las palabras clave, devuelve el texto dividido en palabras
-    const words = cleanText.split(" ");
-    const firstLine = words.slice(0, 9).join(" "); // Primeras 9 palabras
-    const secondLine = words.slice(9, 10).join(" "); // Palabra 10
-    const thirdLine = words.slice(10).join(" "); // Resto de las palabras
-    return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
-  };
+  const closeModal = () => setModalOpen(false);
+  const closeErrorModal = () => setErrorModalOpen(false);
 
   return (
-    <div className="">
-      <form onSubmit={searchCode} className="w-full ">
-        <div className="flex items-center  justify-center">
-          <div className=" flex-1">
-            <input
-              type="search"
-              id="default-search"
-              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white  focus:border-primaryblue  m-0"
-              placeholder={`Ingrese su código ${
-                searchType === "code" ? "código" : ""
-              }`}
-              required
-              onClick={toggleIsActive}
-              onChange={onChange}
-              value={queryValue}
-            />
-          </div>
-          <div className=" ml-2 h-full">
-            <Button
-              color="primary"
-              type="submit"
-              className="bg-customBlue dark:bg-customDark text-white border border-white/50 rounded-lg"
-            >
-              Buscar
-            </Button>
-          </div>
+    <div>
+      <form onSubmit={searchCode} className="w-full">
+        <div className="flex items-center justify-center">
+          <input
+            type="search"
+            placeholder="Ingrese su código"
+            required
+            value={queryValue}
+            onChange={handleInputChange}
+            className="font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-primaryblue m-0 flex-1"
+          />
+          <Button
+            type="submit"
+            className="ml-2 bg-customBlue text-white border border-white/50 rounded-lg"
+          >
+            Buscar
+          </Button>
         </div>
       </form>
 
       {loading && <Spinner color="primary" />}
-      {studentData && (
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <div className="flex justify-center mb-4 gap-2">
-            <Image
-              src={"/img/logo/unp-piura.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-            <Image
-              src={"/img/logo/logo.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-            <Image
-              src={"/img/logo/funde.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-          </div>
-          <div className=" max-w-md text-center  rounded-md mx-auto">
-            {tableRows.map((row, index) => (
-              <div key={index} className="mb-4">
-                <div className="inline-flex items-center text-white  text-sm p-1 md:w-80 w-72 rounded-lg bg-slate-600 font-semibold">
-                  {row.imgSrc && (
-                    <Image
-                      src={row.imgSrc}
-                      alt={row.label}
-                      className="flex lg:w-5 lg:h-5 w-5 h-5 object-contain ml-1"
-                      width={800}
-                      height={800}
-                    />
-                  )}
-                  <div className="flex-1 text-center">{row.label}</div>
-                </div>
 
-                <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                  {row.value === newStudentData?.institute &&
-                    row.value &&
-                    splitText(row.value).map((line, index) => (
-                      <p key={index} className="mb-1">
-                        {line}
-                      </p>
-                    ))}
-                  {row.value !== newStudentData?.institute && row.value}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Modal para Course o Graduate */}
+      {modalOpen && studentData && (
+        <Modal open={modalOpen} onClose={closeModal}>
+          {isCourse ? (
+            <div>
+             <ModalCourse courseData={studentData} />
+            </div>
+          ) : (
+            <div>
+             <ModalGraduate participantData={studentData} />
+            </div>
+          )}
         </Modal>
       )}
-      <Modal open={modalOpen} onClose={closeErrorModal}>
-        <div className="p-2 rounded-lg">
-          <h2 className="text-md font-bold text-red-500 mb-4">
-            Código incorrecto
-          </h2>
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
-            El código que ingresaste no se encuentra en nuestra base de datos.
-          </h3>
+
+      {/* Modal de error */}
+      <Modal open={errorModalOpen} onClose={closeErrorModal}>
+        <div className="p-4 text-center">
+          <h2 className="text-md font-bold text-red-500 mb-4">Código incorrecto</h2>
+          <p className="text-sm text-gray-600">
+            El código ingresado no se encuentra en nuestra base de datos.
+          </p>
         </div>
       </Modal>
     </div>
   );
 };
 
-export default SearchName;
+export default SearchCode;

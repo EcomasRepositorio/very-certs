@@ -3,7 +3,7 @@ import VideoBackground from "@/components/certificate-qr/VideoBackground";
 import CertificateDetails from "@/components/certificate-qr/certificateDetails";
 import CertificateDetailsCourse from "@/components/certificate-qr/certificateDetailsCourse";
 import { ParticipantData, CourseData } from "@/components/utils/format/types";
-import { ModalError }  from "@/components/certificate-qr/modalError";
+import { ModalError } from "@/components/certificate-qr/modalError";
 
 interface CertPageProps {
   params: {
@@ -13,7 +13,8 @@ interface CertPageProps {
 
 // Función para validar el formato de un UUID
 function isValidUUIDFormat(uuid: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }
 
@@ -21,7 +22,8 @@ export default async function CertPage({ params }: CertPageProps) {
   const { uuid } = params;
 
   // Validar el formato del UUID
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   if (!uuidRegex.test(uuid)) {
     return (
       <section className="relative min-h-screen w-full">
@@ -69,7 +71,6 @@ export default async function CertPage({ params }: CertPageProps) {
     if (!participantData && !courseData) {
       throw new Error("No se encontró información asociada a este QR");
     }
-
   } catch (error) {
     // Mostrar mensaje de error si ocurre un problema con las APIs o no se encuentran datos
     return (
@@ -90,10 +91,11 @@ export default async function CertPage({ params }: CertPageProps) {
         {isCourse && courseData ? (
           <CertificateDetailsCourse courseData={courseData} />
         ) : (
-          participantData && <CertificateDetails participantData={participantData} />
+          participantData && (
+            <CertificateDetails participantData={participantData} />
+          )
         )}
       </Suspense>
     </section>
   );
 }
-

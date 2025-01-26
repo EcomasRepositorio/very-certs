@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "./Style.css";
 import Image from "next/image";
-import animationData from "../../public/certificate/qr/animation/check-animation.json";
+import animationData from "../../../public/certificate/qr/animation/check-animation.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 import {
   GraduationCap as LucideGraduationCap,
@@ -16,7 +15,7 @@ import {
 import { format } from "date-fns";
 import { CertificateDetailsPropsCourse } from "@/components/utils/format/types";
 
-const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
+const ModalCourse = ({ courseData }: CertificateDetailsPropsCourse) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
@@ -61,7 +60,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
             
             width={200}
             height={200}
-            className="h-24 w-auto object-contain hidden dark:hidden lg:block"
+            className="h-24 w-auto object-contain lg:block"
           />
           {/* <Image
             src={"/certificate/logos/VERTICAL_BLANCO.svg"}
@@ -79,7 +78,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
             {/* Encabezado con logo */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <div className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                <div className="text-xl font-bold text-gray-800 ">
                   ORGANIZADO POR:
                 </div>
                 <div className="mt-6">
@@ -99,25 +98,25 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
             </div>
 
             {/* Certificado verificado */}
-            <p className="text-base text-gray-600 dark:text-gray-300 mb-2">
+            <p className="text-base text-gray-600  mb-2">
               Certificado verificado a nombre de:
             </p>
 
             {/* Nombre del participante */}
-            <div className="font-semibold text-3xl text-gray-800 dark:text-gray-100 mb-6">
+            <div className="font-semibold text-3xl text-gray-800  mb-6">
               {courseData?.fullName || "Nombre del participante no disponible"}
             </div>
 
             {/* Curso */}
-            <p className="text-base text-gray-800 dark:text-gray-100 mb-4">
+            <p className="text-base text-gray-800  mb-4">
               Por culminar con éxito el curso:
             </p>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 border-l-4 border-cyan-500">
+            <div className="bg-gray-100  rounded-lg p-4 border-l-4 border-cyan-500">
               <div>
-                <div className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                <div className="text-lg font-semibold text-gray-800 ">
                   {moduleNames}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                <div className="text-sm text-gray-600  flex items-center">
                   Completado
                   <div className="w-6 h-6 ml-0">
                     <Player
@@ -132,7 +131,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
             </div>
 
             {/* ID del certificado */}
-            <div className="flex items-center text-gray-600 dark:text-gray-300 mt-6 space-x-2">
+            <div className="flex items-center text-gray-600  mt-6 space-x-2">
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
                 <strong>Doc. de Identidad: </strong>&nbsp;
@@ -140,7 +139,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
               </span>
             </div>
 
-            <div className="mt-4 text-gray-600 dark:text-gray-300 text-base space-y-3">
+            <div className="mt-4 text-gray-600  text-base space-y-3">
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
@@ -162,4 +161,4 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
   );
 };
 
-export default CertificateDetails;
+export default ModalCourse;

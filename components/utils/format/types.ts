@@ -176,5 +176,70 @@ export interface CertificateDetailsPropsCourse {
 }
 
 
+export interface Quota {
+  id: number;
+  name: string;
+  code: string;
+  dateReceipt: string | null;
+  hourReceipt: string | null;
+  price: string;
+  state: boolean;
+  date: string;
+  observation: string | null;
+  observationOption: string | null;
+  idGraduate: number;
+  voucherUpload: string | null;
+  createdAt: string;
+  updatedAt: string;
+  studentGraduateId: number;
+}
+
+export interface Graduate {
+  graduate: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface Corporation {
+  corporation: {
+    id: number;
+    name: string;
+    icon: string;
+    image: string;
+    graduate: {
+      credits: string;
+      hours: string;
+      corporation: { graduate: Graduate[] };
+    }[];
+    module: {
+      module: {
+        id: number;
+        name: string;
+        startDate: string;
+        endDate: string;
+      };
+    }[];
+  };
+}
+
+export interface StudentGraduate {
+  id: number;
+  fullName: string;
+  documentNumber: string;
+  code: string;
+  quota: Quota[];
+  result: any[]; // Define según los datos reales
+  graduate: Graduate[];
+  corporation: Corporation[];
+  endDate: string;
+}
+
+export interface DataStudent {
+  studentGraduate: StudentGraduate[];
+}
+
+
+
 
   

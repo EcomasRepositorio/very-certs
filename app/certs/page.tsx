@@ -48,7 +48,7 @@ const TestingPage: React.FC<Props> = () => {
 
         <div className="py-8 mx-auto max-w-screen-xl lg:py-10">
           <div style={{ position: "relative", width: "100%" }}>
-            <div className="bg-transparent backdrop-blur-sm border border-white/30 rounded-lg p-4 sm:p-6 md:p-8 lg:p-12 mx-2">
+            <div className="bg-transparent  bg-opacity-50 dark:bg-opacity-50 border border-white/30 rounded-lg p-4 sm:p-6 md:p-8 lg:p-12 mx-2 shadow-lg">
               <div className="flex flex-col items-center justify-center mx-auto px-4 py-8 max-w-screen-xl gap-6 md:flex-row md:gap-12">
                 {/* Left Section */}
 
@@ -90,7 +90,7 @@ const TestingPage: React.FC<Props> = () => {
                       >
                         <div>
                           <div className="bg-transparent dark:bg-transparent">
-                            <SearchCode  />
+                            <SearchCode />
                           </div>
                         </div>
                       </Tab>

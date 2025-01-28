@@ -8,64 +8,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { URL } from "@/components/utils/format/tokenConfig";
+import { veryURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps } from "@/interface/interface";
-import Modal from "../share/Modal";
+import { CertificateDetailsPropsCourse } from "@/components/utils/format/typeSeacrh"; // Interfaz corregida
+import Modal from "../share/ModalSearchDni";
+
+import Modalerror from "../share/ModalErrorLens";
 import "./Styles.css";
 import { Spinner } from "@nextui-org/react";
+import useCounterStore from "@/store/counterStore";
 import Image from "next/image";
-
-interface StudentCode extends Student {
-  hour: string;
-  institute: string;
-}
-
-export interface Student {
-  id: number;
-  documentNumber: string;
-  name: string;
-  code: string;
-  activityAcademy: string;
-  participation: string;
-  institute: string;
-  hour: string;
-  date: string;
-  imageCertificate: string | null;
-}
-
-export interface DataStudent {
-  students: Student[]; // Ahora es un arreglo
-}
 
 const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const [isActive, setIsActive] = useState(false);
   const [queryValue, setQueryValue] = useState<string>("");
-  const [searchType, setSearchType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<DataStudent>();
+  const [studentData, setStudentData] = useState<
+    CertificateDetailsPropsCourse[] | null
+  >(null);
   const [closeTable, setCloseTable] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [open, setOpen] = useState<boolean>(false);
   const [selectedStudentData, setSelectedStudentData] =
-    useState<StudentCode | null>(null);
-  const [openModals, setOpenModals] = useState<boolean[]>(
-    Array(selectedStudentData ? 1 : 0).fill(false)
-  );
-
-  const openStudentModal = (selectedStudent: StudentCode, index: number) => {
-    setSelectedStudentData(selectedStudent);
-    const updatedOpenModals = [...openModals];
-    updatedOpenModals[index] = true;
-    setOpenModals(updatedOpenModals);
-  };
-
-  const closeStudentModal = (index: number) => {
-    const updatedOpenModals = [...openModals];
-    updatedOpenModals[index] = false;
-    setOpenModals(updatedOpenModals);
-  };
-
+    useState<CertificateDetailsPropsCourse | null>(null);
+ const [errorModalOpen, setErrorModalOpen] = useState(false); 
   const toggleIsActive = () => {
     setIsActive(!isActive);
   };
@@ -80,141 +46,79 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
 
   const searchDNI = async (event: FormEvent) => {
     event.preventDefault();
-    if (queryValue.trim()) setLoading(true);
+    if (!queryValue.trim()) return;
+
+    setLoading(true);
+
     try {
       const value = queryValue.trim();
-      const res = await axios.get(
-        `${URL()}/student/dni/${value.trim()}/type/${searchType}`
-      );
+      const url = `${veryURL()}/search/students?search=${value}`;
+
+      const res = await axios.get(url);
 
       if (
         res.data &&
-        Array.isArray(res.data.students) &&
-        res.data.students.length > 0
+        Array.isArray(res.data.studentCourse) &&
+        res.data.studentCourse.length > 0
       ) {
-        // Hay coincidencias, muestra los datos
-        setStudentData(res.data);
-        onSearchDNI(res.data);
+        // Se asignan los datos correctamente
+        setStudentData(res.data.studentCourse);
+        onSearchDNI(res.data.studentCourse);
         setCloseTable(true);
       } else {
-        // No hay coincidencias, muestra el modal de error
+        console.warn("No se encontraron estudiantes.");
         openErrorModal();
-        setStudentData(undefined); // Asegúrate de limpiar los datos de estudiantes
+        setStudentData(null);
         setCloseTable(false);
       }
+
+      if (res.data.counter) {
+        useCounterStore.getState().setCount(res.data.counter);
+      }
     } catch (error) {
-      console.error("Error: DNI inválido", error);
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error en la solicitud:",
+          error.response?.data || error.message
+        );
+      } else {
+        if (error instanceof Error) {
+          console.error("Error en la solicitud:", error.message);
+        } else {
+          console.error("Error en la solicitud:", error);
+        }
+      }
+
       openErrorModal();
-      setStudentData(undefined); // Limpia los datos si hay un error
+      setStudentData(null);
       setCloseTable(false);
     } finally {
       setLoading(false);
     }
   };
 
-  const newStudentData = studentData?.students;
-  console.log(newStudentData);
-  // Función para dividir el texto según palabras clave o cantidad de palabras
-  const splitText = (text: string): string[] => {
-    // Elimina espacios innecesarios
-    const cleanText = text.trim();
-
-    // Identificamos las posiciones de las palabras clave dentro del texto
-    const indexCorporacion = cleanText.indexOf("BINEX Educación Continúa");
-    const indexFundenorp = cleanText.indexOf("FUNDENORP");
-    const indexEscuela = cleanText.indexOf("Escuela de Posgrado");
-    const indexUniversidad = cleanText.indexOf("Universidad Nacional de Piura");
-
-    // Si contiene "Escuela de Posgrado"
-    if (
-      indexCorporacion !== -1 &&
-      indexFundenorp !== -1 &&
-      indexEscuela !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexEscuela)
-        .trim(); // Desde "Corporación SAYAN" hasta "Escuela de Posgrado"
-      const escuela = cleanText.substring(indexEscuela, indexFundenorp).trim(); // Desde "Escuela de Posgrado" hasta "FUNDENORP"
-      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
-
-      return [corporacion, escuela, fundenorp];
-    }
-
-    // Si contiene "Universidad Nacional de Piura" (y no "Escuela de Posgrado")
-    if (
-      indexCorporacion !== -1 &&
-      indexFundenorp !== -1 &&
-      indexUniversidad !== -1
-    ) {
-      const corporacion = cleanText
-        .substring(indexCorporacion, indexUniversidad)
-        .trim(); // Desde "Corporación SAYAN" hasta "Universidad Nacional de Piura"
-      const universidad = cleanText
-        .substring(indexUniversidad, indexFundenorp)
-        .trim(); // Desde "Universidad Nacional de Piura" hasta "FUNDENORP"
-      const fundenorp = cleanText.substring(indexFundenorp).trim(); // Desde "FUNDENORP" hasta el final
-
-      return [corporacion, universidad, fundenorp];
-    }
-
-    // Si no encuentra las palabras clave, devuelve el texto dividido en palabras
-    const words = cleanText.split(" ");
-    const firstLine = words.slice(0, 9).join(" "); // Primeras 9 palabras
-    const secondLine = words.slice(9, 10).join(" "); // Palabra 10
-    const thirdLine = words.slice(10).join(" "); // Resto de las palabras
-    return [firstLine, secondLine, thirdLine].filter((line) => line.length > 0);
-  };
-
-  const tableRows = [
-    {
-      imgSrc: "/icons/organizadopor.svg",
-      label: "Organizado por:",
-      value: selectedStudentData?.institute,
-    },
-    {
-      imgSrc: "/icons/otorgado.svg",
-      label: "Otorgado a:",
-      value: selectedStudentData?.name,
-    },
-    {
-      imgSrc: "/icons/nom_evento.svg",
-      label: "Nombre del evento:",
-      value: selectedStudentData?.activityAcademy,
-    },
-    {
-      imgSrc: "/icons/creditos_horas.svg",
-      label: "Creditos/Horas:",
-      value: selectedStudentData?.hour,
-    },
-    {
-      imgSrc: "/icons/fecha_emision.svg",
-      label: "Fecha de emisión:",
-      value: selectedStudentData?.date,
-    },
-  ];
+  console.log("Datos obtenidos:", studentData);
 
   return (
     <div className="">
-      <form onSubmit={searchDNI} className="w-full ">
-        <div className="flex items-center ">
-          <div className=" flex-1">
+      <form onSubmit={searchDNI} className="w-full">
+        <div className="flex items-center">
+          <div className="flex-1">
             <input
               type="search"
               id="default-search"
-              className=" font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white  focus:border-transparent  m-0"
-              placeholder={`Ingrese su Documento de Identidad${
-                searchType === "name" ? "nombre" : ""
-              }`}
+              className="font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-transparent m-0"
+              placeholder="Ingrese su Documento de Identidad"
               required
               onClick={toggleIsActive}
               onChange={onChange}
               value={queryValue}
             />
           </div>
-          <div className=" ml-2 h-full">
+          <div className="ml-2 h-full">
             <Button
               type="submit"
-              className="bg-customBlue dark:bg-customDark  text-white border border-white/50 rounded-lg"
+              className="bg-customBlue dark:bg-customDark text-white border border-white/50 rounded-lg"
             >
               Buscar
             </Button>
@@ -223,13 +127,13 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
       </form>
 
       {loading && <Spinner />}
+
       {closeTable && studentData && (
-        <div className="relative overflow-x-auto rounded-lg border border-white/30  mt-8">
-          {/* Tabla utilizando shadcn/ui */}
-          <Table className="border border-transparent bg-gray-50 dark:bg-gray-700/30 ">
+        <div className="relative overflow-x-auto rounded-lg border border-white/30 mt-8">
+          <Table className="border border-transparent bg-gray-50 dark:bg-gray-700/30">
             <TableHeader>
               <TableRow className="border border-transparent rounded-xl bg-gray-300 dark:bg-customDark">
-                <TableHead className="text-center text-gray-800 dark:text-gray-200 ">
+                <TableHead className="text-center text-gray-800 dark:text-gray-200">
                   #
                 </TableHead>
                 <TableHead className="text-center text-gray-800 dark:text-gray-200">
@@ -241,23 +145,23 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {newStudentData?.map((student, index) => (
+              {studentData.map((student, index) => (
                 <TableRow
-                  key={index}
+                  key={student.id}
                   className="hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <TableCell className="text-center text-gray-700 dark:text-gray-100">
                     {index + 1}
                   </TableCell>
                   <TableCell className="text-center text-gray-700 dark:text-gray-100">
-                    {student.name}
+                    {student.fullName}
                   </TableCell>
                   <TableCell className="text-center">
                     <Button
-                      className="bg-customBlue text-primary-foreground hover:bg-primary/90 dark:bg-customDark dark:text-gray-100 dark:hover:bg-customDark/70"
-                      onClick={() =>
-                        openStudentModal(student as StudentCode, index)
-                      }
+                      onClick={() => {
+                        setSelectedStudentData(student);
+                        setModalOpen(true); // Asegura que el modal se abre
+                      }}
                     >
                       Ver
                     </Button>
@@ -270,74 +174,95 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
       )}
 
       {selectedStudentData && (
-        <Modal
-          open={openModals.findIndex(Boolean) !== -1}
-          onClose={() => closeStudentModal(openModals.findIndex(Boolean))}
-        >
-          <div className="flex justify-center mb-4 gap-2">
-            <Image
-              src={"/img/logo/unp-piura.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-            <Image
-              src={"/img/logo/logo.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-            <Image
-              src={"/img/logo/funde.png"}
-              alt="binex"
-              className="md:w-20 w-16  object-contain mt-2"
-              width={400}
-              height={400}
-              priority={true}
-            />
-          </div>
-          <div className="max-w-md text-center mx-auto">
-            {tableRows.map((row, index) => (
-              <div key={index} className="mb-4">
-                <div className="inline-flex items-center text-white text-sm p-1 w-72 rounded-lg bg-slate-600 font-semibold">
-                  {row.imgSrc && (
-                    <Image
-                      src={row.imgSrc}
-                      alt={row.label}
-                      className="w-5 h-5 object-contain ml-1"
-                      width={200}
-                      height={200}
-                    />
-                  )}
-                  <div className="flex-1 text-center">{row.label}</div>
-                </div>
-                <div className="text-gray-300 mt-3 mb-5 text-sm font-semibold">
-                  {row.label === "Organizado por:" && row.value
-                    ? splitText(row.value).map((line, index) => (
-                        <p key={index}>{line}</p>
-                      ))
-                    : row.value}
-                </div>
+        <Modal open={modalOpen} onClose={() => setSelectedStudentData(null)}>
+          <div className="p-6 bg-white dark:bg-gray-900 rounded-lg max-w-2xl mx-auto">
+            <h2 className="text-center text-2xl font-bold text-white bg-blue-600 p-3 rounded-t-lg">
+              {selectedStudentData.fullName}
+            </h2>
+            <p className="text-center text-gray-600 dark:text-gray-300 mb-4">
+              DNI: {selectedStudentData.documentNumber}
+            </p>
+
+            {/* Diplomados de especialización */}
+            <h3 className="text-lg font-semibold bg-blue-600 text-white px-4 py-2 rounded-md">
+              Diplomados de especialización
+            </h3>
+            <table className="w-full border-collapse border border-gray-300 mt-2 text-sm">
+              <thead>
+                <tr className="bg-blue-500 text-white">
+                  <th className="border border-gray-300 px-4 py-2">
+                    Denominación
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Organizado por
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">Créditos</th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    En calidad
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Fecha de emisión
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">Acción</th>
+                </tr>
+              </thead>
+              <tbody>diplomados</tbody>
+            </table>
+
+            {/* Cursos de capacitación */}
+            <h3 className="text-lg font-semibold bg-blue-600 text-white px-4 py-2 rounded-md mt-4">
+              Cursos de capacitación
+            </h3>
+            <table className="w-full border-collapse border border-gray-300 mt-2 text-sm">
+              <thead>
+                <tr className="bg-blue-500 text-white">
+                  <th className="border border-gray-300 px-4 py-2">
+                    Denominación
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Organizado por
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">Horas</th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    En calidad
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Fecha de emisión
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedStudentData.module.map((module) => (
+                  <tr
+                    key={module.module.id}
+                    className="text-center border-b border-gray-300"
+                  >
+                    <td className="px-4 py-2">{module.module.name}</td>
+                    <td className="px-4 py-2">
+                      {module.module.corporation.map((a) => a.institute)}
+                    </td>
+                    <td className="px-4 py-2 text-blue-600 cursor-pointer">
+                      Ver
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <Modalerror open={errorModalOpen} onClose={closeErrorModal}>
+              <div className="p-4 text-center">
+                <h2 className="text-md font-bold text-red-500 mb-4">
+                  Código incorrecto
+                </h2>
+                <p className="text-sm text-gray-600">
+                  El código ingresado no se encuentra en nuestra base de datos.
+                </p>
               </div>
-            ))}
+            </Modalerror>
           </div>
         </Modal>
       )}
-
-      <Modal open={modalOpen} onClose={closeErrorModal}>
-        <div className="p-2 rounded-lg">
-          <h2 className="text-md font-bold text-red-500 mb-4">
-            DNI incorrecto
-          </h2>
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-100">
-            El DNI que ingresaste no se encuentra en nuestra base de datos.
-          </h3>
-        </div>
-      </Modal>
     </div>
   );
 };

@@ -244,4 +244,31 @@ export interface DataStudent {
 
 
 
-  
+
+export interface Corporation {
+  id: number;
+  name: string;
+  icon?: string;
+  image?: string;
+}
+
+export interface ModuleData {
+  id: number;
+  code: string;
+  uuidCode: string;
+  fullName: string;
+  documentNumber: string;
+  nameModule: string;
+  endDate: string;
+  hours: string;
+  corporation: string; // Es un string en los datos reales
+  studentGraduate: {
+    corporation: {
+      corporation: Corporation;
+    }[];
+  }; // Estructura anidada integrada
+}
+
+export interface CertificateDetailsPropsModule {
+  corporation: ModuleData;
+}

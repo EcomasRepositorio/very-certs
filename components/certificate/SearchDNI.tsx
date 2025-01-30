@@ -12,9 +12,8 @@ import { veryURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps } from "@/interface/interface";
 import { CertificateDetailsPropsCourse } from "@/components/utils/format/typeSeacrh"; // Interfaz corregida
-import Modal from "../share/ModalSearchDni";
-
 import Modalerror from "../share/ModalErrorLens";
+import DynamicModalDni from "./modals/DynamicSearchDni";
 import "./Styles.css";
 import { Spinner } from "@nextui-org/react";
 import useCounterStore from "@/store/counterStore";
@@ -174,94 +173,12 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
       )}
 
       {selectedStudentData && (
-        <Modal open={modalOpen} onClose={() => setSelectedStudentData(null)}>
-          <div className="p-6 bg-white dark:bg-gray-900 rounded-lg max-w-2xl mx-auto">
-            <h2 className="text-center text-2xl font-bold text-white bg-blue-600 p-3 rounded-t-lg">
-              {selectedStudentData.fullName}
-            </h2>
-            <p className="text-center text-gray-600 dark:text-gray-300 mb-4">
-              DNI: {selectedStudentData.documentNumber}
-            </p>
-
-            {/* Diplomados de especialización */}
-            <h3 className="text-lg font-semibold bg-blue-600 text-white px-4 py-2 rounded-md">
-              Diplomados de especialización
-            </h3>
-            <table className="w-full border-collapse border border-gray-300 mt-2 text-sm">
-              <thead>
-                <tr className="bg-blue-500 text-white">
-                  <th className="border border-gray-300 px-4 py-2">
-                    Denominación
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Organizado por
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">Créditos</th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    En calidad
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Fecha de emisión
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">Acción</th>
-                </tr>
-              </thead>
-              <tbody>diplomados</tbody>
-            </table>
-
-            {/* Cursos de capacitación */}
-            <h3 className="text-lg font-semibold bg-blue-600 text-white px-4 py-2 rounded-md mt-4">
-              Cursos de capacitación
-            </h3>
-            <table className="w-full border-collapse border border-gray-300 mt-2 text-sm">
-              <thead>
-                <tr className="bg-blue-500 text-white">
-                  <th className="border border-gray-300 px-4 py-2">
-                    Denominación
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Organizado por
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">Horas</th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    En calidad
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Fecha de emisión
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedStudentData.module.map((module) => (
-                  <tr
-                    key={module.module.id}
-                    className="text-center border-b border-gray-300"
-                  >
-                    <td className="px-4 py-2">{module.module.name}</td>
-                    <td className="px-4 py-2">
-                      {module.module.corporation.map((a) => a.institute)}
-                    </td>
-                    <td className="px-4 py-2 text-blue-600 cursor-pointer">
-                      Ver
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <Modalerror open={errorModalOpen} onClose={closeErrorModal}>
-              <div className="p-4 text-center">
-                <h2 className="text-md font-bold text-red-500 mb-4">
-                  Código incorrecto
-                </h2>
-                <p className="text-sm text-gray-600">
-                  El código ingresado no se encuentra en nuestra base de datos.
-                </p>
-              </div>
-            </Modalerror>
-          </div>
-        </Modal>
+        <DynamicModalDni
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          student={selectedStudentData}
+      
+        />
       )}
     </div>
   );

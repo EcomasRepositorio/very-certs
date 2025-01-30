@@ -2,7 +2,12 @@ import React, { Suspense } from "react";
 import VideoBackground from "@/components/certificate-qr/VideoBackground";
 import CertificateDetails from "@/components/certificate-qr/certificateDetails";
 import CertificateDetailsCourse from "@/components/certificate-qr/certificateDetailsCourse";
-import { ParticipantData, CourseData } from "@/components/utils/format/types";
+import CertificateDetailsModule from "@/components/certificate-qr/certificateDetailsModule";
+import {
+  ParticipantData,
+  CourseData,
+  ModuleData,
+} from "@/components/utils/format/types";
 import { ModalError } from "@/components/certificate-qr/modalError";
 
 interface CertPageProps {
@@ -11,7 +16,6 @@ interface CertPageProps {
   };
 }
 
-// Función para validar el formato de un UUID
 function isValidUUIDFormat(uuid: string): boolean {
   const uuidRegex =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -21,13 +25,27 @@ function isValidUUIDFormat(uuid: string): boolean {
 export default async function CertPage({ params }: CertPageProps) {
   const { uuid } = params;
 
-  // Validar el formato del UUID
-  const uuidRegex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  if (!uuidRegex.test(uuid)) {
+  if (!isValidUUIDFormat(uuid)) {
     return (
       <section className="relative min-h-screen w-full">
-        <VideoBackground />
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
+          style={{
+            backgroundImage: "url(/certificate/image/blue_bg_5.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+
+        {/* Imagen para modo Dark */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
+          style={{
+            backgroundImage: "url(/certificate/image/test_bg.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
         <ModalError />
       </section>
     );
@@ -35,60 +53,99 @@ export default async function CertPage({ params }: CertPageProps) {
 
   let participantData: ParticipantData | null = null;
   let courseData: CourseData | null = null;
+  let moduleData: ModuleData | null = null;
   let isCourse = false;
+  let isModule = false;
 
   try {
-    // Fetch participante
     const participantRes = await fetch(
       `https://backclassroom.ecomas.pe/api/v1/certificate/graduate/${uuid}`,
       { cache: "no-store" }
     );
-
     if (participantRes.ok) {
       const participantResponse: ParticipantData = await participantRes.json();
-      // Validar que el UUID corresponde al participante
       if (participantResponse?.uuidCode === uuid) {
         participantData = participantResponse;
       }
     }
 
-    // Fetch curso
     const courseRes = await fetch(
       `https://backclassroom.ecomas.pe/api/v1/certificate/course/${uuid}`,
       { cache: "no-store" }
     );
-
     if (courseRes.ok) {
       const courseResponse: CourseData = await courseRes.json();
-      // Validar que el UUID corresponde al curso
       if (courseResponse?.uuidCode === uuid) {
         courseData = courseResponse;
         isCourse = true;
       }
     }
 
-    // Si luego de ambas peticiones no hay datos válidos:
-    if (!participantData && !courseData) {
+    const moduleRes = await fetch(
+      `https://backclassroom.ecomas.pe/api/v1/certificate/module/${uuid}`,
+      { cache: "no-store" }
+    );
+    if (moduleRes.ok) {
+      const moduleResponse: ModuleData = await moduleRes.json();
+      if (moduleResponse?.uuidCode === uuid) {
+        moduleData = moduleResponse;
+        isModule = true;
+      }
+    }
+
+    if (!participantData && !courseData && !moduleData) {
       throw new Error("No se encontró información asociada a este QR");
     }
   } catch (error) {
-    // Mostrar mensaje de error si ocurre un problema con las APIs o no se encuentran datos
     return (
       <section className="relative min-h-screen w-full">
-        <VideoBackground />
-        <div className="">
-          <ModalError />
-        </div>
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
+          style={{
+            backgroundImage: "url(/certificate/image/blue_bg_5.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+
+        {/* Imagen para modo Dark */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
+          style={{
+            backgroundImage: "url(/certificate/image/test_bg.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+        <ModalError />
       </section>
     );
   }
 
-  // Renderizar el contenido apropiado
   return (
     <section className="relative min-h-screen w-full">
-      <VideoBackground />
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
+        style={{
+          backgroundImage: "url(/certificate/image/blue_bg_5.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
+
+      {/* Imagen para modo Dark */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
+        style={{
+          backgroundImage: "url(/certificate/image/test_bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
       <Suspense fallback={<p className="text-white">Cargando...</p>}>
-        {isCourse && courseData ? (
+        {isModule && moduleData ? (
+          <CertificateDetailsModule corporation={moduleData} />
+        ) : isCourse && courseData ? (
           <CertificateDetailsCourse courseData={courseData} />
         ) : (
           participantData && (

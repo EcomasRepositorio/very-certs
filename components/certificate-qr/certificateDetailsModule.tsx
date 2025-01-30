@@ -14,32 +14,32 @@ import {
   X,
 } from "lucide-react";
 import { format } from "date-fns";
-import { CertificateDetailsPropsCourse } from "@/components/utils/format/types";
+import { CertificateDetailsPropsModule } from "@/components/utils/format/types";
 
-const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
+const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
   const API_BASE_URL = "https://backclassroom.ecomas.pe";
 
-  const corpotationImageUrl = courseData.corporation?.[0]?.corporation?.icon
-    ? `${API_BASE_URL}${courseData.corporation[0].corporation.icon}`
+  const corpotationImageUrl = corporation.studentGraduate.corporation[0]
+    .corporation.icon
+    ? `${API_BASE_URL}${corporation.studentGraduate.corporation[0].corporation.icon}`
     : null;
 
-  const formattedDate = courseData?.module[0].module.endDate
-    ? format(new Date(courseData?.module[0].module.endDate), "dd/MM/yyyy")
+  const formattedDate = corporation
+    ? format(new Date(corporation?.endDate), "dd/MM/yyyy")
     : "Fecha no disponible";
 
   const moduleNames =
-    courseData?.module?.map((mod) => mod.module.name).join(", ") ||
-    "Nombre del curso no disponible";
+    corporation?.nameModule || "Nombre del curso no disponible";
 
   if (!showModal) {
     return null;
   }
 
   return (
-     <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/80 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/80 z-50">
       <div className="relative bg-slate-200 dark:bg-slate-200 rounded-xl shadow-lg p-8 max-w-4xl w-full">
         {/* Botón para cerrar el modal */}
         <button
@@ -58,7 +58,6 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
           <Image
             src={"/certificate/logos/VERTICAL_COLOR.svg"}
             alt="Logo de Very Certs claro"
-            
             width={200}
             height={200}
             className="h-24 w-auto object-contain hidden dark:hidden lg:block"
@@ -105,7 +104,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
 
             {/* Nombre del participante */}
             <div className="font-semibold text-3xl text-gray-800  mb-6">
-              {courseData?.fullName || "Nombre del participante no disponible"}
+              {corporation.fullName || "Nombre del participante no disponible"}
             </div>
 
             {/* Curso */}
@@ -136,7 +135,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
               <span className="flex items-center space-x-2">
                 <ShieldCheck className="text-cyan-500" size={20} />
                 <strong>Doc. de Identidad: </strong>&nbsp;
-                {courseData?.documentNumber || "Código no disponible"}
+                {corporation.documentNumber || "Código no disponible"}
               </span>
             </div>
 
@@ -144,7 +143,8 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
-                  <strong>Horas de capacitación:</strong> 50 horas
+                  <strong>Horas de capacitación:</strong>{" "}
+                  {corporation.hours || "No disponible"}
                 </span>
               </div>
 

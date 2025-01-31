@@ -19,7 +19,7 @@ import { Spinner } from "@nextui-org/react";
 import useCounterStore from "@/store/counterStore";
 import Image from "next/image";
 
-const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
+const SearchDNI: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const [isActive, setIsActive] = useState(false);
   const [queryValue, setQueryValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStudentData, setSelectedStudentData] =
     useState<CertificateDetailsPropsCourse | null>(null);
- const [errorModalOpen, setErrorModalOpen] = useState(false); 
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
   const toggleIsActive = () => {
     setIsActive(!isActive);
   };
@@ -43,6 +43,30 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
   const openErrorModal = () => setModalOpen(true);
   const closeErrorModal = () => setModalOpen(false);
 
+
+  
+  const handleOpenModal = (dni: string) => {
+    const studentFullData = studentData?.filter(
+      (student) => student.documentNumber === dni
+    );
+
+    if (studentFullData && studentFullData.length > 0) {
+      setSelectedStudentData({
+              id: studentFullData[0].id,
+              code: studentFullData[0].code,
+              quota: studentFullData[0].quota,
+              module: studentFullData[0].module,
+              corporation: studentFullData[0].corporation,
+              fullName: studentFullData[0].fullName,
+              documentNumber: studentFullData[0].documentNumber,
+              studentCourse: studentFullData.flatMap(student => student?.studentCourse || []),
+              studentGraduate: studentFullData.flatMap(student => student?.studentGraduate || []),
+              studentModule: studentFullData.flatMap(student => student?.studentModule || []),
+            });
+      setModalOpen(true);
+    }
+  };
+
   const searchDNI = async (event: FormEvent) => {
     event.preventDefault();
     if (!queryValue.trim()) return;
@@ -52,23 +76,32 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
     try {
       const value = queryValue.trim();
       const url = `${veryURL()}/search/students?search=${value}`;
-
       const res = await axios.get(url);
 
-      if (
-        res.data &&
-        Array.isArray(res.data.studentCourse) &&
-        res.data.studentCourse.length > 0
-      ) {
-        // Se asignan los datos correctamente
-        setStudentData(res.data.studentCourse);
-        onSearchDNI(res.data.studentCourse);
-        setCloseTable(true);
-      } else {
-        console.warn("No se encontraron estudiantes.");
-        openErrorModal();
-        setStudentData(null);
-        setCloseTable(false);
+      if (res.data) {
+        const allData = [
+          ...(res.data.studentCourse || []),
+          ...(res.data.studentGraduate || []),
+          ...(res.data.studentModule || []),
+        ];
+
+        const uniqueStudents = Object.values(
+          allData.reduce((acc, student) => {
+            acc[student.documentNumber] = student; // Solo guardamos el último registro por DNI
+            return acc;
+          }, {} as Record<string, CertificateDetailsPropsCourse>)
+        );
+
+        if (uniqueStudents.length > 0) {
+          setStudentData(uniqueStudents as CertificateDetailsPropsCourse[]);
+          onSearchDNI(allData); // Se pasa la data completa para el modal
+          setCloseTable(true);
+        } else {
+          console.warn("⚠ No se encontraron estudiantes.");
+          openErrorModal();
+          setStudentData(null);
+          setCloseTable(false);
+        }
       }
 
       if (res.data.counter) {
@@ -77,17 +110,12 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
-          "Error en la solicitud:",
+          "❌ Error en la solicitud:",
           error.response?.data || error.message
         );
       } else {
-        if (error instanceof Error) {
-          console.error("Error en la solicitud:", error.message);
-        } else {
-          console.error("Error en la solicitud:", error);
-        }
+        console.error("❌ Error en la solicitud:", error);
       }
-
       openErrorModal();
       setStudentData(null);
       setCloseTable(false);
@@ -157,10 +185,7 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
                   </TableCell>
                   <TableCell className="text-center">
                     <Button
-                      onClick={() => {
-                        setSelectedStudentData(student);
-                        setModalOpen(true); // Asegura que el modal se abre
-                      }}
+                      onClick={() => handleOpenModal(student.documentNumber)}
                     >
                       Ver
                     </Button>
@@ -177,11 +202,10 @@ const SearchName: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           student={selectedStudentData}
-      
         />
       )}
     </div>
   );
 };
 
-export default SearchName;
+export default SearchDNI;

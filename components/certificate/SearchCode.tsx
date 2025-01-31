@@ -10,7 +10,9 @@ const SearchCode: React.FC = () => {
   const [queryValue, setQueryValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState<any>(null);
-  const [dataType, setDataType] = useState<"course" | "graduate" | "module" | null>(null);
+  const [dataType, setDataType] = useState<
+    "course" | "graduate" | "module" | null
+  >(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
 
@@ -29,17 +31,23 @@ const SearchCode: React.FC = () => {
       );
 
       if (res.data) {
-        if (res.data.studentCourse) {
-          setStudentData(res.data.studentCourse[0]);
-          setDataType("course");
-          setModalOpen(true);
-        } else if (res.data.studentGraduate) {
-          setStudentData(res.data.studentGraduate[0]);
-          setDataType("graduate");
-          setModalOpen(true);
-        } else if (res.data.studentModule) {
-          setStudentData(res.data.studentModule[0]);
-          setDataType("module");
+        let student = null;
+        let type: "course" | "graduate" | "module" | null = null;
+
+        if (res.data.studentCourse?.length > 0) {
+          student = res.data.studentCourse[0];
+          type = "course";
+        } else if (res.data.studentGraduate?.length > 0) {
+          student = res.data.studentGraduate[0];
+          type = "graduate";
+        } else if (res.data.studentModule?.length > 0) {
+          student = res.data.studentModule[0];
+          type = "module";
+        }
+
+        if (student && type) {
+          setStudentData(student);
+          setDataType(type);
           setModalOpen(true);
         } else {
           setErrorModalOpen(true);
@@ -73,6 +81,7 @@ const SearchCode: React.FC = () => {
     }
     return null;
   };
+  console.log("Datos recibidos en SearchCode:", dataType);
 
   return (
     <div>
@@ -101,8 +110,12 @@ const SearchCode: React.FC = () => {
 
       <Modalerror open={errorModalOpen} onClose={closeErrorModal}>
         <div className="p-4 text-center">
-          <h2 className="text-md font-bold text-red-500 mb-4">Código incorrecto</h2>
-          <p className="text-sm text-gray-600">El código ingresado no se encuentra en nuestra base de datos.</p>
+          <h2 className="text-md font-bold text-red-500 mb-4">
+            Código incorrecto
+          </h2>
+          <p className="text-sm text-gray-600">
+            El código ingresado no se encuentra en nuestra base de datos.
+          </p>
         </div>
       </Modalerror>
     </div>

@@ -1,70 +1,94 @@
+// src/interfaces/types.ts
+
+export interface Quota {
+  id: number;
+  name: string;
+  code: string;
+  dateReceipt: string | null;
+  hourReceipt: string | null;
+  price: string;
+  state: boolean;
+  date: string;
+  observation: string | null;
+  observationOption: string | null;
+  moduleId?: number;  // Opcional para evitar errores
+  createdAt: string;
+  updatedAt: string;
+  studentCourseId?: number;
+}
+
+export interface Graduate {
+  id: number;
+  name: string;
+}
+
+export interface Corporation {
+  id: number;
+  name: string;
+  icon: string;
+  image: string;
+}
+
+export interface Module {
+  id: number;
+  name: string;
+  startDate?: string;
+  endDate: string;
+  corporation?: Corporation[];
+}
+
+// 🔹 Definimos la estructura correcta de `studentGraduate`
+export interface StudentGraduate {
+  id: number;
+  fullName: string;
+  documentNumber: string;
+  code: string;
+  quota: Quota[];
+  graduate: { graduate: Graduate }[];
+  corporation: { corporation: Corporation }[];
+  endDate?: string;
+}
+
+// 🔹 Definimos la estructura correcta de `studentCourse`
+export interface StudentCourse {
+  id: number;
+  fullName: string;
+  documentNumber: string;
+  code: string;
+  quota: Quota[];
+  module?: { module: Module }[];
+  corporation: { corporation: Corporation }[];
+  endDate?: string;
+}
+
+// 🔹 Definimos la estructura correcta de `studentModule`
+export interface StudentModule {
+  id: number;
+  fullName: string;
+  documentNumber: string;
+  nameModule: string;
+  endDate: string;
+  hours: string;
+  code: string;
+  corporation: string;
+}
+
+// 🔹 API Response para manejar los datos
+export interface APIResponse {
+  studentGraduate: StudentGraduate[];
+  studentCourse: StudentCourse[];
+  studentModule: StudentModule[];
+  counter: number;
+}
+
+// 🔹 Extendemos de `StudentGraduate`, `StudentCourse` y `StudentModule` correctamente
 export interface CertificateDetailsPropsCourse {
   id: number;
-  fullName: string; // Nombre completo del participante
+  fullName: string;
   documentNumber: string;
-  code: string; // Código del certificado
-
-  // Cuotas
-  quota: {
-    id: number;
-    name: string; // Nombre de la cuota
-    code: string; // Código de la cuota
-    dateReceipt: string | null; // Fecha de recibo
-    hourReceipt: string | null; // Hora de recibo
-    price: string; // Precio de la cuota
-    state: boolean; // Estado de la cuota (pagado o no)
-    date: string; // Fecha de vencimiento de la cuota
-    observation: string | null; // Observaciones
-    observationOption: string | null; // Opción de observación
-    moduleId: number; // ID del módulo relacionado
-    createdAt: string; // Fecha de creación
-    updatedAt: string; // Fecha de actualización
-    studentCourseId: number; // ID del curso del estudiante
-  }[];
-
-  // Cursos de Capacitación
-  studentCourse?: {
-    name: string; // Nombre del curso
-    hours: string; // Horas del curso
-    endDate: string; // Fecha de finalización del curso
-    corporation: string; // Nombre de la corporación organizadora
-  }[];
-
-  // Diplomados de Especialización
-  studentGraduate?: {
-    name: string; // Nombre del diplomado
-    credits: string; // Créditos del diplomado
-    endDate: string; // Fecha de finalización del diplomado
-    corporation: string; // Nombre de la corporación organizadora
-  }[];
-
-  // Módulos de Especialización
-  studentModule?: {
-    name: string; // Nombre del módulo
-    hours: string; // Horas del módulo
-    endDate: string; // Fecha de finalización del módulo
-    corporation: string; // Nombre de la corporación organizadora
-  }[];
-
-  // Información del módulo (para cursos)
-  module: {
-    module: {
-      id: number; // ID del módulo
-      name: string; // Nombre del módulo
-      endDate: string; // Fecha de fin del módulo
-      corporation: {
-        institute: string | null; // Instituto relacionado (puede ser nulo)
-      }[];
-    };
-  }[];
-
-  // Información de la corporación
-  corporation: {
-    corporation: {
-      id: number; // ID de la corporación
-      name: string; // Nombre de la corporación
-      icon: string; // URL del icono de la corporación
-      image: string; // URL de la imagen de la corporación
-    };
-  }[];
+  code: string;
+  quota: Quota[];
+  studentGraduate?: StudentGraduate[];
+  studentCourse?: StudentCourse[];
+  studentModule?: StudentModule[];
 }

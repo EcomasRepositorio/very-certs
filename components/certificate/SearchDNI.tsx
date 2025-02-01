@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { veryURL } from "@/components/utils/format/tokenConfig";
 import axios from "axios";
 import { SearchDNIProps } from "@/interface/interface";
-import { CertificateDetailsPropsCourse } from "@/components/utils/format/typeSeacrh"; // Interfaz corregida
+import { Student, APIResponse } from "@/interface/types";
 import Modalerror from "../share/ModalErrorLens";
 import DynamicModalDni from "./modals/DynamicSearchDni";
 import "./Styles.css";
@@ -20,49 +20,35 @@ import useCounterStore from "@/store/counterStore";
 import Image from "next/image";
 
 const SearchDNI: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [queryValue, setQueryValue] = useState<string>("");
+  const [queryValue, setQueryValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [studentData, setStudentData] = useState<
-    CertificateDetailsPropsCourse[] | null
-  >(null);
-  const [closeTable, setCloseTable] = useState(false);
+  const [studentData, setStudentData] = useState<Student[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStudentData, setSelectedStudentData] =
-    useState<CertificateDetailsPropsCourse | null>(null);
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const toggleIsActive = () => {
-    setIsActive(!isActive);
-  };
+    useState<Student | null>(null);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQueryValue(event.target.value);
-    setCloseTable(false);
   };
 
-  const openErrorModal = () => setModalOpen(true);
-  const closeErrorModal = () => setModalOpen(false);
-
-
-  
   const handleOpenModal = (dni: string) => {
-    const studentFullData = studentData?.filter(
-      (student) => student.documentNumber === dni
-    );
+    const studentDetails = studentData.find((s) => s.documentNumber === dni);
 
-    if (studentFullData && studentFullData.length > 0) {
-      setSelectedStudentData({
-              id: studentFullData[0].id,
-              code: studentFullData[0].code,
-              quota: studentFullData[0].quota,
-              module: studentFullData[0].module,
-              corporation: studentFullData[0].corporation,
-              fullName: studentFullData[0].fullName,
-              documentNumber: studentFullData[0].documentNumber,
-              studentCourse: studentFullData.flatMap(student => student?.studentCourse || []),
-              studentGraduate: studentFullData.flatMap(student => student?.studentGraduate || []),
-              studentModule: studentFullData.flatMap(student => student?.studentModule || []),
-            });
+    if (studentDetails) {
+      const fullStudentData = {
+        ...studentDetails,
+        studentGraduate: studentData.filter(
+          (s) => s.documentNumber === dni && s.graduate
+        ),
+        studentCourse: studentData.filter(
+          (s) => s.documentNumber === dni && s.module
+        ),
+        studentModule: studentData.filter(
+          (s) => s.documentNumber === dni && s.module
+        ),
+      };
+
+      setSelectedStudentData(fullStudentData);
       setModalOpen(true);
     }
   };
@@ -72,72 +58,48 @@ const SearchDNI: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
     if (!queryValue.trim()) return;
 
     setLoading(true);
-
     try {
-      const value = queryValue.trim();
-      const url = `${veryURL()}/search/students?search=${value}`;
-      const res = await axios.get(url);
+      const url = `${veryURL()}/search/students?search=${queryValue.trim()}`;
+      const res = await axios.get<APIResponse>(url);
 
       if (res.data) {
-        const allData = [
-          ...(res.data.studentCourse || []),
-          ...(res.data.studentGraduate || []),
-          ...(res.data.studentModule || []),
+        const studentRecords = [
+          ...res.data.studentGraduate,
+          ...res.data.studentCourse,
+          ...res.data.studentModule,
         ];
-
-        const uniqueStudents = Object.values(
-          allData.reduce((acc, student) => {
-            acc[student.documentNumber] = student; // Solo guardamos el último registro por DNI
-            return acc;
-          }, {} as Record<string, CertificateDetailsPropsCourse>)
-        );
-
-        if (uniqueStudents.length > 0) {
-          setStudentData(uniqueStudents as CertificateDetailsPropsCourse[]);
-          onSearchDNI(allData); // Se pasa la data completa para el modal
-          setCloseTable(true);
-        } else {
-          console.warn("⚠ No se encontraron estudiantes.");
-          openErrorModal();
-          setStudentData(null);
-          setCloseTable(false);
-        }
+        setStudentData(studentRecords);
+        onSearchDNI(studentRecords);
       }
+      console.log(res.data);
 
       if (res.data.counter) {
         useCounterStore.getState().setCount(res.data.counter);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "❌ Error en la solicitud:",
-          error.response?.data || error.message
-        );
-      } else {
-        console.error("❌ Error en la solicitud:", error);
-      }
-      openErrorModal();
-      setStudentData(null);
-      setCloseTable(false);
+      console.error(
+        "❌ Error en la solicitud:",
+        axios.isAxiosError(error)
+          ? error.response?.data || error.message
+          : error
+      );
+      setStudentData([]);
     } finally {
       setLoading(false);
     }
   };
 
-  console.log("Datos obtenidos:", studentData);
-
   return (
-    <div className="">
+    <div>
       <form onSubmit={searchDNI} className="w-full">
         <div className="flex items-center">
           <div className="flex-1">
             <input
               type="search"
               id="default-search"
-              className="font-normal text-sm text-gray-900 border-1 border-gray-300 rounded-lg bg-white focus:border-transparent m-0"
+              className="font-normal text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:border-transparent"
               placeholder="Ingrese su Documento de Identidad"
               required
-              onClick={toggleIsActive}
               onChange={onChange}
               value={queryValue}
             />
@@ -155,7 +117,7 @@ const SearchDNI: React.FC<SearchDNIProps> = ({ onSearchDNI }) => {
 
       {loading && <Spinner />}
 
-      {closeTable && studentData && (
+      {studentData.length > 0 && (
         <div className="relative overflow-x-auto rounded-lg border border-white/30 mt-8">
           <Table className="border border-transparent bg-gray-50 dark:bg-gray-700/30">
             <TableHeader>

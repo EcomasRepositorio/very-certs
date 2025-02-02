@@ -1,6 +1,7 @@
-import React from "react";
-import { CertificateDetailsPropsCourse } from "@/components/utils/format/typeSeacrh";
-import Modal from "../../share/ModalSearchDni";
+import React, { useState, FormEvent } from "react";
+import axios from "axios";
+import { veryURL } from "@/components/utils/format/tokenConfig";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,139 +10,202 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
+import { Spinner } from "@nextui-org/react";
 
-interface StudentDetailsModalProps {
-  open: boolean;
-  onClose: () => void;
-  student: CertificateDetailsPropsCourse | null;
-}
+const SearchDNI: React.FC = () => {
+  const [queryValue, setQueryValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [studentData, setStudentData] = useState<any[]>([]);
+  const [selectedStudentData, setSelectedStudentData] = useState<any | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const StudentDetailsModal: React.FC<StudentDetailsModalProps> = ({
-  open,
-  onClose,
-  student,
-}) => {
-  if (!student) return null;
+  const searchDNI = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!queryValue.trim()) return;
 
-  console.log(student);
+    setLoading(true);
+    try {
+      const url = `${veryURL()}/search/students?search=${queryValue.trim()}`;
+      const res = await axios.get(url);
 
-  const formattedDate = (date?: string | null) =>
-    date ? format(new Date(date), "dd/MM/yyyy") : "Fecha no disponible";
+      if (res.data) {
+        const studentRecords = [
+          ...res.data.studentGraduate,
+          ...res.data.studentCourse,
+          ...res.data.studentModule,
+        ];
+        console.log("📌 Datos de la API:", res.data);
+
+        const uniqueStudents = Array.from(
+          new Map(studentRecords.map((s) => [s.documentNumber, s])).values()
+        );
+        setStudentData(uniqueStudents);
+      }
+    } catch (error) {
+      console.error("❌ Error en la solicitud:", error);
+      setStudentData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <div className="p-8 bg-white dark:bg-gray-900 rounded-lg max-w-5xl w-full mx-auto max-h-[90vh] overflow-y-auto shadow-lg">
-        <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-gray-200">
-          {student.fullName}
-        </h2>
-        <p className="text-center text-lg text-gray-600 dark:text-gray-400 font-semibold mb-6">
-          DNI: {student.documentNumber}
-        
-        </p>
+    <div className="p-4">
+      <h1 className="text-xl font-bold text-center mb-4">
+        Búsqueda de Participantes
+      </h1>
 
-        {/* Diplomados de Especialización */}
-        <h3 className="text-lg text-center font-semibold bg-blue-500 text-white px-4 py-2 rounded-md">
-          Diplomados de Especialización
-        </h3>
-        <Table className="w-full mt-2 border border-gray-300 rounded-lg overflow-hidden">
-          <TableHeader className="bg-blue-500 text-white">
-            <TableRow>
-              <TableHead>Denominación</TableHead>
-              <TableHead>Organizado por</TableHead>
-              <TableHead>Créditos</TableHead>
-              <TableHead>Fecha de emisión</TableHead>
+      {/* Formulario de búsqueda */}
+      <form onSubmit={searchDNI} className="flex gap-2 justify-center mb-4">
+        <input
+          type="search"
+          className="border border-gray-300 rounded-lg px-4 py-2"
+          placeholder="Ingrese su Documento de Identidad"
+          required
+          value={queryValue}
+          onChange={(e) => setQueryValue(e.target.value)}
+        />
+        <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+          Buscar
+        </Button>
+      </form>
+
+      {loading && <Spinner className="flex justify-center" />}
+
+      {/* Tabla de estudiantes */}
+      {studentData.length > 0 && (
+        <Table className="border border-gray-300 rounded-lg">
+          <TableHeader>
+            <TableRow className="bg-gray-200">
+              <TableHead className="text-center">#</TableHead>
+              <TableHead className="text-center">Nombre</TableHead>
+              <TableHead className="text-center">Acción</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.isArray(student.studentGraduate) &&
-              student.studentGraduate.map((graduate, index) => (
-                <TableRow
-                  key={index}
-                  className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <TableCell>{graduate.graduate[0].graduate.name}</TableCell>
-
-                  <TableCell>
-                    {graduate.graduate[0].graduate.name || "N/A"}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-
-        {/* Cursos de Capacitación */}
-        <h3 className="text-lg text-center font-semibold bg-blue-500 text-white px-4 py-2 rounded-md mt-6">
-          Cursos de Capacitación
-        </h3>
-        <Table className="w-full mt-2 border border-gray-300 rounded-lg overflow-hidden">
-          <TableHeader className="bg-blue-500 text-white">
-            <TableRow>
-              <TableHead>Denominación</TableHead>
-              <TableHead>Organizado por</TableHead>
-              <TableHead>Horas</TableHead>
-              <TableHead>Fecha de emisión</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {student.studentCourse?.map((course, index) => (
-              <TableRow
-                key={index}
-                className="hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <TableCell>
-                  {Array.isArray(course.module) && course.module.length > 0
-                    ? course.module[0].module.name
-                    : "N/A"}
+            {studentData.map((student, index) => (
+              <TableRow key={student.id} className="hover:bg-gray-100 transition">
+                <TableCell className="text-center">{index + 1}</TableCell>
+                <TableCell className="text-center">{student.fullName}</TableCell>
+                <TableCell className="text-center">
+                  <Button
+                    onClick={() => {
+                      setSelectedStudentData(student);
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    Ver
+                  </Button>
                 </TableCell>
-
-                <TableCell>
-                  {Array.isArray(course.module) && course.module.length > 0
-                    ? course.module[0].module.endDate
-                    : "N/A"}
-                </TableCell>
-
-                <TableCell>
-                  {Array.isArray(course.module) && course.module.length > 0
-                    ? course.module[0].module.startDate
-                    : "N/A"}
-                </TableCell>
-
-                <TableCell>{formattedDate(course.endDate)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      )}
 
-        {/* Módulos de Especialización */}
-        <h3 className="text-lg text-center font-semibold bg-green-500 text-white px-4 py-2 rounded-md mt-6">
-          Módulos de Especialización
-        </h3>
-        <Table className="w-full mt-2 border border-gray-300 rounded-lg overflow-hidden">
-          <TableHeader className="bg-green-500 text-white">
-            <TableRow>
-              <TableHead>Denominación</TableHead>
-              <TableHead>Horas</TableHead>
-              <TableHead>Fecha de emisión</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {student.studentModule?.map((module, index) => (
-              <TableRow
-                key={index}
-                className="hover:bg-gray-100 dark:hover:bg-gray-700"
+      {/* MODAL */}
+      {isModalOpen && selectedStudentData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-4/5 max-w-4xl">
+            <h2 className="text-xl font-bold text-center">
+              {selectedStudentData.fullName}
+            </h2>
+            <p className="text-center text-gray-600">
+              DNI: {selectedStudentData.documentNumber}
+            </p>
+
+            {/* Diplomados */}
+            {Array.isArray(selectedStudentData.graduate) &&
+              selectedStudentData.graduate.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold bg-blue-500 text-white px-4 py-2 rounded-md text-center">
+                    Diplomados de Especialización
+                  </h3>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Denominación</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {selectedStudentData.graduate.map((grad, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{grad.graduate?.name || "N/A"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+
+            {/* Cursos */}
+            {Array.isArray(selectedStudentData.module) &&
+              selectedStudentData.module.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold bg-blue-500 text-white px-4 py-2 rounded-md text-center">
+                    Cursos de Capacitación
+                  </h3>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Nombre del Curso</TableHead>
+                        <TableHead>Fecha de Inicio</TableHead>
+                        <TableHead>Fecha de Fin</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {selectedStudentData.module.map((course, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{course.module?.name || "N/A"}</TableCell>
+                          <TableCell>{course.module?.startDate || "N/A"}</TableCell>
+                          <TableCell>{course.module?.endDate || "N/A"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+
+            {/* Corporaciones */}
+            {Array.isArray(selectedStudentData.corporation) &&
+              selectedStudentData.corporation.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold bg-blue-500 text-white px-4 py-2 rounded-md text-center">
+                    Institución
+                  </h3>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Nombre</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {selectedStudentData.corporation.map((corp, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{corp.corporation?.name || "N/A"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+
+            {/* Botón para cerrar el modal */}
+            <div className="flex justify-center mt-6">
+              <Button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg"
               >
-                <TableCell>{module.nameModule}</TableCell>
-                <TableCell>{module.hours} Hrs</TableCell>
-                <TableCell>{formattedDate(module.endDate)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </Modal>
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default StudentDetailsModal;
+export default SearchDNI;

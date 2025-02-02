@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.8",
     "@nextui-org/react": "^2.3.4",
     "@nextui-org/tabs": "^2.0.28",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-slot": "^1.1.1",
     "@shadcn/ui": "^0.0.4",
     "autoprefixer": "^10.4.19",

@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Spinner } from "@nextui-org/react";
+import useCounterStore from "@/store/counterStore";
 import "./Styles.css";
 
 // Tipo extendido para incluir cursos y módulos asociados al graduado.
@@ -62,6 +63,12 @@ const SearchDNI: React.FC = () => {
         setStudentData([]);
         setNoResultsModal(true);
       }
+
+      if (res.data.counter) {
+        useCounterStore.getState().setCount(res.data.counter);
+      }
+
+      console.log(res.data);
     } catch (error) {
       console.error("❌ Error en la solicitud:", error);
       setStudentData([]);
@@ -108,7 +115,7 @@ const SearchDNI: React.FC = () => {
         <div className="overflow-x-auto">
           <Table className="w-full border border-gray-300 dark:border-gray-700 rounded-lg">
             <TableHeader>
-              <TableRow className="bg-gray-200 dark:bg-gray-800">
+              <TableRow className="bg-gray-200 dark:bg-[#0F172A]">
                 <TableHead className="text-center">#</TableHead>
                 <TableHead className="text-center">Nombre</TableHead>
                 <TableHead className="text-center">Acción</TableHead>
@@ -166,7 +173,7 @@ const SearchDNI: React.FC = () => {
       {isModalOpen && selectedStudent && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
           {/* Modal con colores equilibrados para light/dark */}
-          <div className="relative bg-neutral-100 dark:bg-neutral-800 p-6 rounded-lg w-11/12 sm:w-4/5 max-w-5xl shadow-lg max-h-[80vh] overflow-y-auto">
+          <div className="relative bg-neutral-100 dark:bg-neutral-800 p-8 rounded-lg w-11/12 sm:w-4/5 max-w-5xl shadow-lg max-h-[80vh] overflow-y-auto">
             {/* Botón de cierre en la esquina superior derecha */}
             <button
               onClick={() => setIsModalOpen(false)}

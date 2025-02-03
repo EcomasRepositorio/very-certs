@@ -79,7 +79,7 @@ const TestingPage: React.FC<Props> = () => {
                       >
                         <div>
                           <div className="bg-transparent dark:bg-transparent">
-                            <SearchDNI onSearchDNI={handleSearch} />
+                            <SearchDNI  />
                           </div>
                         </div>
                       </Tab>

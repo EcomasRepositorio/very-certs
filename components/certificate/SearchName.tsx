@@ -200,6 +200,8 @@ const SearchName: React.FC<SearchNameProps> = ({ onSearchName }) => {
 
   return (
     <div className="">
+
+      
       <form onSubmit={searchName} className="w-full ">
         <div className="flex items-center ">
           <div className=" flex-1">

@@ -5,9 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 
 const Dialog = DialogPrimitive.Root;
-
 const DialogTrigger = DialogPrimitive.Trigger;
-
 const DialogPortal = DialogPrimitive.Portal;
 
 const DialogOverlay = React.forwardRef<
@@ -16,10 +14,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn(
-      "fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity",
-      className
-    )}
+    className={cn("fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity", className)}
     {...props}
   />
 ));
@@ -61,6 +56,12 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 const DialogClose = DialogPrimitive.Close;
 
+/* ✅ Agregamos `DialogHeader` */
+const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
+);
+DialogHeader.displayName = "DialogHeader";
+
 export {
   Dialog,
   DialogTrigger,
@@ -68,4 +69,5 @@ export {
   DialogTitle,
   DialogDescription,
   DialogClose,
+  DialogHeader, // <-- Ahora exportamos DialogHeader
 };

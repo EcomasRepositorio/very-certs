@@ -4,7 +4,7 @@ import { Button, Spinner } from "@nextui-org/react";
 import Modal from "../share/ModalTest";
 import Modalerror from "../share/ModalErrorLens";
 import useCounterStore from "@/store/counterStore";
-import DynamicModal from "./modals/DynamicModal";
+import DynamicModal from "./modalCode/DynamicModal";
 
 const SearchCode: React.FC = () => {
   const [queryValue, setQueryValue] = useState<string>("");

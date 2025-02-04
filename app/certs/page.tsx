@@ -6,8 +6,8 @@ import useCounterStore from "@/store/counterStore";
 import "./Style.css";
 
 const SearchCode = dynamic(() => import("@/components/certificate/SearchCode"));
-const SearchDNI = dynamic(() => import("@/components/certificate/SearchDNI"));
-const SearchName = dynamic(() => import("@/components/certificate/SearchName"));
+const SearchDNI = dynamic(() => import("@/components/certificate/searchdocument/SearchDNI"));
+const SearchName = dynamic(() => import("@/components/certificate/searchname/SearchName"));
 
 interface Props {}
 
@@ -101,7 +101,7 @@ const TestingPage: React.FC<Props> = () => {
                       >
                         <div>
                           <div className="bg-transparent dark:bg-transparent">
-                            <SearchName onSearchName={handleSearch} />
+                            <SearchName  />
                           </div>
                         </div>
                       </Tab>

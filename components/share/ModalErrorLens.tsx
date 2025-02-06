@@ -26,7 +26,7 @@ const ModalError: React.FC<{
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/10 z-50">
-      <div className="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80 text-center">
 
         {children}
 
@@ -34,7 +34,7 @@ const ModalError: React.FC<{
         <div className="text-center mt-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            className="bg-customBlue dark:customBlue text-white px-4 py-2 rounded-lg mt-4"
           >
             Cerrar
           </button>

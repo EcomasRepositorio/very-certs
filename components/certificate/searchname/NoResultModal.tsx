@@ -19,11 +19,11 @@ const NoResultsModal: React.FC<NoResultsModalProps> = ({
           No se encontraron resultados
         </h3>
         <p className="text-gray-600 dark:text-gray-300 mt-2">
-          Intente con otro DNI.
+          Intente Nuevamente.
         </p>
         <Button
           onClick={() => setIsOpen(false)}
-          className="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded-lg mt-4"
+          className="bg-customBlue dark:customBlue text-white px-4 py-2 rounded-lg mt-4"
         >
           Cerrar
         </Button>

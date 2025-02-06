@@ -33,6 +33,21 @@ const StudentModal: React.FC<StudentModalProps> = ({
   const [selectedStudent, setSelectedStudent] =
     useState<ExtendedStudent | null>(null);
 
+  const [isDynamicModalOpen, setIsDynamicModalOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState<any>(null); // Almacena los datos del ítem seleccionado
+  const [selectedDataType, setSelectedDataType] = useState<
+    "course" | "graduate" | "module"
+  >("graduate"); // Tipo de dato seleccionado
+
+  const handleViewClick = (
+    data: any,
+    type: "course" | "graduate" | "module"
+  ) => {
+    setSelectedData(data);
+    setSelectedDataType(type);
+    setIsDynamicModalOpen(true);
+  };
+
   // 📌 Sincroniza `selectedStudent` cuando `student` cambia
   useEffect(() => {
     if (isOpen && student) {
@@ -115,7 +130,12 @@ const StudentModal: React.FC<StudentModalProps> = ({
                           : "N/A"}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2">
-                        <Button className="bg-customBlue dark:bg-customBlue text-white underline">
+                        <Button
+                          className="bg-customBlue dark:bg-customBlue text-white underline"
+                          onClick={() =>
+                            handleViewClick(selectedStudent, "graduate")
+                          }
+                        >
                           Ver
                         </Button>
                       </TableCell>
@@ -171,7 +191,10 @@ const StudentModal: React.FC<StudentModalProps> = ({
                           : "N/A"}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2">
-                        <Button className="bg-customBlue dark:bg-customBlue text-white underline">
+                        <Button
+                          className="bg-customBlue dark:bg-customBlue text-white underline"
+                          onClick={() => handleViewClick(course, "course")}
+                        >
                           Ver
                         </Button>
                       </TableCell>
@@ -207,6 +230,9 @@ const StudentModal: React.FC<StudentModalProps> = ({
                     <TableHead className="text-center px-4 py-2">
                       Fecha de finalización
                     </TableHead>
+                    <TableHead className="text-center px-4 py-2">
+                      Acción
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -235,6 +261,14 @@ const StudentModal: React.FC<StudentModalProps> = ({
                               }
                             )
                           : "N/A"}
+                      </TableCell>
+                      <TableCell className="text-center px-4 py-2">
+                        <Button
+                          className="bg-customBlue dark:bg-customBlue text-white underline"
+                          onClick={() => handleViewClick(module, "module")}
+                        >
+                          Ver
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

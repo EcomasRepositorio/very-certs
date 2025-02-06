@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from "react";
 import axios from "axios";
 import { Button, Spinner } from "@nextui-org/react";
 import Modal from "../share/ModalTest";
-import Modalerror from "../share/ModalErrorLens";
+import Modalerror from "@/components/share/ModalErrorLens";
 import useCounterStore from "@/store/counterStore";
 import DynamicModal from "./modalCode/DynamicModal";
 
@@ -81,7 +81,6 @@ const SearchCode: React.FC = () => {
     }
     return null;
   };
-  console.log("Datos recibidos en SearchCode:", dataType);
 
   return (
     <div>
@@ -108,16 +107,24 @@ const SearchCode: React.FC = () => {
 
       {renderModalContent()}
 
-      <Modalerror open={errorModalOpen} onClose={closeErrorModal}>
-        <div className="p-4 text-center">
-          <h2 className="text-md font-bold text-red-500 mb-4">
-            Código incorrecto
-          </h2>
-          <p className="text-sm text-gray-600">
-            El código ingresado no se encuentra en nuestra base de datos.
-          </p>
+      {errorModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80 text-center">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              No se encontraron resultados
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
+              Intente Nuevamente.
+            </p>
+            <Button
+              onClick={closeErrorModal}
+              className="bg-customBlue dark:bg-customBlue text-white px-4 py-2 rounded-lg mt-4"
+            >
+              Cerrar
+            </Button>
+          </div>
         </div>
-      </Modalerror>
+      )}
     </div>
   );
 };

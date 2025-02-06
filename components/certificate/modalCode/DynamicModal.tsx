@@ -128,7 +128,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
               {dataType === "course"
                 ? "curso"
                 : dataType === "module"
-                ? "módulo"
+                ? "curso taller"
                 : "diplomado"}
               :
             </p>

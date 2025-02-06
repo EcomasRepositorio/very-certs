@@ -32,7 +32,7 @@ const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
     : "Fecha no disponible";
 
   const moduleNames =
-    corporation?.nameModule || "Nombre del curso no disponible";
+    corporation?.nameModule || "Nombre del modulo no disponible";
 
   if (!showModal) {
     return null;
@@ -109,7 +109,7 @@ const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
 
             {/* Curso */}
             <p className="text-base text-gray-800  mb-4">
-              Por culminar con éxito el curso:
+              Por culminar con éxito el curso taller:
             </p>
             <div className="bg-gray-100 dark:bg-gray-100 rounded-lg p-4 border-l-4 border-cyan-500">
               <div>

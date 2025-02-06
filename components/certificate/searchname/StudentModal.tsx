@@ -209,7 +209,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
         {selectedStudent.modules && selectedStudent.modules.length > 0 && (
           <div className="mt-6">
             <h3 className="text-lg font-semibold bg-customBlue text-white px-4 py-2 rounded-md text-center">
-              Módulos de Especialización
+              Cursos Taller
             </h3>
             <div className="overflow-x-auto mt-2">
               <Table className="w-full border border-gray-300 dark:border-gray-700 rounded-lg">

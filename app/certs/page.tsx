@@ -117,7 +117,7 @@ const TestingPage: React.FC<Props> = () => {
                     </h3>
                     <p className="text-sm md:text-base">
                       Puedes verificar la validez de tu certificado
-                      introduciendo tu Documento de Identidad, nombre completo o
+                      introduciendo tu Documento de Identidad, nombre completo(como figura exactamente en tu DNI)  o
                       código de certificado. Nos esforzamos en proteger la
                       privacidad y el manejo confidencial de tus datos
                       personales.

@@ -3,7 +3,7 @@ import ModalTable from '../share/modalTable';
 import StudentDelete from './StudentDelete';
 import StudentForm from './StudentForm';
 import { FaRegEdit } from 'react-icons/fa';
-import { StudentData } from '@/interface/interface';
+import { StudentData } from '@/interface/interfaceSearch';
 import Modal from '../share/Modal';
 
 interface DuplicatedCodesDetectorProps {

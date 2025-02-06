@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import tokenConfig, { URL } from '@/components/utils/format/tokenConfig';
 import { useRouteData } from '@/hooks/hooks';
 import Modal from '../share/Modal';
-import { StudentFormData } from '@/interface/interface';
+import { StudentFormData } from '@/interface/interfaceSearch';
 import ErrorModal from '../share/errorModal';
 
 interface StudentFormProps {

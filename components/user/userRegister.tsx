@@ -4,7 +4,7 @@ import Modal from '../share/Modal';
 import React, { useEffect, useState } from 'react';
 import { useRouteData } from '@/hooks/hooks';
 import tokenConfig, { URL } from '@/components/utils/format/tokenConfig';
-import { UserData } from '@/interface/interface';
+import { UserData } from '@/interface/interfaceSearch';
 import PasswordInput from '../utils/format/passwordHash';
 
 interface CreateUserModal {

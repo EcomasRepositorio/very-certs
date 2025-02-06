@@ -4,7 +4,7 @@ import Modal from '../share/Modal';
 import React, { useEffect, useState } from 'react';
 import { useRouteData } from '@/hooks/hooks';
 import tokenConfig, { URL } from '@/components/utils/format/tokenConfig';
-import { UserUpdateData } from '@/interface/interface';
+import { UserUpdateData } from '@/interface/interfaceSearch';
 
 interface UpdateUserModal {
   onCloseModal: () => void;

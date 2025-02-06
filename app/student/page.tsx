@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouteData } from "@/hooks/hooks";
 import tokenConfig, { URL } from "@/components/utils/format/tokenConfig";
 import { FaRegEdit } from "react-icons/fa";
-import { StudentData } from "@/interface/interface";
+import { StudentData } from "@/interface/interfaceSearch";
 import * as XLSX from 'xlsx';
 import StudentForm from "@/components/student/StudentForm";
 import { BsFiletypeXls } from "react-icons/bs";

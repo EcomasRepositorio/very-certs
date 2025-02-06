@@ -6,13 +6,13 @@ import {
   SearchStudentDNIProps,
   Student,
   StudentData,
-} from "@/interface/interface";
+} from "@/interface/interfaceSearch";
 import Modal from "../share/Modal";
 import { FaRegEdit } from "react-icons/fa";
 import StudentForm from "./StudentForm";
 import StudentDelete from "./StudentDelete";
 import ModalTable from "../share/modalTable";
-import SearchDNI from "@/components/certificate/SearchDNI";
+
 
 const SearchName: React.FC<SearchStudentDNIProps> = ({ onSearchDNI }) => {
   const [isActive, setIsActive] = useState(false);

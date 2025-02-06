@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouteData } from '@/hooks/hooks';
 import tokenConfig, { URL } from '@/components/utils/format/tokenConfig';
-import { UserData } from '@/interface/interface';
+import { UserData } from '@/interface/interfaceSearch';
 import UserRegister from '@/components/user/userRegister';
 import UserUpdate from '@/components/user/userUpdate';
 import UserDelete from '@/components/user/userDelete';

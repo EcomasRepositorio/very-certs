@@ -13,6 +13,7 @@ import {
   StudentCourse,
   StudentModule,
 } from "@/interface/types";
+import DynamicModal from "../../certificate/modalCode/DynamicModal"; // Ajusta la ruta según tu estructura de archivos
 
 interface StudentModalProps {
   isOpen: boolean;
@@ -221,9 +222,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
                     <TableHead className="text-center px-4 py-2">
                       Organizado por
                     </TableHead>
-                    <TableHead className="text-center px-4 py-2">
-                      Código
-                    </TableHead>
+
                     <TableHead className="text-center px-4 py-2">
                       Horas
                     </TableHead>
@@ -243,9 +242,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
                         {module.studentGraduate.corporation.name || "ECOMAS"}
-                      </TableCell>
-                      <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {module.code}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
                         {module.hours} hrs
@@ -278,6 +274,12 @@ const StudentModal: React.FC<StudentModalProps> = ({
           </div>
         )}
       </div>
+      <DynamicModal
+        open={isDynamicModalOpen}
+        onClose={() => setIsDynamicModalOpen(false)}
+        data={selectedData}
+        dataType={selectedDataType}
+      />
     </div>
   );
 };

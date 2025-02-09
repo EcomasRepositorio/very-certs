@@ -22,6 +22,12 @@ const SearchCode: React.FC = () => {
 
   const searchCode = async (event: FormEvent) => {
     event.preventDefault();
+
+    if (!/^\d+$/.test(queryValue) || queryValue.length <= 8) {
+      setErrorModalOpen(true);
+      return;
+    }
+
     setLoading(true);
     setStudentData(null);
 

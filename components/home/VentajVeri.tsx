@@ -30,27 +30,7 @@ const ExpertiseSection = () => {
           />
         </div>
 
-        {/* Otra imagen detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block absolute top-60 left-12  -z-1">
-          <Image
-            src="/image/fondcian.jpg"
-            alt="Background mechanic image"
-            width={350}
-            height={250}
-            className="rounded-lg shadow-md opacity-50 mt-[40px] ml-[35px] dark:opacity-60"
-          />
-        </div>
-
-        {/* Imagen adicional detrás (solo visible en pantallas md o mayores) */}
-        <div className="hidden md:block relative bottom-80 left-12 mb-20 sm:mr-10 -z-1">
-          <Image
-            src="/image/fondcian.jpg"
-            alt="Background mechanic image"
-            width={400}
-            height={300}
-            className="rounded-lg shadow-lg opacity-50 dark:opacity-70"
-          />
-        </div>
+      
 
         {/* Elemento hexagonal */}
         {/* <div

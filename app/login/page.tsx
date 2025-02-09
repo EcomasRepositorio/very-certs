@@ -94,7 +94,7 @@ const SignIn: React.FC = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed dark:hidden"
         style={{
-          backgroundImage: "url(/image/fond-wite.webp)",
+          backgroundImage: "url(/certificate/image/blue_bg_4.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -104,18 +104,18 @@ const SignIn: React.FC = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed hidden dark:block"
         style={{
-          backgroundImage: "url(/image/espace.png)",
+          backgroundImage: "url(/certificate/image/dark.svg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       ></div>
 
-      <div className="relative z-10 w-[400px] p-8 backdrop-blur-md bg-black/60 rounded-xl shadow-lg">
+      <div className="relative z-10 w-[400px] p-8 backdrop-blur-md bg-black/30 rounded-xl shadow-lg">
         <h1 className="text-2xl font-semibold text-white text-center mb-4">
           Iniciar Sesión
         </h1>
-        <p className="text-sm text-gray-400 text-center mb-6">
-          Mantén todo en orden y estarás bien
+        <p className="text-sm text-gray-100 text-center mb-6">
+          Ingresa tu Correo y Contraseña
         </p>
 
         {/* Errores */}
@@ -134,11 +134,11 @@ const SignIn: React.FC = () => {
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           {/* Campo de Email */}
           <div>
-            <label className="text-sm text-gray-300">Correo</label>
+            <label className="text-sm text-gray-200">Correo</label>
             <input
               type="email"
               placeholder="Correo"
-              className="bg-gray-800 text-white placeholder-gray-500 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+              className="bg-gray-800 text-white placeholder-gray-500 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-customCian dark:focus:ring-gray-300 w-full"
               value={form.email}
               onChange={(e) => handleFormData(e, "email")}
               required
@@ -147,12 +147,12 @@ const SignIn: React.FC = () => {
 
           {/* Campo de Contraseña */}
           <div>
-            <label className="text-sm text-gray-300">Contraseña</label>
+            <label className="text-sm text-gray-200">Contraseña</label>
             <div className="relative">
               <input
                 type={isVisible ? "text" : "password"}
                 placeholder="Contraseña"
-                className="bg-gray-800 text-white placeholder-gray-500 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                className="bg-gray-800 text-white placeholder-gray-500 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-customCian dark:focus:ring-gray-300 w-full"
                 value={form.password}
                 onChange={(e) => handleFormData(e, "password")}
                 required
@@ -170,18 +170,18 @@ const SignIn: React.FC = () => {
           {/* Botón de Inicio de Sesión */}
           <button
             type="submit"
-            className="w-full py-3 bg-[#009FB2] text-white font-semibold rounded-md hover:bg-[#007C92] transition"
+            className="w-full py-3 border border-gray-100/50 bg-customBlue dark:bg-customDark text-white font-semibold rounded-md hover:bg-purple-950/20 transition"
           >
             {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
           </button>
         </form>
 
         <div className="text-center mt-4">
-          <p className="text-gray-400">
+          <p className="text-gray-100">
             ¿Nuevo en la plataforma?{" "}
             <button
               onClick={handleRegisterRedirect}
-              className="text-[#009FB2] hover:underline"
+              className="text-customCian hover:underline"
             >
               Regístrate ahora
             </button>

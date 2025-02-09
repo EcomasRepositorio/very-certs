@@ -9,8 +9,9 @@ import {
   FaTiktok,
   FaWhatsapp,
   FaYoutube,
-} from "react-icons/fa";
+} from "react-icons/fa"
 import { HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
+import { Book } from "lucide-react";
 
 // Tipos para los enlaces y menús
 type SocialLink = {
@@ -26,10 +27,17 @@ type MenuLink = {
 
 // Definición de los enlaces de redes sociales y menús
 const socialLinks: SocialLink[] = [
-  { href: "https://www.facebook.com/profile.php?id=61567708557735", icon: FaFacebookF },
+  {
+    href: "https://www.facebook.com/profile.php?id=61567708557735",
+    icon: FaFacebookF,
+  },
   { href: "https://www.instagram.com", icon: FaInstagram },
   { href: "https://wa.me/", icon: FaWhatsapp, disabled: false },
-  { href: "https://www.tiktok.com/@verycerts", icon: FaTiktok, disabled: false },
+  {
+    href: "https://www.tiktok.com/@verycerts",
+    icon: FaTiktok,
+    disabled: false,
+  },
   { href: "https://www.youtube.com", icon: FaYoutube, disabled: true },
 ];
 
@@ -129,29 +137,14 @@ const Footer: React.FC = () => {
                 priority
               />
               <p className="mt-2 text-sm text-center md:text-left">
-              Confiabilidad y seguridad en la gestión de certificados para el mundo
-          digital. "Construya un entorno de confianza con VeryCerts, la plataforma
-          líder en verificación de certificados. Verifique y valide cada certificado
-          de manera eficiente y segura".
+                Confiabilidad y seguridad en la gestión de certificados para el
+                mundo digital. "Construya un entorno de confianza con VeryCerts,
+                la plataforma líder en verificación de certificados. Verifique y
+                valide cada certificado de manera eficiente y segura".
               </p>
               <Link href="/book">
                 <div className="mt-2 text-sm text-black dark:text-white hover:underline flex items-center">
-                  {/* Imagen para modo claro */}
-                  <Image
-                    src="/image/book-black.svg"
-                    alt="Libro de Reclamaciones"
-                    width={24}
-                    height={24}
-                    className="mr-2 block dark:hidden" // Visible en modo claro
-                  />
-                  {/* Imagen para modo oscuro */}
-                  <Image
-                    src="/image/book-white.svg"
-                    alt="Libro de Reclamaciones"
-                    width={24}
-                    height={24}
-                    className="mr-2 hidden dark:block" // Visible en modo oscuro
-                  />
+                  <Book className="w-5 h-5 mr-2 text-black dark:text-white" />
                   Libro de Reclamaciones
                 </div>
               </Link>
@@ -230,13 +223,18 @@ const Footer: React.FC = () => {
                   <HiOutlineMail size={20} className="mr-2" />
                   <Link href="gerencia@verycerts.com">
                     {/* colocar correo */}
-                    <span className="hover:underline"> contacto@verycerts.com</span>
+                    <span className="hover:underline">
+                      {" "}
+                      contacto@verycerts.com
+                    </span>
                   </Link>
                 </li>
                 <li className="flex items-center">
                   <HiOutlinePhone size={20} className="mr-2" />
                   <Link href="tel:+51">
-                    <span className="hover:underline">{/* aqui va el numero  */}</span>
+                    <span className="hover:underline">
+                      {/* aqui va el numero  */}
+                    </span>
                   </Link>
                 </li>
               </ul>
@@ -487,7 +485,7 @@ const Footer: React.FC = () => {
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               9. <strong>Contacto</strong>
             </p>
-            
+
             <button
               onClick={closePrivacyModal}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition mt-4"

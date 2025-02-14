@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'backclassroom.ecomas.pe', // Reemplaza con tu dominio
+        hostname: 'https://backclassroom.verycerts.com', // Reemplaza con tu dominio
         pathname: '/**',
       },
     ],

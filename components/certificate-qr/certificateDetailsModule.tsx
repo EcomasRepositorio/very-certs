@@ -20,7 +20,7 @@ const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
-  const API_BASE_URL = "https://backclassroom.ecomas.pe";
+  const API_BASE_URL = "https://backclassroom.verycerts.com";
 
   const corpotationImageUrl = corporation.studentGraduate.corporation[0]
     .corporation.icon

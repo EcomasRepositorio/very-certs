@@ -11,7 +11,7 @@ export const URL = () => "https://backend.verycerts.com/api/v1";
 export const getURL = () => "https://backend.ecomas.pe/api/v1";
 
 
-export const veryURL = () => "https://backclassroom.ecomas.pe/api/v1";
+export const veryURL = () => "https://backclassroom.verycerts.com/api/v1";
 
 export default tokenConfig;
 

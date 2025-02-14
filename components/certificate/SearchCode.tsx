@@ -33,7 +33,7 @@ const SearchCode: React.FC = () => {
 
     try {
       const res = await axios.get(
-        `https://backclassroom.ecomas.pe/api/v1/search/students?search=${queryValue}`
+        `https://backclassroom.verycerts.com/api/v1/search/students?search=${queryValue}`
       );
 
       if (res.data) {

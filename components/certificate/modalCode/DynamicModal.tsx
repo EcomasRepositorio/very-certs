@@ -28,7 +28,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 }) => {
   if (!open) return null;
 
-  const API_BASE_URL = "https://backclassroom.ecomas.pe";
+  const API_BASE_URL = "https://backclassroom.verycerts.com";
 
   const corporationData =
     dataType === "module"

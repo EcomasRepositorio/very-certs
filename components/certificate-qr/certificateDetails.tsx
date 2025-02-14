@@ -21,7 +21,7 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
   const [date, setDate] = useState(""); // Fecha dinámica en estado
   const router = useRouter();
 
-  const API_BASE_URL = "https://backclassroom.ecomas.pe";
+  const API_BASE_URL = "https://backclassroom.verycerts.com";
 
   console.log(participantData);
 

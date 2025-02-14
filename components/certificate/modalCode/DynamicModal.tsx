@@ -28,6 +28,8 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 }) => {
   if (!open) return null;
 
+  console.log(data);
+
   const API_BASE_URL = "https://backclassroom.verycerts.com";
 
   const corporationData =

@@ -241,7 +241,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
                         {module.nameModule}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {module.studentGraduate.corporation.name || "ECOMAS"}
+                        {module.corporation || "N/A"}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
                         {module.hours} hrs

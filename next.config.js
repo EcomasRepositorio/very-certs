@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://backclassroom.verycerts.com', // Reemplaza con tu dominio
+        hostname: 'backclassroom.verycerts.com', // Dominio de la imagen
         pathname: '/**',
       },
     ],

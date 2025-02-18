@@ -59,7 +59,7 @@ export default async function CertPage({ params }: CertPageProps) {
 
   try {
     const participantRes = await fetch(
-      `https://backclassroom.verycerts.com/api/v1/certificate/graduate/${uuid}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/certificate/graduate/${uuid}`,
       { cache: "no-store" }
     );
     if (participantRes.ok) {
@@ -70,7 +70,7 @@ export default async function CertPage({ params }: CertPageProps) {
     }
 
     const courseRes = await fetch(
-      `https://backclassroom.verycerts.com/api/v1/certificate/course/${uuid}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/certificate/course/${uuid}`,
       { cache: "no-store" }
     );
     if (courseRes.ok) {
@@ -82,7 +82,7 @@ export default async function CertPage({ params }: CertPageProps) {
     }
 
     const moduleRes = await fetch(
-      `https://backclassroom.verycerts.com/api/v1/certificate/module/${uuid}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/certificate/module/${uuid}`,
       { cache: "no-store" }
     );
     if (moduleRes.ok) {

@@ -33,7 +33,7 @@ const SearchCode: React.FC = () => {
 
     try {
       const res = await axios.get(
-        `https://backclassroom.verycerts.com/api/v1/search/students?search=${queryValue}`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/search/students?search=${queryValue}`
       );
 
       if (res.data) {

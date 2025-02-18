@@ -2,16 +2,22 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  reactStrictMode: true, // Habilita el modo estricto para encontrar problemas.
-  swcMinify: true, // Usa el minificador SWC de Next.js para optimización.
-  output: 'standalone', // Útil si despliegas en contenedores.
+  reactStrictMode: true,
+  swcMinify: true,
+  output: 'standalone',
 
-  // Configuración para imágenes externas
   images: {
     remotePatterns: [
+      // Dominio original
       {
         protocol: 'https',
-        hostname: 'backclassroom.verycerts.com', // Dominio de la imagen
+        hostname: 'backclassroom.verycerts.com',
+        pathname: '/**',
+      },
+      // Dominio nuevo
+      {
+        protocol: 'https',
+        hostname: 'backclassroom.ecomas.pe',
         pathname: '/**',
       },
     ],

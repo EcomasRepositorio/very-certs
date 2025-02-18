@@ -20,7 +20,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
-  const API_BASE_URL = "https://backclassroom.verycerts.com";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
 
   const corpotationImageUrl = courseData.corporation?.[0]?.corporation?.icon
     ? `${API_BASE_URL}${courseData.corporation[0].corporation.icon}`

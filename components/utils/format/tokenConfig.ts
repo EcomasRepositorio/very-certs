@@ -5,13 +5,13 @@ export const tokenConfig = (value: string) => {
 };
 
 // Primera API
-export const URL = () => "https://backclassroom.verycerts.com/api/v1";
+export const URL = () => `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 
 // Segunda API
-export const getURL = () => "https://backclassroom.verycerts.com/api/v1";
+export const getURL = () => `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 
 
-export const veryURL = () => "https://backclassroom.verycerts.com/api/v1";
+export const veryURL = () => `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 
 export default tokenConfig;
 

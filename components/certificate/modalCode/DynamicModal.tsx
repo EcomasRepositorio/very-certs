@@ -30,7 +30,10 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 
   console.log(data);
 
-  const API_BASE_URL = "https://backclassroom.verycerts.com";
+
+
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
+
 
   const corporationData =
     dataType === "module"

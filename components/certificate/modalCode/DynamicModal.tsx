@@ -11,7 +11,8 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 interface DynamicModalProps {
   open: boolean;
@@ -19,6 +20,7 @@ interface DynamicModalProps {
   data: any;
   dataType: "course" | "graduate" | "module";
 }
+
 
 const DynamicModal: React.FC<DynamicModalProps> = ({
   open,
@@ -30,30 +32,31 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 
   console.log(data);
 
-
-
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
-
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const corporationData =
     dataType === "module"
-      ? data?.studentGraduate?.corporation?.[0]?.corporation || null // Extraer de studentGraduate
-      : data?.corporation?.[0]?.corporation || null; // Mantiene la lógica para graduate y course
+      ? data?.studentGraduate?.corporation?.[0]?.corporation || null
+      : data?.corporation?.[0]?.corporation || null;
 
   const corporationImageUrl = corporationData?.icon
     ? `${API_BASE_URL}${corporationData.icon}`
     : null;
 
-  console.log("corporationData", corporationData);
+  const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
+
+  const getFormattedDate = (dateString: any) => {
+    if (!isValidDate(dateString)) return "Fecha no disponible";
+
+    const utcDate = parseISO(dateString);
+
+    return format(new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate()), "dd/MM/yyyy");
+  };
 
   const formattedDate =
     dataType === "course"
-      ? data?.module?.[0]?.module?.endDate
-        ? format(new Date(data.module[0].module.endDate), "dd/MM/yyyy")
-        : "Fecha no disponible"
-      : data?.endDate
-      ? format(new Date(data.endDate), "dd/MM/yyyy")
-      : "Fecha no disponible";
+      ? getFormattedDate(data?.module?.[0]?.module?.endDate)
+      : getFormattedDate(data?.endDate);
 
   const itemName =
     dataType === "course"

@@ -26,6 +26,7 @@
     "clsx": "^2.1.1",
     "cookie": "^0.6.0",
     "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "framer-motion": "^11.17.0",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.471.2",

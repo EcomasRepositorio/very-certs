@@ -13,7 +13,27 @@ import {
   StudentCourse,
   StudentModule,
 } from "@/interface/types";
-import DynamicModal from "../../certificate/modalCode/DynamicModal"; // Ajusta la ruta según tu estructura de archivos
+import DynamicModal from "../../certificate/modalCode/DynamicModal";
+import { format, parseISO } from "date-fns";
+
+const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
+
+const getFormattedDate = (dateString: any) => {
+  if (!isValidDate(dateString)) return "N/A";
+
+  // Convertir la fecha sin modificar la zona horaria
+  const utcDate = parseISO(dateString);
+
+  // Extraer año, mes y día en UTC para evitar cambios por zona horaria
+  return format(
+    new Date(
+      utcDate.getUTCFullYear(),
+      utcDate.getUTCMonth(),
+      utcDate.getUTCDate()
+    ),
+    "dd/MM/yyyy"
+  );
+};
 
 interface StudentModalProps {
   isOpen: boolean;
@@ -121,17 +141,11 @@ const StudentModal: React.FC<StudentModalProps> = ({
                         {selectedStudent.corporation?.[0]?.corporation
                           ?.graduate?.[0]?.credits || "N/A"}
                       </TableCell>
+
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {selectedStudent.endDate
-                          ? new Date(
-                              selectedStudent.endDate
-                            ).toLocaleDateString("es-ES", {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                            })
-                          : "N/A"}
+                        {getFormattedDate(selectedStudent.endDate)}
                       </TableCell>
+
                       <TableCell className="text-center px-4 py-2">
                         <Button
                           className="bg-customBlue dark:bg-customBlue text-white underline"
@@ -183,16 +197,9 @@ const StudentModal: React.FC<StudentModalProps> = ({
                         {course.corporation?.[0]?.corporation?.name || "N/A"}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {course.module?.[0]?.module?.endDate
-                          ? new Date(
-                              course.module[0].module.endDate
-                            ).toLocaleDateString("es-ES", {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                            })
-                          : "N/A"}
+                        {getFormattedDate(course.module?.[0]?.module?.endDate)}
                       </TableCell>
+
                       <TableCell className="text-center px-4 py-2">
                         <Button
                           className="bg-customBlue dark:bg-customBlue text-white underline"
@@ -249,17 +256,9 @@ const StudentModal: React.FC<StudentModalProps> = ({
                         {module.hours} hrs
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {module.endDate
-                          ? new Date(module.endDate).toLocaleDateString(
-                              "es-ES",
-                              {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                              }
-                            )
-                          : "N/A"}
+                        {getFormattedDate(module.endDate)}
                       </TableCell>
+
                       <TableCell className="text-center px-4 py-2">
                         <Button
                           className="bg-customBlue dark:bg-customBlue text-white underline"

@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { CertificateDetailsProps } from "@/components/utils/format/types";
 
 const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
@@ -25,6 +25,15 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
 
 
   console.log(participantData);
+
+  const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
+  const getFormattedDate = (dateString: any) => {
+    if (!isValidDate(dateString)) return "Fecha no disponible";
+
+    const utcDate = parseISO(dateString);
+
+    return format(new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate()), "dd/MM/yyyy");
+  };
 
   const corpotationImageUrl = participantData.corporation?.[0]?.corporation
     ?.icon
@@ -41,8 +50,9 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
     corporation: [],
   };
   const formattedDate = participantData.endDate
-    ? format(new Date(participantData.endDate), "dd/MM/yyyy")
+    ? getFormattedDate(participantData.endDate)
     : "Fecha no disponible";
+    
 
   if (!showModal) {
     return null;

@@ -13,8 +13,10 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { CertificateDetailsPropsCourse } from "@/components/utils/format/types";
+
+const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
 
 const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
   const [showModal, setShowModal] = useState(true);
@@ -26,8 +28,19 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
     ? `${API_BASE_URL}${courseData.corporation[0].corporation.icon}`
     : null;
 
+    const getFormattedDate = (dateString: any) => {
+      if (!isValidDate(dateString)) return "Fecha no disponible";
+    
+      // Convertir la fecha desde la API sin ajustar la zona horaria
+      const utcDate = parseISO(dateString);
+    
+      // Forzar que la fecha se mantenga en UTC sin modificar
+      return format(new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate()), "dd/MM/yyyy");
+    };
+
+
   const formattedDate = courseData?.module[0].module.endDate
-    ? format(new Date(courseData?.module[0].module.endDate), "dd/MM/yyyy")
+    ? getFormattedDate(courseData?.module[0].module.endDate)
     : "Fecha no disponible";
 
   const moduleNames =

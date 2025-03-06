@@ -13,23 +13,42 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { CertificateDetailsPropsModule } from "@/components/utils/format/types";
+
+const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
 
 const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const corpotationImageUrl = corporation.studentGraduate.corporation[0]
     .corporation.icon
     ? `${API_BASE_URL}${corporation.studentGraduate.corporation[0].corporation.icon}`
     : null;
 
+  const getFormattedDate = (dateString: any) => {
+    if (!isValidDate(dateString)) return "Fecha no disponible";
+
+    // Convertir la fecha desde la API sin ajustar la zona horaria
+    const utcDate = parseISO(dateString);
+
+    // Forzar que la fecha se mantenga en UTC sin modificar
+    return format(
+      new Date(
+        utcDate.getUTCFullYear(),
+        utcDate.getUTCMonth(),
+        utcDate.getUTCDate()
+      ),
+      "dd/MM/yyyy"
+    );
+  };
+
   const formattedDate = corporation
-    ? format(new Date(corporation?.endDate), "dd/MM/yyyy")
-    : "Fecha no disponible";
+      ? getFormattedDate(corporation?.endDate)
+      : "Fecha no disponible";
 
   const moduleNames =
     corporation?.nameModule || "Nombre del modulo no disponible";

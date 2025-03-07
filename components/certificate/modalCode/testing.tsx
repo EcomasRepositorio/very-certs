@@ -28,43 +28,35 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 }) => {
   if (!open) return null;
 
+  console.log("Datos recibidos en DynamicModal:", data);
+
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const corporationData =
     dataType === "module"
-      ? data?.studentGraduate?.corporation?.[0]?.corporation
-      : dataType === "course"
-      ? data?.corporation?.[0]?.corporation
-      : dataType === "graduate"
-      ? data?.corporation?.[0]?.corporation
-      : null;
+      ? data?.studentGraduate?.corporation?.[0]?.corporation || null
+      : data?.corporation?.[0]?.corporation || null;
 
   const corporationImageUrl = corporationData?.icon
     ? `${API_BASE_URL}${corporationData.icon}`
     : null;
 
+
   const instituteData =
     dataType === "module"
-      ? data?.studentGraduate?.corporation?.[0]?.corporation?.graduate?.[0]
-          ?.corporation?.graduate?.[0]?.institute
-      : dataType === "course"
-      ? data?.module?.[0]?.module?.corporation?.[0]?.institute
-      : dataType === "graduate"
-      ? data?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation
-          ?.graduate?.[0]?.institute
-      : null;
+      ? data?.studentGraduate?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation
+          ?.graduate?.[0]?.institute || null
+      : data?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation?.graduate?.[0]
+          ?.institute || null;
 
-  const instituteImageUrl = instituteData?.icon
-    ? `${API_BASE_URL}${instituteData.icon}`
-    : null;
-
-  const thirdImageUrl = instituteData?.image
+  const instituteImageUrl = instituteData?.image
     ? `${API_BASE_URL}${instituteData.image}`
     : null;
 
-  const logos = [corporationImageUrl, instituteImageUrl, thirdImageUrl].filter(
-    Boolean
-  );
+  const logos = [
+    corporationImageUrl,
+    instituteImageUrl,
+  ].filter(Boolean); 
 
   const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
 
@@ -110,6 +102,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         "0 créditos"
       : null;
 
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Fondo semi-transparente */}
@@ -119,6 +112,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         className="relative bg-white rounded-xl shadow-lg p-8 max-w-4xl w-full z-50 overflow-y-auto"
         style={{ maxHeight: "90vh" }}
       >
+        {/* Botón de cierre */}
         <button
           aria-label="Cerrar modal"
           onClick={onClose}
@@ -128,94 +122,33 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         </button>
 
         <div className="flex">
+          {/* Barra lateral de color */}
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
 
           <div className="flex-1 p-6">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                {/* VISTA MÓVIL (se muestra en pantallas pequeñas) */}
-                <div className="block md:hidden">
-                  <div className="text-xl font-bold text-gray-800 mb-2">
-                    ORGANIZADO POR:
-                  </div>
-
-                  {corporationImageUrl || instituteImageUrl || thirdImageUrl ? (
-                    <div className="flex flex-col items-center gap-4">
-                      {corporationImageUrl && (
-                        <div className="relative w-60 h-20">
-                          <Image
-                            src={corporationImageUrl}
-                            alt="Logo Corporación"
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 768px) 50vw, 25vw"
-                          />
-                        </div>
-                      )}
-
-                      {[instituteImageUrl, thirdImageUrl]
-                        .filter(Boolean)
-                        .map((logoUrl, idx) => (
-                          <div
-                            key={idx}
-                            className="mt-2 mb-4 relative w-28 h-28"
-                          >
-                            <Image
-                              src={logoUrl || ""}
-                              alt={`Logo ${idx + 2}`}
-                              fill
-                              className="object-contain"
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                            />
-                          </div>
-                        ))}
-                    </div>
-                  ) : (
-                    <p className="mt-6 text-red-400">Logos no disponibles</p>
-                  )}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <div className="text-xl font-bold text-gray-800">
+                  ORGANIZADO POR:
                 </div>
-
-                {/* VISTA ESCRITORIO (se muestra en pantallas medianas en adelante) */}
-                <div className="hidden md:block">
-                  <div className=" text-xl font-bold text-gray-800 mb-2">
-                    ORGANIZADO POR:
+                {/* 4) CONTENEDOR DE LOGOS (hasta 3) */}
+                {logos.length > 0 ? (
+                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
+                    {logos.map((logoUrl, idx) => (
+                      <div key={idx} className="w-full flex justify-center">
+                        <Image
+                          src={logoUrl as string}
+                          alt={`Logo ${idx + 1}`}
+                          width={200}
+                          height={200}
+                          className="object-contain h-auto"
+                        />
+                      </div>
+                    ))}
                   </div>
-
-                  {corporationImageUrl || instituteImageUrl || thirdImageUrl ? (
-                    <div className="flex flex-row items-center gap-6 -my-14">
-                      {corporationImageUrl && (
-                        <div className="relative w-40 h-40 md:w-60 md:h-60">
-                          <Image
-                            src={corporationImageUrl}
-                            alt="Logo Corporación"
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 768px) 50vw, 25vw"
-                          />
-                        </div>
-                      )}
-
-                      {[instituteImageUrl, thirdImageUrl]
-                        .filter(Boolean)
-                        .map((logoUrl, idx) => (
-                          <div
-                            key={idx}
-                            className="relative w-32 h-32 md:w-28 md:h-28"
-                          >
-                            <Image
-                              src={logoUrl || ""}
-                              alt={`Logo ${idx + 2}`}
-                              fill
-                              className="object-contain"
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                            />
-                          </div>
-                        ))}
-                    </div>
-                  ) : (
-                    <p className="mt-6 text-red-400">Logos no disponibles</p>
-                  )}
-                </div>
+                ) : (
+                  <p className="mt-6 text-red-400">Logos no disponibles</p>
+                )}
               </div>
             </div>
 

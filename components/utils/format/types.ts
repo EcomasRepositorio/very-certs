@@ -160,7 +160,12 @@ export interface CertificateDetailsPropsCourse {
         name: string; // Nombre del módulo
         endDate: string; // Fecha de fin del módulo
         corporation: {
-          institute: string | null; // Instituto relacionado (puede ser nulo)
+          institute: {
+            id: number;
+            name: string;
+            icon: string | null;
+            image: string | null;
+          } // Instituto relacionado (puede ser nulo)
         }[];
       };
     }[];

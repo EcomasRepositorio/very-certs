@@ -244,7 +244,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
                         {module.corporation || "N/A"}
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
-                        {module.hours} hrs
+                        {20} hrs
                       </TableCell>
                       <TableCell className="text-center px-4 py-2 text-neutral-800 dark:text-neutral-200">
                         {module.endDate

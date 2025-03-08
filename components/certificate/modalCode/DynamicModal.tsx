@@ -58,6 +58,9 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
     ? `${API_BASE_URL}${instituteData.icon}`
     : null;
 
+  console.log("Institute Image URL:", instituteImageUrl);
+
+
   const thirdImageUrl = instituteData?.image
     ? `${API_BASE_URL}${instituteData.image}`
     : null;
@@ -97,7 +100,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 
   const hours =
     dataType === "module"
-      ? data?.hours || "0 horas"
+      ? "20 horas"
       : dataType === "graduate"
       ? data?.corporation?.[0]?.corporation?.graduate?.[0]?.hours || "0 horas"
       : dataType === "course"

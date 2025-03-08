@@ -16,15 +16,15 @@ import {
 import { format, parseISO } from "date-fns";
 import { CertificateDetailsProps } from "@/components/utils/format/types";
 
-const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
+const CertificateDetails = ({ participantData }: any) => {
   const [showModal, setShowModal] = useState(true);
-  const [date, setDate] = useState(""); // Fecha dinámica en estado
+  const [date, setDate] = useState(""); 
   const router = useRouter();
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://backclassroom.ecomas.pe";
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "https://backclassroom.ecomas.pe";
 
-
-  console.log(participantData);
+   
 
   const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
   const getFormattedDate = (dateString: any) => {
@@ -32,13 +32,28 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
 
     const utcDate = parseISO(dateString);
 
-    return format(new Date(utcDate.getUTCFullYear(), utcDate.getUTCMonth(), utcDate.getUTCDate()), "dd/MM/yyyy");
+    return format(
+      new Date(
+        utcDate.getUTCFullYear(),
+        utcDate.getUTCMonth(),
+        utcDate.getUTCDate()
+      ),
+      "dd/MM/yyyy"
+    );
   };
 
   const corpotationImageUrl = participantData.corporation?.[0]?.corporation
     ?.icon
     ? `${API_BASE_URL}${participantData.corporation[0].corporation.icon}`
     : null;
+
+    const instituteImageUrl = participantData.corporation?.[0]?.corporation?.graduate[0].corporation?.graduate[0]?.institute?.image
+    ? `${API_BASE_URL}${participantData.corporation?.[0]?.corporation?.graduate[0].corporation?.graduate[0]?.institute?.image}`
+    : null;
+
+
+
+  const logos = [corpotationImageUrl, instituteImageUrl].filter(Boolean);
 
   useEffect(() => {
     // Establecer la fecha dinámica solo en el cliente
@@ -52,7 +67,6 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
   const formattedDate = participantData.endDate
     ? getFormattedDate(participantData.endDate)
     : "Fecha no disponible";
-    
 
   if (!showModal) {
     return null;
@@ -72,48 +86,95 @@ const CertificateDetails = ({ participantData }: CertificateDetailsProps) => {
           <X size={24} />
         </button>
 
-        {/* Logo de Very Certs posicionado en la esquina superior derecha */}
-        <div className="hidden lg:flex absolute top-20 right-16 flex-col items-end space-y-2">
-          {/* Logo para pantallas claras */}
-          <Image
-            src={"/certificate/logos/VERTICAL_COLOR.svg"}
-            alt="Logo de Very Certs Light"
-            width={200}
-            height={200}
-            className="h-24 w-auto object-contain hidden dark:hidden lg:block"
-          />
-        
-          {/* <Image
-            src={"/certificate/logos/VERTICAL_BLANCO.svg"}
-            alt="Logo de Very Certs Dark"
-            width={200}
-            height={200}
-            className="h-24 w-auto object-contain hidden dark:block lg:block"
-          /> */}
-        </div>
 
         <div className="flex">
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
           <div className="flex-1 p-6">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <div className="text-xl font-bold text-gray-800 dark:text-gray-800">
-                  ORGANIZADO POR:
-                </div>
-                <div className="mt-6">
-                  {corpotationImageUrl ? (
-                    <Image
-                      src={corpotationImageUrl}
-                      alt="Logo de la corporación - graduates"
-                      width={250}
-                      height={250}
-                      className=" object-cover"
-                    />
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="block md:hidden ">
+                  <div className="text-xl font-bold text-gray-800 mb-2">
+                    ORGANIZADO POR:
+                  </div>
+                  {corpotationImageUrl || instituteImageUrl ? (
+                    <div className="flex flex-col items-center gap-4">
+                      {/* Logo Corporación (móvil) */}
+                      {corpotationImageUrl && (
+                        <div className="relative w-60 h-20">
+                          <Image
+                            src={corpotationImageUrl}
+                            alt="Logo Corporación"
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                          />
+                        </div>
+                      )}
+
+                      {/* Otros logos (móvil) */}
+                      {[instituteImageUrl]
+                        .filter(Boolean)
+                        .map((logoUrl, idx) => (
+                          <div
+                            key={idx}
+                            className="mt-2 mb-4 relative w-28 h-28"
+                          >
+                            <Image
+                              src={logoUrl || ""}
+                              alt={`Logo ${idx + 2}`}
+                              fill
+                              className="object-contain"
+                              sizes="(max-width: 768px) 50vw, 25vw"
+                            />
+                          </div>
+                        ))}
+                    </div>
                   ) : (
-                    <p>Logo no disponible</p>
+                    <p className="mt-6 text-red-400">Logos no disponibles</p>
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* VISTA ESCRITORIO */}
+            <div className="hidden md:block">
+              <div className="text-xl font-bold text-gray-800 mb-2">
+                ORGANIZADO POR:
+              </div>
+              {corpotationImageUrl || instituteImageUrl ? (
+                <div className="flex flex-row items-center gap-6 -my-14">
+                  {/* Logo Corporación (escritorio) */}
+                  {corpotationImageUrl && (
+                    <div className="relative w-40 h-40 md:w-60 md:h-60">
+                      <Image
+                        src={corpotationImageUrl}
+                        alt="Logo Corporación"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                      />
+                    </div>
+                  )}
+
+                  {/* Otros logos (escritorio) */}
+                  {[instituteImageUrl].filter(Boolean).map((logoUrl, idx) => (
+                    <div
+                      key={idx}
+                      className="relative w-32 h-32 md:w-28 md:h-28"
+                    >
+                      <Image
+                        src={logoUrl || ""}
+                        alt={`Logo ${idx + 2}`}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-6 text-red-400">Logos no disponibles</p>
+              )}
             </div>
 
             <p className="text-base text-gray-600 dark:text-gray-600 mb-2">

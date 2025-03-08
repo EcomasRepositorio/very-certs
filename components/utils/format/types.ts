@@ -1,34 +1,66 @@
-export interface CertificateDetailsProps{
+export interface CertificateDetailsProps {
   participantData: {
     id: number;
     code: string;
     uuidCode: string;
     documentNumber: string;
     fullName: string;
-    quota: any[]; // Parece que está vacío en los datos proporcionados, pero lo puedes ajustar según la lógica
-    result: any[]; // Lo mismo que `quota`
+
+    quota: {
+      id: number;
+      name: string;
+      code: string;
+      dateReceipt: string | null;
+      hourReceipt: string | null;
+      price: string;
+      state: boolean;
+      date: string;
+      observation: string | null;
+      observationOption: string | null;
+      idGraduate: number;
+      voucherUpload: string | null;
+      createdAt: string;
+      updatedAt: string;
+      studentGraduateId: number;
+    }[];
+
+    result: any[]; // Sin detalles en los datos, se deja como `any[]`
+
     graduate: {
       graduate: {
         id: number;
         name: string;
       };
     }[];
+
     corporation: {
       corporation: {
         id: number;
         name: string;
         image: string;
-        icon: string;
+        icon: string | null;
+
         graduate: {
           credits: string;
           hours: string;
-          institute: {
-            id: number;
-            name: string;
-            image: string;
-            icon: string | null;
+
+          // Aquí está la clave correcta para `institute`
+          corporation: {
+            graduate: {
+              corporation: {
+                id: number;
+                name: string;
+              };
+              institute: {
+                id: number;
+                name: string;
+                image: string;
+                icon: string | null;
+              };
+            }[];
           };
         }[];
+
         module: {
           module: {
             id: number;
@@ -39,9 +71,11 @@ export interface CertificateDetailsProps{
         }[];
       };
     }[];
+
     endDate: string;
-  }
+  };
 }
+
 
 export interface ParticipantData {
   id: number;
@@ -88,47 +122,42 @@ export interface ParticipantData {
   
  // types/type.ts
 
-export interface CourseData {
+ export interface CourseData {
+  id: number;
+  fullName: string;
+  documentNumber: string;
+  code: string;
+  uuidCode: string;
+  quota: {
     id: number;
-    fullName: string; // Nombre completo del participante
-    documentNumber: string;
-    code: string; // Código del certificado
-    uuidCode: string; // Código único del certificado
-    quota: {
-      id: number;
-      name: string; // Nombre de la cuota
-      code: string; // Código de la cuota
-      dateReceipt: string; // Fecha de recibo
-      hourReceipt: string; // Hora de recibo
-      price: string; // Precio de la cuota
-      state: boolean; // Estado de la cuota (pagado o no)
-      date: string; // Fecha de vencimiento de la cuota
-      observation: string; // Observaciones
-      observationOption: string; // Opción de observación
-      moduleId: number; // ID del módulo relacionado
-      createdAt: string; // Fecha de creación
-      updatedAt: string; // Fecha de actualización
-      studentCourseId: number; // ID del curso del estudiante
-    }[];
-    module: {
-      module: {
-        id: number; // ID del módulo
-        name: string; // Nombre del módulo
-        endDate: string; // Fecha de fin del módulo
-        corporation: {
-          institute: string | null; // Instituto relacionado (puede ser nulo)
-        }[];
-      };
-    }[];
+    name: string;
+    code: string;
+    dateReceipt: string;
+    hourReceipt: string;
+    price: string;
+    state: boolean;
+    studentCourseId: number;
+  }[];
+  module: {
+    id: number;
+    name: string;
+    endDate: string;
     corporation: {
-      corporation: {
-        id: number; // ID de la corporación
-        name: string; // Nombre de la corporación
-        icon: string; // URL del icono de la corporación
-        image: string; // URL de la imagen de la corporación
+      institute: {
+        id: number;
+        name: string;
+        icon: string | null;
+        image: string | null;
       };
     }[];
-  };
+  }[];
+  corporation: {
+    id: number;
+    name: string;
+    icon: string | null;
+    image: string | null;
+  }[];
+}
 
 
 export interface CertificateDetailsPropsCourse {

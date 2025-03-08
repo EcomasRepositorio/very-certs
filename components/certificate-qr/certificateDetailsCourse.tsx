@@ -18,7 +18,7 @@ import { CertificateDetailsPropsCourse } from "@/components/utils/format/types";
 
 const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
 
-const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
+const CertificateDetails = ({ courseData }: any) => {
   const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
@@ -56,7 +56,7 @@ const CertificateDetails = ({ courseData }: CertificateDetailsPropsCourse) => {
     : "Fecha no disponible";
 
   const moduleNames =
-    courseData?.module?.map((mod) => mod.module.name).join(", ") ||
+    courseData?.module?.map((mod: { module: { name: string } }) => mod.module.name).join(", ") ||
     "Nombre del curso no disponible";
 
   if (!showModal) {

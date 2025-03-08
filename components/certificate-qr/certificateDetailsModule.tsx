@@ -163,7 +163,7 @@ const CertificateDetails = ({ corporation }: CertificateDetailsPropsModule) => {
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
                   <strong>Horas de capacitación:</strong>{" "}
-                  {corporation.hours || "No disponible"}
+                  {"20 horas"}
                 </span>
               </div>
 

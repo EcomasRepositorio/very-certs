@@ -28,35 +28,60 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 }) => {
   if (!open) return null;
 
-  console.log("Datos recibidos en DynamicModal:", data);
-
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const corporationData =
     dataType === "module"
-      ? data?.studentGraduate?.corporation?.[0]?.corporation || null
-      : data?.corporation?.[0]?.corporation || null;
+      ? data?.studentGraduate?.corporation?.[0]?.corporation
+      : dataType === "course"
+      ? data?.corporation?.[0]?.corporation
+      : dataType === "graduate"
+      ? data?.corporation?.[0]?.corporation
+      : null;
+
+  const instituteData =
+    dataType === "module"
+      ? data?.studentGraduate?.corporation?.[0]?.corporation?.graduate?.[0]
+          ?.corporation?.graduate?.[0]?.institute
+      : dataType === "course"
+      ? data?.module?.[0]?.module?.corporation?.[0]?.institute
+      : dataType === "graduate"
+      ? data?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation
+          ?.graduate?.[0]?.institute
+      : null;
+
+  const STATIC_IMAGE = "/certificate/fundee.png";
 
   const corporationImageUrl = corporationData?.icon
     ? `${API_BASE_URL}${corporationData.icon}`
     : null;
 
-
-  const instituteData =
-    dataType === "module"
-      ? data?.studentGraduate?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation
-          ?.graduate?.[0]?.institute || null
-      : data?.corporation?.[0]?.corporation?.graduate?.[0]?.corporation?.graduate?.[0]
-          ?.institute || null;
-
-  const instituteImageUrl = instituteData?.image
-    ? `${API_BASE_URL}${instituteData.image}`
+  const instituteImageUrl = instituteData?.icon
+    ? `${API_BASE_URL}${instituteData.icon}`
     : null;
 
-  const logos = [
-    corporationImageUrl,
-    instituteImageUrl,
-  ].filter(Boolean); 
+
+  console.log("Institute Image URL:", instituteImageUrl);
+
+  const cuotas = data?.quota || [];
+  const cuotasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
+
+  const unicaCuota = cuotas.length === 1 ? parseFloat(cuotas[0].price) : 0;
+
+  const logos = corporationImageUrl ? [corporationImageUrl] : [];
+
+  if (dataType === "course") {
+    if (cuotasPagadas === 2 || (cuotas.length === 1 && unicaCuota >= 70)) {
+      
+      if (instituteImageUrl) logos.push(instituteImageUrl);
+      logos.push(STATIC_IMAGE);
+    }
+  }
+
+  if (dataType === "graduate") {
+    if (instituteImageUrl) logos.push(instituteImageUrl);
+    logos.push(STATIC_IMAGE);
+  }
 
   const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());
 
@@ -89,7 +114,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
 
   const hours =
     dataType === "module"
-      ? data?.hours || "0 horas"
+      ? "20 horas"
       : dataType === "graduate"
       ? data?.corporation?.[0]?.corporation?.graduate?.[0]?.hours || "0 horas"
       : dataType === "course"
@@ -102,7 +127,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         "0 créditos"
       : null;
 
-
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Fondo semi-transparente */}
@@ -112,7 +136,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         className="relative bg-white rounded-xl shadow-lg p-8 max-w-4xl w-full z-50 overflow-y-auto"
         style={{ maxHeight: "90vh" }}
       >
-        {/* Botón de cierre */}
         <button
           aria-label="Cerrar modal"
           onClick={onClose}
@@ -122,33 +145,31 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         </button>
 
         <div className="flex">
-          {/* Barra lateral de color */}
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
 
           <div className="flex-1 p-6">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <div className="text-xl font-bold text-gray-800">
-                  ORGANIZADO POR:
-                </div>
-                {/* 4) CONTENEDOR DE LOGOS (hasta 3) */}
-                {logos.length > 0 ? (
-                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
-                    {logos.map((logoUrl, idx) => (
-                      <div key={idx} className="w-full flex justify-center">
-                        <Image
-                          src={logoUrl as string}
-                          alt={`Logo ${idx + 1}`}
-                          width={200}
-                          height={200}
-                          className="object-contain h-auto"
-                        />
-                      </div>
-                    ))}
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                {/* VISTA ESCRITORIO (se muestra en pantallas medianas en adelante) */}
+                <div className="hidden md:block">
+                  <div className=" text-xl font-bold text-gray-800 mb-2">
+                    ORGANIZADO POR:
                   </div>
-                ) : (
-                  <p className="mt-6 text-red-400">Logos no disponibles</p>
-                )}
+
+                  {logos.map((logoUrl, idx) => (
+                    <div key={idx} className="relative w-28 h-28">
+                      {logoUrl && (
+                        <Image
+                          src={logoUrl}
+                          alt={`Logo ${idx + 1}`}
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

@@ -23,6 +23,7 @@ const CertificateDetails = ({ courseData }: any) => {
   const router = useRouter();
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const STATIC_IMAGE = "/certificate/fundee.png";
 
   // Logo corporación
   const corporationImageUrl = courseData?.corporation?.[0]?.corporation?.icon
@@ -35,9 +36,23 @@ const CertificateDetails = ({ courseData }: any) => {
     ? `${API_BASE_URL}${courseData.module[0].module.corporation[0].institute.image}`
     : null;
 
-  const logos = [corporationImageUrl, instituteImageUrl].filter(Boolean);
 
-  // Función para formatear fecha
+
+  const cuotas = courseData?.quota || [];
+  const coutasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
+  const unicaCuota = cuotas.length === 1 ? parseFloat(cuotas[0].price) : 0;
+
+  const logos = [];
+
+  if (
+    coutasPagadas === cuotas.length ||
+    (cuotas.length === 1 && unicaCuota >= 55)
+  ) {
+    if (corporationImageUrl) logos.push(corporationImageUrl);
+    if (instituteImageUrl) logos.push(instituteImageUrl);
+    logos.push(STATIC_IMAGE);
+  }
+
   const getFormattedDate = (dateString: any) => {
     if (!isValidDate(dateString)) return "Fecha no disponible";
     const utcDate = parseISO(dateString);
@@ -56,8 +71,9 @@ const CertificateDetails = ({ courseData }: any) => {
     : "Fecha no disponible";
 
   const moduleNames =
-    courseData?.module?.map((mod: { module: { name: string } }) => mod.module.name).join(", ") ||
-    "Nombre del curso no disponible";
+    courseData?.module
+      ?.map((mod: { module: { name: string } }) => mod.module.name)
+      .join(", ") || "Nombre del curso no disponible";
 
   if (!showModal) {
     return null;
@@ -84,94 +100,73 @@ const CertificateDetails = ({ courseData }: any) => {
         {/* Contenido principal */}
         <div className="flex">
           <div className="w-4 bg-cyan-500 rounded-l-xl"></div>
+
           <div className="flex-1 p-6">
-            {/* VISTA MÓVIL */}
             <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="block md:hidden ">
+                <div className="">
                   <div className="text-xl font-bold text-gray-800 mb-2">
                     ORGANIZADO POR:
                   </div>
-                  {corporationImageUrl || instituteImageUrl ? (
-                    <div className="flex flex-col items-center gap-4">
-                      {/* Logo Corporación (móvil) */}
-                      {corporationImageUrl && (
-                        <div className="relative w-60 h-20">
+                  <div className="block md:hidden flex flex-col items-center gap-4 -mt-8">
+                    {logos.length > 0 && (
+                      <div className="relative w-48 h-40 -mb-10">
+                        <Image
+                          src={logos[0]}
+                          alt="Logo principal"
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex flex-row items-center gap-4 mb-6">
+                      {logos.slice(1).map((logoUrl, idx) => (
+                        <div key={idx} className="relative w-24 h-24">
                           <Image
-                            src={corporationImageUrl}
-                            alt="Logo Corporación"
+                            src={logoUrl}
+                            alt={`Logo ${idx + 2}`}
                             fill
                             className="object-contain"
                             sizes="(max-width: 768px) 50vw, 25vw"
                           />
                         </div>
-                      )}
-
-                      {/* Otros logos (móvil) */}
-                      {[instituteImageUrl]
-                        .filter(Boolean)
-                        .map((logoUrl, idx) => (
-                          <div
-                            key={idx}
-                            className="mt-2 mb-4 relative w-28 h-28"
-                          >
-                            <Image
-                              src={logoUrl || ""}
-                              alt={`Logo ${idx + 2}`}
-                              fill
-                              className="object-contain"
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                            />
-                          </div>
-                        ))}
+                      ))}
                     </div>
-                  ) : (
-                    <p className="mt-6 text-red-400">Logos no disponibles</p>
-                  )}
+                  </div>
+                  {/* VISTA ESCRITORIO */}
+                  <div className="hidden md:flex flex-row items-center justify-center gap-6">
+                    {logos.length > 0 && (
+                      <div className="relative w-60 h-24">
+                        <Image
+                          src={logos[0]}
+                          alt="Logo principal"
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex flex-row items-center gap-4 mb-6">
+                      {logos.slice(1).map((logoUrl, idx) => (
+                        <div key={idx} className="relative w-24 h-24">
+                          <Image
+                            src={logoUrl}
+                            alt={`Logo ${idx + 1}`}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* VISTA ESCRITORIO */}
-            <div className="hidden md:block">
-              <div className="text-xl font-bold text-gray-800 mb-2">
-                ORGANIZADO POR:
-              </div>
-              {corporationImageUrl || instituteImageUrl ? (
-                <div className="flex flex-row items-center gap-6 -my-14">
-                  {/* Logo Corporación (escritorio) */}
-                  {corporationImageUrl && (
-                    <div className="relative w-40 h-40 md:w-60 md:h-60">
-                      <Image
-                        src={corporationImageUrl}
-                        alt="Logo Corporación"
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                      />
-                    </div>
-                  )}
-
-                  {/* Otros logos (escritorio) */}
-                  {[instituteImageUrl].filter(Boolean).map((logoUrl, idx) => (
-                    <div
-                      key={idx}
-                      className="relative w-32 h-32 md:w-28 md:h-28"
-                    >
-                      <Image
-                        src={logoUrl || ""}
-                        alt={`Logo ${idx + 2}`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="mt-6 text-red-400">Logos no disponibles</p>
-              )}
-            </div>
             <p className="text-base text-gray-600 mb-2">
               Certificado verificado a nombre de:
             </p>

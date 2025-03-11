@@ -36,20 +36,37 @@ const CertificateDetails = ({ courseData }: any) => {
     ? `${API_BASE_URL}${courseData.module[0].module.corporation[0].institute.image}`
     : null;
 
+
   const cuotas = courseData?.quota || [];
   const coutasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
   const unicaCuota = cuotas.length === 1 ? parseFloat(cuotas[0].price) : 0;
 
   const logos = [];
 
-  if (
-    coutasPagadas === cuotas.length ||
-    (cuotas.length === 1 && unicaCuota >= 55)
-  ) {
-    if (corporationImageUrl) logos.push(corporationImageUrl);
-    if (instituteImageUrl) logos.push(instituteImageUrl);
-    logos.push(STATIC_IMAGE);
-  }
+  const hasUniversityInName =
+  courseData?.module?.[0]?.module?.corporation?.[0]?.institute?.name &&
+  /universidad nacional de piura/i.test(
+    courseData.module[0].module.corporation[0].institute.name
+  );
+
+if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
+  if (corporationImageUrl) logos.push(corporationImageUrl);
+  if (instituteImageUrl) logos.push(instituteImageUrl);
+  if (hasUniversityInName) logos.push(STATIC_IMAGE);
+} else if (cuotas.length > 1 && coutasPagadas === 1) {
+  if (corporationImageUrl) logos.push(corporationImageUrl);
+}
+
+
+  // if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
+  //   if (corporationImageUrl) logos.push(corporationImageUrl);
+  //   if (instituteImageUrl) logos.push(instituteImageUrl);
+  //   logos.push(STATIC_IMAGE);
+  // } 
+
+  // else if (cuotas.length > 1 && coutasPagadas === 1) {
+  //   if (corporationImageUrl) logos.push(corporationImageUrl);
+  // }
 
   const getFormattedDate = (dateString: any) => {
     if (!isValidDate(dateString)) return "Fecha no disponible";

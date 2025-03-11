@@ -21,7 +21,7 @@ const CertificateDetails = ({ participantData }: any) => {
   const router = useRouter();
 
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "https://backclassroom.ecomas.pe";
+    process.env.NEXT_PUBLIC_API_BASE_URL ;
   const STATIC_IMAGE = "/certificate/fundee.png";
 
   const isValidDate = (date: any) => date && !isNaN(new Date(date).getTime());

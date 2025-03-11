@@ -75,17 +75,19 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   }
 
   if (dataType === "course") {
-    if (
-      coutasPagadas === cuotas.length ||
-      (cuotas.length === 1 && unicaCuota >= 55)
-    ) {
+    const hasUniversityInName =
+      instituteData?.name &&
+      /universidad nacional de piura/i.test(instituteData.name);
+  
+    if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
       if (corporationImageUrl) logos.push(corporationImageUrl);
       if (instituteImageUrl) logos.push(instituteImageUrl);
-      logos.push(STATIC_IMAGE);
+      if (hasUniversityInName) logos.push(STATIC_IMAGE);
     } else if (cuotas.length === 2 && coutasPagadas < 2) {
       if (corporationImageUrl) logos.push(corporationImageUrl);
     }
   }
+  
 
   if (dataType === "module") {
     if (corporationImageUrl) logos.push(corporationImageUrl);

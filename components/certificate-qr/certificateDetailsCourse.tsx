@@ -36,8 +36,6 @@ const CertificateDetails = ({ courseData }: any) => {
     ? `${API_BASE_URL}${courseData.module[0].module.corporation[0].institute.image}`
     : null;
 
-
-
   const cuotas = courseData?.quota || [];
   const coutasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
   const unicaCuota = cuotas.length === 1 ? parseFloat(cuotas[0].price) : 0;
@@ -219,7 +217,10 @@ const CertificateDetails = ({ courseData }: any) => {
               </div>
             </div>
           </div>
+
         </div>
+
+
       </div>
     </div>
   );

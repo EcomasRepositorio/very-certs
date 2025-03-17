@@ -36,7 +36,6 @@ const CertificateDetails = ({ courseData }: any) => {
     ? `${API_BASE_URL}${courseData.module[0].module.corporation[0].institute.image}`
     : null;
 
-
   const cuotas = courseData?.quota || [];
   const coutasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
   const unicaCuota = cuotas.length === 1 ? parseFloat(cuotas[0].price) : 0;
@@ -44,25 +43,27 @@ const CertificateDetails = ({ courseData }: any) => {
   const logos = [];
 
   const hasUniversityInName =
-  courseData?.module?.[0]?.module?.corporation?.[0]?.institute?.name &&
-  /universidad nacional de piura/i.test(
-    courseData.module[0].module.corporation[0].institute.name
-  );
+    courseData?.module?.[0]?.module?.corporation?.[0]?.institute?.name &&
+    /universidad nacional de piura/i.test(
+      courseData.module[0].module.corporation[0].institute.name
+    );
 
-if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
-  if (corporationImageUrl) logos.push(corporationImageUrl);
-  if (instituteImageUrl) logos.push(instituteImageUrl);
-  if (hasUniversityInName) logos.push(STATIC_IMAGE);
-} else if (cuotas.length > 1 && coutasPagadas === 1) {
-  if (corporationImageUrl) logos.push(corporationImageUrl);
-}
-
+  if (
+    coutasPagadas === cuotas.length ||
+    (cuotas.length === 1 && unicaCuota >= 55)
+  ) {
+    if (corporationImageUrl) logos.push(corporationImageUrl);
+    if (instituteImageUrl) logos.push(instituteImageUrl);
+    if (hasUniversityInName) logos.push(STATIC_IMAGE);
+  } else if (cuotas.length > 1 && coutasPagadas === 1) {
+    if (corporationImageUrl) logos.push(corporationImageUrl);
+  }
 
   // if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
   //   if (corporationImageUrl) logos.push(corporationImageUrl);
   //   if (instituteImageUrl) logos.push(instituteImageUrl);
   //   logos.push(STATIC_IMAGE);
-  // } 
+  // }
 
   // else if (cuotas.length > 1 && coutasPagadas === 1) {
   //   if (corporationImageUrl) logos.push(corporationImageUrl);
@@ -223,7 +224,9 @@ if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)
               <div className="flex items-center space-x-2">
                 <LucideClock className="text-cyan-500" size={20} />
                 <span>
-                  <strong>Horas de capacitación:</strong> 50 horas
+                  <strong>Horas de capacitación:</strong>&nbsp;
+                  {courseData.module[0].module.corporation[0].hours ||
+                    "Horas no disponibles"}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
@@ -234,10 +237,7 @@ if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)
               </div>
             </div>
           </div>
-
         </div>
-
-
       </div>
     </div>
   );

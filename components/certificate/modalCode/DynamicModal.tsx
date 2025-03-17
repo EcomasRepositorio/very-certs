@@ -78,8 +78,11 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
     const hasUniversityInName =
       instituteData?.name &&
       /universidad nacional de piura/i.test(instituteData.name);
-  
-    if (coutasPagadas === cuotas.length || (cuotas.length === 1 && unicaCuota >= 55)) {
+
+    if (
+      coutasPagadas === cuotas.length ||
+      (cuotas.length === 1 && unicaCuota >= 55)
+    ) {
       if (corporationImageUrl) logos.push(corporationImageUrl);
       if (instituteImageUrl) logos.push(instituteImageUrl);
       if (hasUniversityInName) logos.push(STATIC_IMAGE);
@@ -87,7 +90,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
       if (corporationImageUrl) logos.push(corporationImageUrl);
     }
   }
-  
 
   if (dataType === "module") {
     if (corporationImageUrl) logos.push(corporationImageUrl);
@@ -220,7 +222,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
                     </div>
                   </div>
                 </div>
-                
               </div>
             </div>
 

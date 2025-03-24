@@ -69,7 +69,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
     setIsDynamicModalOpen(true);
   };
 
-  console.log(selectedStudent);
+  // console.log(selectedStudent);
+  console.log("Cantidad de cursos:", selectedStudent?.courses?.length);
 
   // 📌 Sincroniza `selectedStudent` cuando `student` cambia
   useEffect(() => {
@@ -215,6 +216,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
             </div>
           </div>
         )}
+
+        
 
         {selectedStudent.modules && selectedStudent.modules.length > 0 && (
           <div className="mt-6">

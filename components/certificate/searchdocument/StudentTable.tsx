@@ -23,6 +23,8 @@ const StudentTable: React.FC<StudentTableProps> = ({
 }) => {
   if (studentData.length === 0) return null;
 
+  
+
   return (
     <div className="overflow-x-auto">
       <Table className="w-full border border-gray-300 dark:border-gray-700 rounded-lg">

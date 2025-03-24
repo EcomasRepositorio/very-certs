@@ -14,6 +14,7 @@ import StudentModal from "./StudentModal";
 import NoResultsModal from "./NoResultsModal";
 
 interface ExtendedStudent extends StudentGraduate {
+   
   courses?: StudentCourse[];
   modules?: StudentModule[];
 }

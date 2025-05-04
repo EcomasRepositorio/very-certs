@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import animationData from "../../../public/certificate/qr/animation/check-animation.json";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -10,6 +10,8 @@ import {
   CalendarDays as LucideCalendarDays,
   ShieldCheck,
   X,
+  CheckCircle,
+  Loader2,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
@@ -27,7 +29,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   dataType,
 }) => {
   if (!open) return null;
-
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const corporationData =
@@ -60,7 +61,6 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
     ? `${API_BASE_URL}${instituteData.image}`
     : null;
 
-  console.log("Institute Image URL:", instituteImageUrl);
 
   const cuotas = dataType === "course" ? data?.quota || [] : [];
   const coutasPagadas = cuotas.filter((cuota: any) => cuota.state).length;
@@ -139,9 +139,17 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
         "0 créditos"
       : null;
 
+      console.log(dataType)
+  const isCompleted = (endDateStr: string) => {
+    if (!isValidDate(endDateStr)) return false;
+    const endDate = new Date(endDateStr);
+    const now = new Date();
+    return endDate <= now;
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-black/80 fixed inset-0" />
+      <div className="bg-black/80 fixed inset-0" onClick={onClose} />
 
       <div
         className="relative bg-white rounded-xl shadow-lg p-8 max-w-4xl w-full z-50 overflow-y-auto"
@@ -246,7 +254,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
                 <div className="text-lg font-semibold text-gray-800">
                   {itemName}
                 </div>
-                <div className="text-sm text-gray-600 flex items-center">
+                {/* <div className="text-sm text-gray-600 flex items-center">
                   Completado
                   <div className="w-6 h-6 ml-0">
                     <Player
@@ -256,7 +264,32 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
                       style={{ height: "24px", width: "24px" }}
                     />
                   </div>
+                </div> */}
+                <div className="text-sm text-gray-600 flex items-center space-x-2">
+                  {isCompleted(
+                    dataType === "course"
+                      ? data?.module?.[0]?.module?.endDate
+                      : data?.endDate
+                  ) ? (
+                    <>
+                      <span>Completado</span>
+                        <div className="w-6 h-6 ml-0">
+                          <Player
+                            autoplay
+                            loop
+                            src={animationData}
+                            style={{ height: "24px", width: "24px" }}
+                          />
+                        </div>
+                    </>
+                  ) : (
+                    <>
+                      <span>En proceso</span>
+                      <Loader2 className="animate-spin text-yellow-500" size={20} />
+                    </>
+                  )}
                 </div>
+
               </div>
             </div>
 
